@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Enums;
+
+enum StatusCode: int
+{
+    // 共用狀態碼
+    case UNKNOWN_ERROR = 1000;
+    case INVALID_ARGUMENT = 1001;
+    case MODEL_NOT_EXIST = 1002;
+
+    //
+    case AUTH_INVALID_CREDENTIALS = 100001;
+    case ACCOUNT_STATUS_DISABLED = 100002;
+    case ACCOUNT_STATUS_UNVERIFIED = 100003;
+
+    //
+    case OTP_SEND_LIMIT = 100101;
+    case OTP_NOT_EXIST = 100102;
+    case OTP_EXPIRED = 100103;
+    case OTP_INVALID = 100104;
+
+    //
+    case CUSTOMER_EMAIL_EXISTS = 100201;
+    case CUSTOMER_PHONE_EXISTS = 100202;
+
+    //
+    case POINT_REPEAT_STORE_SCANNED = 100301;
+
+    //
+    case COUPON_UNBOUND_USER = 100401;
+    case COUPON_EXPIRED = 100402;
+    case COUPON_ALREADY_USED = 100403;
+
+    //
+    case STAMP_INSUFFICIENT_QUANTITY = 100501;
+
+    //
+    case STORE_ACCOUNT_INVALID_CREDENTIALS = 100601;
+    case STORE_ACCOUNT_STATUS_DISABLED = 106002;
+    case STORE_ACCOUNT_USERNAME_EXISTS = 106003;
+}

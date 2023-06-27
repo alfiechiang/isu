@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: .
+    destination: /var/www/isu-api
+hooks:
+  AfterInstall:
+    - location: /.deploy/install_app_dependencies
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: /.deploy/start_server
+      timeout: 30
+      runas: root
