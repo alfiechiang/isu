@@ -40,13 +40,15 @@ class Otp extends Model
 
     const AUTH_CODE_TTL = 600;
 
+    protected $country_code = 'sssss';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'identifier', 'token', 'expired_at', 'valid',
+        'identifier', 'token', 'expired_at', 'valid', 'country_code',
     ];
 
     protected $casts = [
@@ -56,6 +58,11 @@ class Otp extends Model
     public function routeNotificationForSms(): string
     {
         return $this->identifier;
+    }
+
+    public function getCountryCode()
+    {
+        return $this->country_code;
     }
 
     public function routeNotificationForMail(): string

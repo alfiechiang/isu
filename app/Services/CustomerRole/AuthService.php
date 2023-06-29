@@ -35,6 +35,34 @@ class AuthService
         $this->guard = $guard;
     }
 
+    public function loginUser($user): void
+    {
+        Auth::guard($this->guard)->login($user);
+    }
+
+    public function handleLogin($token): array
+    {
+        $user = Auth::guard($this->guard)->user();
+
+        if ($user->status == CustomerStatus::DISABLED->value) {
+            throw new Exception(
+                '顧客帳戶已經停用.',
+                StatusCode::ACCOUNT_STATUS_DISABLED->value
+            );
+        }
+
+        if ($user->status == CustomerStatus::UNVERIFIED->value) {
+            throw new AuthenticationException(
+                '尚未完成信箱驗證.',
+                StatusCode::ACCOUNT_STATUS_UNVERIFIED->value
+            );
+        }
+        
+        // 返回 access_token、token 類型和到期時間.
+        return $this->respondWithToken($token);
+    }
+
+
     /**
      * 刷新 access_token.
      *
@@ -72,39 +100,17 @@ class AuthService
         return Auth::guard($this->guard)->user();
     }
 
-    /**
-     * 登入使用者並傳回 access_token.
-     *
-     * @param array $credentials 使用者的登入憑證.
-     *  - string 'identifier': 電子信箱或者手機號碼，必填
-     *  - string 'password': 密碼，必填
-     *
-     * @return array|null access_token，如果登入失敗，則為 null.
-     * @throws AuthenticationException
-     * @throws Exception
-     */
     public function login(array $credentials): ?array
     {
-        // 以電子郵件嘗試登入使用者.
-        if (filter_var($credentials['identifier'], FILTER_VALIDATE_EMAIL)) {
-            if (!$token = Auth::guard($this->guard)->attempt(['email' => $credentials['identifier'], 'password' => $credentials['password']])) {
-                // 如果登入失敗，返回 throw AuthenticationException.
-                throw new AuthenticationException(
-                    '輸入的帳戶信箱或密碼錯誤.',
-                    StatusCode::AUTH_INVALID_CREDENTIALS->value
-                );
-            }
-        } // 如果使用者未使用電子郵件登錄，則嘗試使用電話號碼登入.
-        else {
-            if (!$token = Auth::guard($this->guard)->attempt(['phone' => $credentials['identifier'], 'password' => $credentials['password']])) {
-                // 如果登入失敗，返回 throw AuthenticationException.
-                throw new AuthenticationException(
-                    '輸入的帳戶手機或密碼錯誤.',
-                    StatusCode::AUTH_INVALID_CREDENTIALS->value
-                );
-            }
+      
+        if (!$token = Auth::guard($this->guard)->attempt(['phone' => $credentials['identifier'], 'password' => $credentials['password']])) {
+            // 如果登入失敗，返回 throw AuthenticationException.
+            throw new AuthenticationException(
+                '輸入的帳戶手機或密碼錯誤.',
+                StatusCode::AUTH_INVALID_CREDENTIALS->value
+            );
         }
-
+    
         $user = Auth::guard($this->guard)->user();
 
         switch ($user->status) {
@@ -153,12 +159,7 @@ class AuthService
      */
     public function createCustomer(array $data): Customer
     {
-        // 如果電子郵件已經被註冊，則拋出異常.
-        $email = Arr::get($data, 'email');
-        if ($email && Customer::whereEmail($email)->exists()) {
-            throw new Exception("電子信箱已經被註冊.", StatusCode::CUSTOMER_EMAIL_EXISTS->value);
-        }
-
+        
         // 如果手機號碼已經被註冊，則拋出異常.
         $phone = Arr::get($data, 'phone');
         if ($phone && Customer::wherePhone($phone)->exists()) {
@@ -167,10 +168,8 @@ class AuthService
 
         // 創建新的用戶.
         return Customer::create([
-            'email' => $data['email'] ?? null,
             'phone' => $data['phone'] ?? null,
             'password' => $data['password'],
-            'citizenship' => $data['citizenship'],
             'status' => CustomerStatus::ENABLED->value,
         ]);
     }

@@ -21,7 +21,7 @@ class OtpService
      *
      * @throws InvalidArgumentException|Exception
      */
-    public function generate(string $identifier): object
+    public function generate(string $identifier,$country_code): object
     {
         $validity = Otp::AUTH_CODE_TTL;
         $digits = 6;
@@ -31,7 +31,7 @@ class OtpService
             ->count();
 
         if ($limit >= Otp::SEND_LIMIT) {
-            throw new Exception('操作過於頻繁，請稍後再試.', StatusCode::OTP_SEND_LIMIT->value);
+           // throw new Exception('操作過於頻繁，請稍後再試.', StatusCode::OTP_SEND_LIMIT->value);
         }
 
         // 驗證參數格式
@@ -55,8 +55,10 @@ class OtpService
         $otp = Otp::create([
             'identifier' => $identifier,
             'token' => $token,
+            'country_code'=>$country_code,
             'expired_at' => Carbon::now()->addSeconds($validity),
         ]);
+
 
         return (object)[
             'otp' => $otp,

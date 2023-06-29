@@ -46,7 +46,7 @@ class RegisterVerifyOtp extends Notification
             return ['mail'];
         }
 
-        if (preg_match('/^09\d{8}$/', $notifiable->identifier) === 1) {
+        if (preg_match('/^9\d{8}$/', $notifiable->identifier) === 1) {
             return ['sms'];
         }
 

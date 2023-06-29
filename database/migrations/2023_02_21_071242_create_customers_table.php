@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('name', 64)->nullable()->comment("姓名");
             $table->string('email')->unique()->nullable()->comment("Email");
             $table->string('phone', 10)->unique()->nullable()->comment("手機");
+            $table->string('country_code', 5)->nullable()->comment("國碼");
             $table->string('password')->comment("密碼");
             $table->enum('citizenship', ['foreign', 'native'])->nullable()->comment("國籍");
             $table->string('avatar')->nullable()->comment("頭像");

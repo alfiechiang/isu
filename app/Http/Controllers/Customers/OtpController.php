@@ -58,6 +58,7 @@ class OtpController extends Controller
     {
         // 從請求中取得識別符、驗證碼有效時間以及驗證碼位數.
         $identifier = $request->get('identifier');
+        $country_code=$request->get('country_code');
 
         try {
             // 驗證輸入數據.
@@ -72,7 +73,7 @@ class OtpController extends Controller
             }
 
             // 生成驗證碼.
-            $generate = $this->otpService->generate($identifier);
+            $generate = $this->otpService->generate($identifier,$country_code);
             $generate->otp->notify(new RegisterVerifyOtp(validity: $generate->validity));
 
             // 返回成功響應.

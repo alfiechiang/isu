@@ -8,6 +8,8 @@ use App\Http\Controllers\Customers;
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);
 Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
+Route::post('login/{provider_name}/register', [Customers\SocialLoginController::class, 'register']);
+
 Route::group([
     'middleware' => 'auth:customers',
 ], function ($router) {

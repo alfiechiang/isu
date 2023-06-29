@@ -133,4 +133,9 @@ class Customer extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(CouponCustomer::class);
     }
+
+    public function logins(): HasMany
+    {
+        return $this->hasMany(LoginCustomer::class);
+    }
 }

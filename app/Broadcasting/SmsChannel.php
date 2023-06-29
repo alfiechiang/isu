@@ -31,14 +31,11 @@ class SmsChannel
     public function send(mixed $notifiable, Notification $notification): void
     {
         $numbers = (array) $notifiable->routeNotificationFor('sms');
-
         if (empty($numbers)) {
             return;
         }
-
         /** @var SmsMessage $message */
         $message = $notification->toSms($notifiable);
-
         foreach ($numbers as $number) {
             $this->manager->driver($message->driver)->send($number, $message);
         }

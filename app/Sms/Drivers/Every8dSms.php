@@ -31,10 +31,12 @@ class Every8dSms
     {
         $this->client = $client;
         $this->config = $config;
+
     }
 
     public function send(string $to, SmsMessage $message): array
     {
+
         $response= $this->client->get(static::API_URL, [
             'query' => [
                 'UID' => $this->config['username'],

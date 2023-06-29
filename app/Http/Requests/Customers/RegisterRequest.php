@@ -14,11 +14,9 @@ class RegisterRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'email' => 'required_if:citizenship,foreign|nullable|email',
-            'phone' => 'required_if:citizenship,native|nullable|regex:/^09\d{8}$/',
-            'password' => 'required|min:8',
-            'citizenship' => 'required|in:foreign,native',
-            'token' => 'required',
+            'phone' => 'required|regex:/^09\d{8}$/',
+            'password' => 'required|min:6',
+            'repeat_password' => 'required|min:6',
         ];
     }
 }
