@@ -75,7 +75,7 @@ class SocialLoginController extends Controller
                         'name' => $providerUser['name'],
                     ]);
                 
-                    $user->update(['status' => CustomerStatus::ENABLED]);
+                    $user->update(['status' => CustomerStatus::ENABLED->value]);
                 }
 
                 $socialAccount = $user->social_accounts()->create([

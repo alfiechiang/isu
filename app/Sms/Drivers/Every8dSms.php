@@ -34,15 +34,16 @@ class Every8dSms
 
     }
 
-    public function send(string $to, SmsMessage $message): array
+    public function send(string $to, SmsMessage $message,string $country_code): array
     {
+
 
         $response= $this->client->get(static::API_URL, [
             'query' => [
                 'UID' => $this->config['username'],
                 'PWD' => $this->config['password'],
                 'SB' => '',
-                'DEST'  => $to,
+                'DEST'  => $country_code.$to,
                 'MSG'   => $message->content,
             ],
         ]);

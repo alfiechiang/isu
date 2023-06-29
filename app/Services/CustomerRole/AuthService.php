@@ -173,4 +173,11 @@ class AuthService
             'status' => CustomerStatus::ENABLED->value,
         ]);
     }
+
+    public function forgetPassword(array $data)
+    {
+        $customer =Customer::where('phone',$data['phone'])->first();
+        $customer->password=$data['password'];
+        $customer->save();
+    }
 }

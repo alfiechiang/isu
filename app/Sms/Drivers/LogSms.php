@@ -22,7 +22,7 @@ class LogSms
         $this->logger = $logger;
     }
 
-    public function send(string $to, SmsMessage $message): ?Response
+    public function send(string $to, SmsMessage $message,string $country_code): ?Response
     {
         $this->logger->debug('LogSms', [
             'to' => $to,

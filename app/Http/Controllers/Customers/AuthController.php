@@ -104,7 +104,6 @@ class AuthController extends Controller
 
             // 返回成功響應
             return response($result);
-
         } catch (\Exception $e) {
             // 返回失敗響應
             return response(['errors' => $e->getMessage(), 'code' => $e->getCode()], 400);
@@ -162,25 +161,45 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-
         $validator = $request->getValidatorInstance();
 
         try {
             if ($validator->fails()) {
-                return Response::format(StatusCode::INVALID_ARGUMENT->value,[],"");
+                return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
-            // 創建用戶
-            $customer = $this->authService->createCustomer($request->all());
-
+            session()->put('user_data', json_encode($request->all()));
             // 返回成功響應
-            return Response::success();
         } catch (\Exception $e) {
             // 返回失敗響應
-            return response(['errors' => $e->getMessage(), 'code' => $e->getCode()], 400);
+            return Response::error();
         }
     }
 
-    public function registerNext(){
-        
+    public function registerNext(Request $request)
+    {
+        try {
+            $user_data = json_decode(session('user_data'), true);
+            $customer = $this->authService->createCustomer($user_data);
+            return Response::success();
+        } catch (\Exception $e) {
+            return Response::error();
+        }
+    }
+
+    public function forgetPassword(Request $request)
+    {
+        try {
+            $password = $request->get('password');
+            $repeat_password = $request->get('password');
+
+            if ($password !== $repeat_password) {
+                return Response::format(40001, [], "兩次密碼不匹配");
+            }
+            $this->authService->forgetPassword($request->all());
+            return Response::success();
+
+        } catch (\Exception $e) {
+            return Response::error();
+        }
     }
 }

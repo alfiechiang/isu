@@ -24,4 +24,13 @@ class Response
         $json['data'] = [];
         return response()->json($json);
     }
+
+    public static function error()
+    {
+        $json = [];
+        $json['code'] = 40001;
+        $json['message'] = '系統錯誤';
+        $json['data'] = [];
+        return response()->json($json);
+    }
 }

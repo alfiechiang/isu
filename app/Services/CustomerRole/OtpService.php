@@ -50,7 +50,7 @@ class OtpService
 
         // 產生 OTP 碼
         $token = $this->generatePin($digits);
-
+        session()->put('verify_code',$token);
         // 儲存至資料庫
         $otp = Otp::create([
             'identifier' => $identifier,
