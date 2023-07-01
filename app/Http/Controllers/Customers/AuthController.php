@@ -168,6 +168,7 @@ class AuthController extends Controller
                 return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
             session()->put('user_data', json_encode($request->all()));
+            return Response::success();
             // 返回成功響應
         } catch (\Exception $e) {
             // 返回失敗響應
@@ -196,6 +197,17 @@ class AuthController extends Controller
                 return Response::format(40001, [], "兩次密碼不匹配");
             }
             $this->authService->forgetPassword($request->all());
+            return Response::success();
+
+        } catch (\Exception $e) {
+            return Response::error();
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+            $this->authService->resetPassword($request->all());
             return Response::success();
 
         } catch (\Exception $e) {

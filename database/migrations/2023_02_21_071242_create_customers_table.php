@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->comment("顧客資料");
-
             $table->uuid('id')->primary()->comment("顧客ID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");
-
             $table->string('name', 64)->nullable()->comment("姓名");
             $table->string('email')->unique()->nullable()->comment("Email");
             $table->string('phone', 10)->unique()->nullable()->comment("手機");
@@ -29,6 +27,10 @@ return new class extends Migration
             $table->enum('status', ['disabled', 'enabled', 'unverified'])->nullable()->comment("狀態");
             $table->enum('gender', ['male', 'female'])->nullable()->comment("性別");
             $table->date('birthday')->index()->nullable()->comment("生日");
+            $table->string('country')->nullable()->comment("國家");
+            $table->string('county')->nullable()->comment("縣市");
+            $table->string('district')->nullable()->comment("區");
+            $table->string('postal')->nullable()->comment("郵遞區號");
             $table->string('address')->nullable()->comment("地址");
             $table->string('interest')->nullable()->comment("興趣");
             $table->integer('point_balance')->default(0)->comment("現有點數");

@@ -21,8 +21,8 @@ class StoreCustomerRequest extends ApiRequest
             'gender' => 'in:male,female',
             'birthday' => 'date_format:"Y-m-d"',
             'address' => 'nullable|string',
-            'interest' => 'nullable|string',
-            'avatar' => [File::types(['png', 'jpg', 'gif'])->max(1024)]
+            'interest' => 'nullable|array',
+            'avatar' => 'nullable|string'
         ];
     }
 }

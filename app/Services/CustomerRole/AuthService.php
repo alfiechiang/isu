@@ -180,4 +180,11 @@ class AuthService
         $customer->password=$data['password'];
         $customer->save();
     }
+
+    public function resetPassword(array $data)
+    {
+        $customer =Customer::where('phone',$data['phone'])->first();
+        $customer->password=$data['password'];
+        $customer->save();
+    }
 }
