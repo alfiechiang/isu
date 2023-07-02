@@ -46,23 +46,10 @@ class ProfileController extends Controller
         $this->couponService = $couponService;
     }
 
-    /**
-     * 獲取已認證用戶的信息.
-     *
-     * @group Customers
-     *
-     * @authenticated
-     *
-     * @apiResource App\Http\Resources\Customers\CustomerResource
-     * @apiResourceModel App\Models\Customer
-     *
-     * @return CustomerResource|Response
-     */
-    public function index(): CustomerResource|Response
+    public function index()
     {
         $authUser = $this->authService->user();
-
-        return new CustomerResource($authUser);
+        return Response::format(200,$authUser,'請求成功');
     }
 
     public function store(StoreCustomerRequest $request)

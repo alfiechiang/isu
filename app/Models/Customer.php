@@ -70,7 +70,7 @@ class Customer extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name', 'email', 'phone', 'password', 'citizenship', 'avatar', 'status', 'gender', 'birthday', 'address', 'interest', 'point_balance', 'stamps', 'legacy_system_id', 'created_at', 'updated_at',
-        'country','county','district','postal'
+        'country','county','district','postal','join_group'
     ];
 
     /**

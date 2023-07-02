@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Helpers\Utils;
+use App\Models\SocialAccount;
 
 class AuthService
 {
@@ -186,5 +188,12 @@ class AuthService
         $customer =Customer::where('phone',$data['phone'])->first();
         $customer->password=$data['password'];
         $customer->save();
+    }
+
+    public function socialAccounts(){
+        $authUser = Auth::guard(Utils::getGuardName())->user();
+        $coutomer_id=$authUser->id;
+
+        return SocialAccount::where('customer_id',$coutomer_id)->pluck('provider_name');
     }
 }

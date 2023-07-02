@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('password')->comment("密碼");
             $table->enum('citizenship', ['foreign', 'native'])->nullable()->comment("國籍");
             $table->string('avatar')->nullable()->comment("頭像");
+            $table->boolean('join_group')->nullable()->comment("揪團");
             $table->enum('status', ['disabled', 'enabled', 'unverified'])->nullable()->comment("狀態");
             $table->enum('gender', ['male', 'female'])->nullable()->comment("性別");
             $table->date('birthday')->index()->nullable()->comment("生日");

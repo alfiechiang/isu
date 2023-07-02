@@ -198,7 +198,6 @@ class AuthController extends Controller
             }
             $this->authService->forgetPassword($request->all());
             return Response::success();
-
         } catch (\Exception $e) {
             return Response::error();
         }
@@ -209,7 +208,16 @@ class AuthController extends Controller
         try {
             $this->authService->resetPassword($request->all());
             return Response::success();
+        } catch (\Exception $e) {
+            return Response::error();
+        }
+    }
 
+    public function socialAccounts(Request $request)
+    {
+        try {
+            $res = $this->authService->socialAccounts();
+            return Response::format(200, $res, "請求成功");
         } catch (\Exception $e) {
             return Response::error();
         }
