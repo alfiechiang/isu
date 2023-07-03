@@ -14,7 +14,7 @@ class RegisterRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|regex:/^09\d{8}$/',
+            'phone' => 'required|regex:/^9\d{8}$/',
             'password' => 'required|min:6',
             'repeat_password' => 'required|min:6',
         ];

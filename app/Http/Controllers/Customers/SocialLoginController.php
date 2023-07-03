@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Customers;
 
 use App\Enums\CustomerStatus;
 use App\Enums\StatusCode;
+use App\Http\Response;
 use App\Models\Customer;
 use App\Models\SocialAccount;
+use ErrorException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use App\Services\Base\SocialLoginService;
@@ -107,48 +108,44 @@ class SocialLoginController extends Controller
 
 
         $accessToken = $request->get('access_token');
-        $email = $request->get('email');
+        $phone = $request->get('phone');
+        $password=$request->get('password');
+        $repeat_password=$request->get('repeat_password');
+        if ($password !=$repeat_password){
+            return Response::format(40001,[],"兩次密碼不匹配");
+        }
         try {
-            $validator = Validator::make(['access_token' => $accessToken, 'email' => $email], [
+            $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone], [
                 'access_token' => 'required',
-                'email' => 'required|email',
+                'phone' => 'required',
             ]);
 
             if ($validator->fails()) {
                 throw new InvalidArgumentException($validator->errors()->first(), StatusCode::INVALID_ARGUMENT->value);
             }
 
-            $providerUser = $this->socialLoginService->auth($provider_name, $accessToken);
+            // $providerUser = $this->socialLoginService->auth($provider_name, $accessToken);
 
-            if (!$providerUser['id']) {
-                throw new Exception('找不到社群帳號 ID', StatusCode::SOCIAL_LOGIN_ERROR->value);
-            }
+            // if (!$providerUser['id']) {
+            //     throw new ErrorException('找不到社群帳號 ID');
+            // }
 
-            
-            $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
-
-            if ($socialAccount) {
-                throw new Exception('社群帳號已經完成註冊', StatusCode::SOCIAL_LOGIN_EXIST->value);
-            }
-
-            
-            if (Customer::whereEmail($email)->exists()) {
-                throw new Exception("電子信箱已經被註冊.", StatusCode::CUSTOMER_EMAIL_EXISTS->value);
-            }
-
-            // $generate = $this->otpService->generate($email);
-            // $generate->otp->notify(new RegisterVerifyOtp(validity: $generate->validity, verifyUrl: $verifyUrl));
+            // $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
+            // if ($socialAccount) {
+            //     throw new ErrorException('社群帳號已經完成註冊');
+            // }
 
             $user = $this->authService->createCustomer([
-                'email' => $email,
-                'name' => $providerUser['name'],
+                'phone' => $phone,
+                'name' => 'dddd',
+                'password'=>$password
             ]);
 
-            $user->social_accounts()->create([
-                'provider_name' => $provider_name,
-                'provider_id' => $providerUser['id'],
-                'access_token' => $accessToken,
-            ]);
+            // $user->social_accounts()->create([
+            //     'provider_name' => $provider_name,
+            //     'provider_id' => $providerUser['id'],
+            //     'access_token' => $accessToken,
+            // ]);
 
             return response(['message' => '註冊成功.']);
         } catch (\Exception $e) {

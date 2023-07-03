@@ -14,6 +14,7 @@ use App\Services\CustomerRole\OtpService;
 use Illuminate\Http\Request;
 use App\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
@@ -168,9 +169,7 @@ class AuthController extends Controller
                 return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
             Log::info('register:'.json_encode($request->all()));
-
-
-            session()->put('user_data', json_encode($request->all()));
+            Redis::set('user_data_'.$request->get('phone'),json_encode($request->all()));
             return Response::success();
             // 返回成功響應
         } catch (\Exception $e) {
@@ -181,8 +180,7 @@ class AuthController extends Controller
 
     public function registerNext(Request $request)
     {
-        $user_data = json_decode(session('user_data'), true);
-        Log::info('$user_data:'.json_encode($user_data));
+        $user_data = json_decode(Redis::get('user_data_'.$request->phone), true);
         $customer = $this->authService->createCustomer($user_data);
         return Response::success();
     }

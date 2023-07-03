@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class OtpService
 {
@@ -50,7 +51,7 @@ class OtpService
 
         // 產生 OTP 碼
         $token = $this->generatePin($digits);
-        session()->put('verify_code',$token);
+        Redis::set($identifier,$token);
         // 儲存至資料庫
         $otp = Otp::create([
             'identifier' => $identifier,

@@ -12,6 +12,7 @@ use App\Point\Enums\PointDistribution;
 use App\Point\PointService;
 use Exception;
 use App\Exceptions\AuthenticationException;
+use App\Exceptions\ErrException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -66,9 +67,9 @@ class SocialLoginService
                 }
             }
 
-            throw new \Exception($error_description, StatusCode::SOCIAL_LOGIN_ERROR->value);
+            throw new ErrException($error_description);
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), StatusCode::SOCIAL_LOGIN_ERROR->value);
+            throw new ErrException($e->getMessage());
         }
     }
 

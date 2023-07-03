@@ -8,6 +8,7 @@ use App\Rules\EmailOrPhone;
 use App\Services\CustomerRole\OtpService;
 use Illuminate\Http\Request;
 use App\Http\Response;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
@@ -63,7 +64,7 @@ class OtpController extends Controller
     public function checkOtp(Request $request)
     {
         $verify_code = $request->get('verify_code');
-        if ($verify_code !== session('verify_code')) {
+        if ($verify_code !== Redis::get($request->get('phone'))) {
             return Response::format(40001, [], "手機驗證錯誤");
         }
 
