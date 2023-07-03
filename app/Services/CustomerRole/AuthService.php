@@ -8,6 +8,7 @@ use App\Http\Requests\Customers\RegisterRequest;
 use App\Models\Customer;
 use Exception;
 use App\Exceptions\AuthenticationException;
+use App\Exceptions\ErrException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -161,12 +162,15 @@ class AuthService
      */
     public function createCustomer(array $data): Customer
     {
-        
         // 如果手機號碼已經被註冊，則拋出異常.
         $phone = Arr::get($data, 'phone');
+
         if ($phone && Customer::wherePhone($phone)->exists()) {
-            throw new Exception("手機號碼已經被註冊.", StatusCode::CUSTOMER_PHONE_EXISTS->value);
+            throw new ErrException("手機號碼已經被註冊");
         }
+
+
+
 
         // 創建新的用戶.
         return Customer::create([

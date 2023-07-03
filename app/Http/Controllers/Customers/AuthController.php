@@ -178,13 +178,10 @@ class AuthController extends Controller
 
     public function registerNext(Request $request)
     {
-        try {
-            $user_data = json_decode(session('user_data'), true);
-            $customer = $this->authService->createCustomer($user_data);
-            return Response::success();
-        } catch (\Exception $e) {
-            return Response::error();
-        }
+
+        $user_data = json_decode(session('user_data'), true);
+        $customer = $this->authService->createCustomer($user_data);
+        return Response::success();
     }
 
     public function forgetPassword(Request $request)

@@ -33,4 +33,5 @@ class Response
         $json['data'] = [];
         return response()->json($json);
     }
+
 }
