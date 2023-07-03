@@ -13,7 +13,7 @@ use App\Services\CustomerRole\AuthService;
 use App\Services\CustomerRole\OtpService;
 use Illuminate\Http\Request;
 use App\Http\Response;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
@@ -178,8 +178,8 @@ class AuthController extends Controller
 
     public function registerNext(Request $request)
     {
-
         $user_data = json_decode(session('user_data'), true);
+        Log::info('$user_data:'.json_encode($user_data));
         $customer = $this->authService->createCustomer($user_data);
         return Response::success();
     }
