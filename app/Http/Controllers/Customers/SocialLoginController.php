@@ -34,16 +34,12 @@ class SocialLoginController extends Controller
 
     }
 
-    /**
-     * @param Request $request
-     * @param $provider_name
-     * @return Response
-     */
-    public function auth(Request $request, $provider_name): Response
+    public function auth(Request $request, $provider_name)
     {
         $accessToken = $request->get('access_token');
         
         try {
+            
             $validator = Validator::make(['access_token' => $accessToken], [
                 'access_token' => ['required'],
             ]);
@@ -91,7 +87,6 @@ class SocialLoginController extends Controller
 
             $this->authService->loginUser($user);
 
-            
             $token = JWTAuth::fromUser($user);
             $result = $this->authService->handleLogin($token);
 
@@ -105,14 +100,12 @@ class SocialLoginController extends Controller
 
     public function register(Request $request, $provider_name)
     {
-
-
         $accessToken = $request->get('access_token');
         $phone = $request->get('phone');
         $password=$request->get('password');
         $country_code=$request->country_code;
-      
         try {
+
             $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone,'password'=>$password,'country_code'=>$country_code], [
                 'access_token' => 'required',
                 'phone' => 'required',
@@ -149,9 +142,19 @@ class SocialLoginController extends Controller
 
             return Response::success();
         } catch (\Exception $e) {
-            return Response::error();
+            return Response::errorFormat($e->getMessage());
         }
 
+    }
+
+    public function checkoutSocailAccount(Request $request)
+    {
+        try {
+            $exist = $this->socialLoginService->checkoutSocailAccount($request->all());
+            return Response::format(200, ['exist' => $exist], '請求成功');
+        } catch (\Exception $e) {
+            return Response::error();
+        }
     }
 
 }

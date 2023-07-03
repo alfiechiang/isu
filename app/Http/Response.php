@@ -34,4 +34,14 @@ class Response
         return response()->json($json);
     }
 
+    public static function errorFormat($e)
+    {
+        $json = [];
+        $json['code'] = 40001;
+        $json['message'] = $e;
+        $json['data'] = [];
+        return response()->json($json);
+    }
+
+
 }

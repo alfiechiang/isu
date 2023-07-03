@@ -13,6 +13,7 @@ use App\Point\PointService;
 use Exception;
 use App\Exceptions\AuthenticationException;
 use App\Exceptions\ErrException;
+use App\Models\SocialAccount;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -166,5 +167,20 @@ class SocialLoginService
             self::GOOGLE => $this->getGoogleAuth($access_token),
             default => throw new \Exception('error provider.', StatusCode::SOCIAL_LOGIN_UNKNOWN_TYPE->value),
         };
+    }
+
+    public function checkoutSocailAccount($data)
+    {
+        $customer = Customer::where('phone', $data['phone'])->first();
+        if (is_null($customer)) {
+            return false;
+        }
+
+        $account = SocialAccount::where('customer_id', $customer->id)->where('provider_name', $data['provider_name'])->first();
+        if (is_null($account)) {
+            return false;
+        }
+
+        return true;
     }
 }

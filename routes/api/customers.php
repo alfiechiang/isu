@@ -5,13 +5,19 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Customers;
 
+Route::get('whosyourdaddy', [Customers\TestController::class, 'axcd']);
+
+
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);
+Route::post('socialaccount/check', [Customers\SocialLoginController::class, 'checkoutSocailAccount']);
+
 Route::post('forgetpassword', [Customers\AuthController::class, 'forgetPassword']);
 Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
 Route::post('otp/check', [Customers\OtpController::class, 'checkOtp']);
 Route::post('login/{provider_name}/register', [Customers\SocialLoginController::class, 'register']);
 Route::post('login/{provider_name}', [Customers\SocialLoginController::class, 'auth']);
+
 
 Route::group([
     'middleware' => 'auth:customers',
