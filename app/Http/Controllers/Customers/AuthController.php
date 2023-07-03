@@ -167,6 +167,9 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
+            Log::info('register:'.json_encode($request->all()));
+
+
             session()->put('user_data', json_encode($request->all()));
             return Response::success();
             // 返回成功響應
