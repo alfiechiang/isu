@@ -103,53 +103,53 @@ class SocialLoginController extends Controller
     }
 
 
-    public function register(Request $request, $provider_name): Response
+    public function register(Request $request, $provider_name)
     {
 
 
         $accessToken = $request->get('access_token');
         $phone = $request->get('phone');
         $password=$request->get('password');
-        $repeat_password=$request->get('repeat_password');
-        if ($password !=$repeat_password){
-            return Response::format(40001,[],"兩次密碼不匹配");
-        }
+        $country_code=$request->country_code;
+      
         try {
-            $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone], [
+            $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone,'password'=>$password,'country_code'=>$country_code], [
                 'access_token' => 'required',
                 'phone' => 'required',
+                'password'=>'required',
+                'country_code'=>'required'
             ]);
 
             if ($validator->fails()) {
                 throw new InvalidArgumentException($validator->errors()->first(), StatusCode::INVALID_ARGUMENT->value);
             }
 
-            // $providerUser = $this->socialLoginService->auth($provider_name, $accessToken);
+            $providerUser = $this->socialLoginService->auth($provider_name, $accessToken);
 
-            // if (!$providerUser['id']) {
-            //     throw new ErrorException('找不到社群帳號 ID');
-            // }
+            if (!$providerUser['id']) {
+                throw new ErrorException('找不到社群帳號 ID');
+            }
 
-            // $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
-            // if ($socialAccount) {
-            //     throw new ErrorException('社群帳號已經完成註冊');
-            // }
+            $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
+            if ($socialAccount) {
+                throw new ErrorException('社群帳號已經完成註冊');
+            }
 
             $user = $this->authService->createCustomer([
                 'phone' => $phone,
-                'name' => 'dddd',
+                'country_cde'=>$country_code,
                 'password'=>$password
             ]);
 
-            // $user->social_accounts()->create([
-            //     'provider_name' => $provider_name,
-            //     'provider_id' => $providerUser['id'],
-            //     'access_token' => $accessToken,
-            // ]);
+            $user->social_accounts()->create([
+                'provider_name' => $provider_name,
+                'provider_id' => $providerUser['id'],
+                'access_token' => $accessToken,
+            ]);
 
-            return response(['message' => '註冊成功.']);
+            return Response::success();
         } catch (\Exception $e) {
-            return response(['errors' => $e->getMessage(), 'code' => $e->getCode()], 400);
+            return Response::error();
         }
 
     }

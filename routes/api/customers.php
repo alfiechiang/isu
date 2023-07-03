@@ -7,7 +7,6 @@ use App\Http\Controllers\Customers;
 
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);
-Route::post('register/next', [Customers\AuthController::class, 'registerNext']);
 Route::post('forgetpassword', [Customers\AuthController::class, 'forgetPassword']);
 Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
 Route::post('otp/check', [Customers\OtpController::class, 'checkOtp']);
