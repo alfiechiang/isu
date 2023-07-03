@@ -168,8 +168,7 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
-            Log::info('register:'.json_encode($request->all()));
-            Redis::set('user_data_'.$request->get('phone'),json_encode($request->all()));
+            $customer = $this->authService->createCustomer($request->all());
             return Response::success();
             // 返回成功響應
         } catch (\Exception $e) {
@@ -180,8 +179,6 @@ class AuthController extends Controller
 
     public function registerNext(Request $request)
     {
-        $user_data = json_decode(Redis::get('user_data_'.$request->phone), true);
-        $customer = $this->authService->createCustomer($user_data);
         return Response::success();
     }
 

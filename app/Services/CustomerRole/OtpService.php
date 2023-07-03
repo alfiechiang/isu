@@ -51,15 +51,20 @@ class OtpService
 
         // 產生 OTP 碼
         $token = $this->generatePin($digits);
-        Redis::set($identifier,$token);
         // 儲存至資料庫
-        $otp = Otp::create([
-            'identifier' => $identifier,
-            'token' => $token,
-            'country_code'=>$country_code,
-            'expired_at' => Carbon::now()->addSeconds($validity),
-        ]);
-
+        $otp=Otp::where('identifier',$identifier)->first();
+        if (is_null($otp)){
+            $otp = Otp::create([
+                'identifier' => $identifier,
+                'token' => $token,
+                'country_code'=>$country_code,
+                'expired_at' => Carbon::now()->addSeconds($validity),
+            ]);
+        }else{
+            $otp->token=$token;
+            $otp->expired_at=Carbon::now()->addSeconds($validity);
+            $otp->save();
+        }
 
         return (object)[
             'otp' => $otp,

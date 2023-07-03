@@ -16,7 +16,7 @@ class RegisterRequest extends ApiRequest
         return [
             'phone' => 'required|regex:/^9\d{8}$/',
             'password' => 'required|min:6',
-            'repeat_password' => 'required|min:6',
+            'country_code'=>'required'
         ];
     }
 }

@@ -169,9 +169,6 @@ class AuthService
             throw new ErrException("手機號碼已經被註冊");
         }
 
-
-
-
         // 創建新的用戶.
         return Customer::create([
             'phone' => $data['phone'] ?? null,
