@@ -65,6 +65,7 @@ class OtpService
             $otp->expired_at=Carbon::now()->addSeconds($validity);
             $otp->save();
         }
+        $otp->country_code=$country_code;
 
         return (object)[
             'otp' => $otp,
