@@ -142,7 +142,7 @@ class SocialLoginController extends Controller
 
             return Response::success();
         } catch (\Exception $e) {
-            return Response::errorFormat($e->getMessage());
+            return Response::errorFormat($e);
         }
 
     }
@@ -150,10 +150,12 @@ class SocialLoginController extends Controller
     public function checkoutSocailAccount(Request $request)
     {
         try {
-            $exist = $this->socialLoginService->checkoutSocailAccount($request->all());
+            $provider_name=$request->provider_name;
+            $access_token=$request->access_token;
+            $exist = $this->socialLoginService->checkoutSocailAccount($provider_name,$access_token);
             return Response::format(200, ['exist' => $exist], '請求成功');
         } catch (\Exception $e) {
-            return Response::error();
+            return Response::errorFormat($e);
         }
     }
 

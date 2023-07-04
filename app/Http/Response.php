@@ -38,7 +38,7 @@ class Response
     {
         $json = [];
         $json['code'] = 40001;
-        $json['message'] = $e;
+        $json['message'] = $e->getMessage();
         $json['data'] = [];
         return response()->json($json);
     }

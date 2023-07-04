@@ -169,15 +169,16 @@ class SocialLoginService
         };
     }
 
-    public function checkoutSocailAccount($data)
+    public function checkoutSocailAccount($provider_name, $accessToken)
     {
-        $customer = Customer::where('phone', $data['phone'])->first();
-        if (is_null($customer)) {
+        $providerUser = $this->auth($provider_name, $accessToken);
+
+        if (!$providerUser['id']) {
             return false;
         }
 
-        $account = SocialAccount::where('customer_id', $customer->id)->where('provider_name', $data['provider_name'])->first();
-        if (is_null($account)) {
+        $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
+        if(is_null($socialAccount)){
             return false;
         }
 
