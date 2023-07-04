@@ -223,7 +223,6 @@ class AuthController extends Controller
             $register = $this->authService->checkRegister($request->phone);
             return Response::format(200,['register'=>$register], "請求成功");
         } catch (\Exception $e) {
-            dd($e);
             return Response::error();
         }
 
