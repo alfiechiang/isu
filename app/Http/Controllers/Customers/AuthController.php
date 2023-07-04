@@ -217,4 +217,15 @@ class AuthController extends Controller
             return Response::error();
         }
     }
+
+    public function checkRegister(Request $request){
+        try {
+            $register = $this->authService->checkRegister($request->phone);
+            return Response::format(200,['register'=>$register], "請求成功");
+        } catch (\Exception $e) {
+            dd($e);
+            return Response::error();
+        }
+
+    }
 }

@@ -197,4 +197,12 @@ class AuthService
 
         return SocialAccount::where('customer_id',$coutomer_id)->pluck('provider_name');
     }
+
+    public function checkRegister($phone){
+        $customer =Customer::where('phone',$phone)->first();
+        if(is_null($customer)){
+            return false;
+        }
+        return true;
+    }
 }
