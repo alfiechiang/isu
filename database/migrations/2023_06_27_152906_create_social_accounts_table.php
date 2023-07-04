@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('social_accounts', function (Blueprint $table) {
             $table->comment("社群帳號");
-
-            $table->uuid('id')->primary()->comment("社群帳號ID");
+            $table->id()->comment("社群帳號ID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");

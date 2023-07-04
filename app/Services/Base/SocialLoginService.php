@@ -2,28 +2,17 @@
 
 namespace App\Services\Base;
 
-use App\Enums\CustomerStatus;
 use App\Enums\StatusCode;
-use App\Http\Requests\Customers\RegisterRequest;
-use App\Models\Customer;
-use App\Models\Level;
-use App\Models\LoginCustomer;
-use App\Point\Enums\PointDistribution;
-use App\Point\PointService;
 use Exception;
-use App\Exceptions\AuthenticationException;
 use App\Exceptions\ErrException;
 use App\Models\SocialAccount;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use InvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Str;
+
 
 class SocialLoginService
 {
@@ -185,5 +174,24 @@ class SocialLoginService
         return true;
     }
 
+    public function bindSocialAccount($provider_name, $accessToken){
+
+        $providerUser = $this->auth($provider_name, $accessToken);
+        if (!$providerUser['id']) {
+            throw new ErrException('找不到社群帳號 ID');
+        }
+
+        $socialAccount = SocialAccount::where('provider_name', $provider_name)->where('provider_id', $providerUser['id'])->first();
+        if ($socialAccount) {
+            throw new ErrException('社群帳號已經完成註冊');
+        }
+
+        $user = Auth::user();
+        $socialAccount = $user->social_accounts()->create([
+            'provider_name' => $provider_name,
+            'provider_id' => $providerUser['id'],
+        ]);
+       
+    }
     
 }

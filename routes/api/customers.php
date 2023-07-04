@@ -31,6 +31,7 @@ Route::group([
     Route::put('me/profile', [Customers\ProfileController::class, 'store']);
     Route::put('resetpassword', [Customers\AuthController::class, 'resetPassword']);
     Route::get('socialaccounts', [Customers\AuthController::class, 'socialAccounts']);
+    Route::post('socialaccount/bind', [Customers\SocialLoginController::class, 'bindSocialAccount']);
     Route::get('coupons', [Customers\CouponController::class, 'index']);
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::post('scan-store/{store_id}', [Customers\PointController::class, 'scanStore']);

@@ -22,24 +22,23 @@ class SocialLoginController extends Controller
     protected SocialLoginService $socialLoginService;
 
     protected AuthService $authService;
-     /**
+    /**
      * Create a new controller instance.
      * @param SocialLoginService $socialLoginService
      * @param AuthService $authService
      */
-    public function __construct( SocialLoginService $socialLoginService,AuthService $authService)
+    public function __construct(SocialLoginService $socialLoginService, AuthService $authService)
     {
         $this->socialLoginService = $socialLoginService;
         $this->authService = $authService;
-
     }
 
     public function auth(Request $request, $provider_name)
     {
         $accessToken = $request->get('access_token');
-        
+
         try {
-            
+
             $validator = Validator::make(['access_token' => $accessToken], [
                 'access_token' => ['required'],
             ]);
@@ -71,7 +70,7 @@ class SocialLoginController extends Controller
                         'email' => $providerUser['email'],
                         'name' => $providerUser['name'],
                     ]);
-                
+
                     $user->update(['status' => CustomerStatus::ENABLED->value]);
                 }
 
@@ -102,15 +101,15 @@ class SocialLoginController extends Controller
     {
         $accessToken = $request->get('access_token');
         $phone = $request->get('phone');
-        $password=$request->get('password');
-        $country_code=$request->country_code;
+        $password = $request->get('password');
+        $country_code = $request->country_code;
         try {
 
-            $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone,'password'=>$password,'country_code'=>$country_code], [
+            $validator = Validator::make(['access_token' => $accessToken, 'phone' => $phone, 'password' => $password, 'country_code' => $country_code], [
                 'access_token' => 'required',
                 'phone' => 'required',
-                'password'=>'required',
-                'country_code'=>'required'
+                'password' => 'required',
+                'country_code' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -130,8 +129,8 @@ class SocialLoginController extends Controller
 
             $user = $this->authService->createCustomer([
                 'phone' => $phone,
-                'country_cde'=>$country_code,
-                'password'=>$password
+                'country_cde' => $country_code,
+                'password' => $password
             ]);
 
             $user->social_accounts()->create([
@@ -144,19 +143,29 @@ class SocialLoginController extends Controller
         } catch (\Exception $e) {
             return Response::errorFormat($e);
         }
-
     }
 
     public function checkoutSocailAccount(Request $request)
     {
         try {
-            $provider_name=$request->provider_name;
-            $access_token=$request->access_token;
-            $exist = $this->socialLoginService->checkoutSocailAccount($provider_name,$access_token);
+            $provider_name = $request->provider_name;
+            $access_token = $request->access_token;
+            $exist = $this->socialLoginService->checkoutSocailAccount($provider_name, $access_token);
             return Response::format(200, ['exist' => $exist], '請求成功');
         } catch (\Exception $e) {
             return Response::errorFormat($e);
         }
     }
 
+    public function bindSocialAccount(Request $request)
+    {
+        try {
+            $provider_name = $request->provider_name;
+            $accessToken = $request->access_token;
+            $this->socialLoginService->bindSocialAccount($provider_name, $accessToken);
+            return Response::format(200, [], '請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
 }
