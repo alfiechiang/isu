@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('stamp_customers', function (Blueprint $table) {
-            $table->date('consumed_at')->nullable()->comment("消費日期");
+            $table->timestamp('consumed_at')->nullable()->comment("消費日期");
         });
     }
 

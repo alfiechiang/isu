@@ -4,51 +4,32 @@ namespace App\Http\Controllers\Customers;
 
 use App\Http\Resources\Customers\PointResource;
 use App\Http\Resources\Customers\StampResource;
+use App\Http\Response;
 use App\Models\Store;
 use App\Point\PointEnums;
 use App\Point\PointService;
 use App\Services\CustomerRole\AuthService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use App\Services\Customers\StampService;
 
 class StampController extends Controller
 {
-    protected AuthService $authService;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @param AuthService $authService
-     */
-    public function __construct(AuthService $authService)
+    protected StampService $stampService;
+
+    public function __construct(StampService $stampService)
     {
-        $this->authService = $authService;
+        $this->stampService = $stampService;
     }
 
-    /**
-     * 取得集章資料.
-     *
-     * @group Customers
-     *
-     * @authenticated
-     *
-     * @return AnonymousResourceCollection
-     *
-     * @queryParam page int 資料頁數 Example: 1
-     *
-     * @apiResourceCollection App\Http\Resources\Customers\StampResource
-     * @apiResourceModel App\Models\StampCustomer paginate=10
-     */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request)
     {
-        $defaultOrderColumn = 'created_at';
-        $defaultOrderBy = 'desc';
 
-        $authUser = $this->authService->user();
+        if(isset($request->page)){
+            $res=$this->stampService->pageList($request->all()); 
+        }
 
-        $models = $authUser->stampCustomer()->with(['reference', 'store'])->orderBy($defaultOrderColumn, $defaultOrderBy);
-        $models = $models->paginate(self::PAGER);
-
-        return StampResource::collection($models);
+       return Response::format(200,$res,'請求成功');
     }
 }

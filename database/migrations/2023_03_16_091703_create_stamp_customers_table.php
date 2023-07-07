@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('stamp_customers', function (Blueprint $table) {
             $table->comment("顧客集章");
 
-            $table->uuid('id')->primary()->comment("顧客集章ID");
+            $table->id();
             $table->timestamp('created_at')->nullable()->comment("領取時間");
 
             $table->uuid('customer_id')->nullable()->comment("顧客ID");

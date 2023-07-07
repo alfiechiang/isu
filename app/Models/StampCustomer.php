@@ -28,9 +28,9 @@ class StampCustomer extends Model
     const UPDATED_AT = null;
 
     protected $casts = [
-        'consumed_at' => 'date',
-        'expired_at' => 'datetime',
-        'type' => StampDistribution::class,
+        'consumed_at' => 'datetime:Y-m-d H:i:s',
+        'expired_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function customer(): BelongsTo
