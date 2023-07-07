@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('expired_at')->nullable()->comment("點數到期時間");
 
             $table->string('source')->index()->nullable()->comment("點數來源");
+            $table->tinyInteger('type')->comment("類型");
 
             $table->string("operator_type")->nullable()->comment("操作人員類型");
             $table->uuid("operator_id")->nullable()->comment("操作人員ID");

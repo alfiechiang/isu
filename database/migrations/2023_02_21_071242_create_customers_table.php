@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->comment("顧客資料");
             $table->uuid('id')->primary()->comment("顧客ID");
+            $table->string('guid')->uinque()->comment("顧客GUID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");

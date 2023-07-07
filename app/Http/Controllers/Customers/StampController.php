@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customers;
 
+use App\Exceptions\ErrException;
 use App\Http\Resources\Customers\PointResource;
 use App\Http\Resources\Customers\StampResource;
 use App\Http\Response;
@@ -28,8 +29,21 @@ class StampController extends Controller
 
         if(isset($request->page)){
             $res=$this->stampService->pageList($request->all()); 
+        }else{
+            $res=$this->stampService->list($request->all()); 
+
         }
 
        return Response::format(200,$res,'請求成功');
+    }
+
+    public function deliver(Request $request)
+    {
+        try {
+            $this->stampService->deliver($request->all());
+            return Response::format(200,[],'請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
     }
 }

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Customers;
 
 use App\Http\Resources\Customers\PointResource;
+use App\Http\Response;
 use App\Models\Store;
 use App\Point\PointEnums;
-use App\Point\PointService;
+use App\Services\Customers\PointService;
 use App\Services\CustomerRole\AuthService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class PointController extends Controller
 {
@@ -27,52 +28,26 @@ class PointController extends Controller
         $this->pointService = $pointService;
     }
 
-    /**
-     * 取得點數歷程.
-     *
-     * @group Customers
-     *
-     * @authenticated
-     *
-     * @return AnonymousResourceCollection
-     *
-     * @queryParam page int 資料頁數 Example: 1
-     *
-     * @apiResourceCollection App\Http\Resources\Customers\PointResource
-     * @apiResourceModel App\Models\PointCustomer paginate=10
-     */
-    public function index(): AnonymousResourceCollection
-    {
-        $defaultOrderColumn = 'created_at';
-        $defaultOrderBy = 'desc';
-
-        $authUser = $this->authService->user();
-
-        $models = $authUser->points()->with(['reference'])->orderBy($defaultOrderColumn, $defaultOrderBy);
-        $models = $models->paginate(self::PAGER);
-
-        return PointResource::collection($models);
+    public function index(Request $request)
+    {    
+        if(isset($request->page)){
+            $res=$this->pointService->pageList($request->all()); 
+        }else{
+            $res=$this->pointService->list(); 
+        }
+        
+       return Response::format(200,$res,'請求成功');
     }
 
-    /**
-     * 掃描商店獲得點數.
-     *
-     * @group Customers
-     *
-     * @response scenario=success
-     * @response status=400 scenario="重複掃描相同店家" {
-     *   "errors": "已經獲得過點數.",
-     *   "code": 100301
-     * }
-     */
-    public function scanStore($store_id): Response
+
+    public function scanStore($store_id)
     {
         try {
             $store = Store::findOrFail($store_id);
 
             $authUser = $this->authService->user();
 
-            $this->pointService->createPoint(PointEnums::SOURCE_SCAN_STORE, $authUser, $store, $authUser);
+            //$this->pointService->createPoint(PointEnums::SOURCE_SCAN_STORE, $authUser, $store, $authUser);
 
              return response(['success' => true]);
         } catch (\Exception $e) {
