@@ -24,7 +24,6 @@ class CustomerSeeder extends Seeder
         StampCustomer::truncate();
         PointCustomer::truncate();
 
-               //        //rice001  911902985 password 123456
         $r1=Customer::create(
             ['name' => 'rice001', 'guid' => 'ISU202307071234567', 'phone' => '911902985', 'password' => '123456']
         );
@@ -49,22 +48,26 @@ class CustomerSeeder extends Seeder
 
     private function stampCustomers($id){
         $insertData = [
-            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-07-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-08-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-09-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-07-05 23:59:59'],
-            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-10-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-07-03 23:59:59'],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-12-16 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-06-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-05-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
+            ['customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
         ];
         StampCustomer::insert($insertData);
-        $this->pointCustomers(($id));
+       $this->pointCustomers(($id));
     }
 
     private function pointCustomers($id){
         ## type 1 進店掃描 2消費認證
         $insertData=[
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>1314],
+            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>1000],
             ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>1000],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>200],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>200],
+            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>1000],
+            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>1000],
         ];
 
         PointCustomer::insert($insertData);

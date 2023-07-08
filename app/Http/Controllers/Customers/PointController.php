@@ -8,6 +8,7 @@ use App\Models\Store;
 use App\Point\PointEnums;
 use App\Services\Customers\PointService;
 use App\Services\CustomerRole\AuthService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -37,6 +38,22 @@ class PointController extends Controller
         }
         
        return Response::format(200,$res,'請求成功');
+    } 
+
+    public function totalPoints(Request $request){
+        $res=$this->pointService->totalPoints(); 
+        return Response::format(200,$res,'請求成功');
+    }
+
+    public function exchangeToStamps(Request $request)
+    {
+
+        try {
+            $this->pointService->exchangeToStamps($request->all());
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+        return Response::format(200, [], '請求成功');
     }
 
 

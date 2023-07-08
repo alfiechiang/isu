@@ -38,4 +38,7 @@ Route::group([
     Route::get('stamps', [Customers\StampController::class, 'index']);
     Route::post('stamps/deliver', [Customers\StampController::class, 'deliver']);
     Route::get('points', [Customers\PointController::class, 'index']);
+    Route::get('points/totalPoints', [Customers\PointController::class, 'totalPoints']);
+    Route::post('points/exchangeToStamps', [Customers\PointController::class, 'exchangeToStamps']);
+
 });
