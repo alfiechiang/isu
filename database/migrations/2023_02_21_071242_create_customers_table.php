@@ -36,6 +36,8 @@ return new class extends Migration
             $table->string('address')->nullable()->comment("地址");
             $table->string('interest')->nullable()->comment("興趣");
             $table->integer('point_balance')->default(0)->comment("現有點數");
+            $table->integer('stamps')->default(0)->comment("現有集章");
+
         });
     }
 

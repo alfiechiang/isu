@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CouponCustomer;
 use App\Models\Customer;
 use App\Models\PointCustomer;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,7 @@ class CustomerSeeder extends Seeder
         DB::table('customers')->delete(); 
         StampCustomer::truncate();
         PointCustomer::truncate();
-
+        CouponCustomer::truncate(); 
         $r1=Customer::create(
             ['name' => 'rice001', 'guid' => 'ISU202307071234567', 'phone' => '911902985', 'password' => '123456']
         );
@@ -56,6 +57,7 @@ class CustomerSeeder extends Seeder
         ];
         StampCustomer::insert($insertData);
         $this->pointCustomers($id);
+        $this->couponCustomers($id);
     }
 
     private function pointCustomers($id){
@@ -84,9 +86,19 @@ class CustomerSeeder extends Seeder
         ];
 
         PointCustomer::insert($insertData);
-
     }
 
+    private function couponCustomers($id){
+        $insertData=[
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'生日大禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','coupon_id'=>'B20230707','customer_id'=>$id],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'好久不見','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','coupon_id'=>'F20230707','customer_id'=>$id],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id],
+        ];
+
+        CouponCustomer::insert($insertData);
+
+    }
 
 }
 

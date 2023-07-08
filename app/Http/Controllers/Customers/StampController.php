@@ -2,16 +2,8 @@
 
 namespace App\Http\Controllers\Customers;
 
-use App\Exceptions\ErrException;
-use App\Http\Resources\Customers\PointResource;
-use App\Http\Resources\Customers\StampResource;
 use App\Http\Response;
-use App\Models\Store;
-use App\Point\PointEnums;
-use App\Point\PointService;
-use App\Services\CustomerRole\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Services\Customers\StampService;
 
 class StampController extends Controller

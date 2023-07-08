@@ -22,7 +22,7 @@ class CouponCustomer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'expired_at', 'status', 'memo', 'coupon_id', 'coupon_code_id', 'customer_id',
+        'expired_at', 'status', 'memo', 'coupon_id', 'coupon_cn_name','coupon_script' ,'customer_id',
         'operator_type', 'operator_id', 'reference_type', 'reference_id',
     ];
 
