@@ -52,39 +52,47 @@ class PointService
 
     public function exchangeToStamps($data)
     {
-
         $auth = Auth::user();
         $customer_id = $auth->id;
-        $rows = PointCustomer::where('customer_id', $customer_id)->orderBy('created_at', 'asc')
-            ->get();
-
+        $rows = PointCustomer::where('customer_id', $customer_id)->where('is_redeem', false)
+            ->orderBy('created_at', 'asc')->get();
         $exchangePoints = $data['exchangePoints'];
-
         $stamps_num = $data['exchangePoints'] / Stamp::ONESTAMPVALUEPOINTS->value;
         $point_ids = [];
-
+        $residue = new PointCustomer();
         foreach ($rows as $row) {
 
             if ($row->value <= $exchangePoints) {
-
-                if ($exchangePoints - $row->value >= 0) {
-
-                    $exchangePoints -= $row->value;
-
-                    $point_ids[] = $row->id;
-                }
+                $exchangePoints -= $row->value;
+                $point_ids[] = $row->id;
+                continue;
             }
-            if ($exchangePoints == 0) {
 
+            if ($row->value > $exchangePoints) {
+                $point_ids[] = $row->id;
+                $residue_points = $row->value - $exchangePoints;
+                $residue->value = $residue_points;
+                $residue->customer_id = $row->customer_id;
+                $residue->source ='點數兌換集章';
+                $residue->source =$row->id;
+                $exchangePoints=0;
+            }
+
+            if ($exchangePoints == 0) {
                 break;
             }
         }
 
-        if ($exchangePoints !== 0) {
+
+        if ($exchangePoints > 0) {
             throw new ErrException('點數無法兌換此數量集章');
         }
 
-        DB::transaction(function () use ($point_ids, $stamps_num, $customer_id) {
+        DB::transaction(function () use ($point_ids, $stamps_num, $customer_id, $residue) {
+
+            if ($residue->value > 0) {
+                $residue->save();
+            }
             PointCustomer::whereIn('id', $point_ids)->update(['is_redeem' => true]);
             $this->stampService->pointExchange(['stamps_num' => $stamps_num, 'customer_id' => $customer_id]);
         });
