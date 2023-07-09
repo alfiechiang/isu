@@ -43,5 +43,15 @@ class Response
         return response()->json($json);
     }
 
+    public static function errorMsg($message)
+    {
+        $json = [];
+        $json['code'] = 40001;
+        $json['message'] = $message;
+        $json['data'] = [];
+        return response()->json($json);
+    }
+
+
 
 }

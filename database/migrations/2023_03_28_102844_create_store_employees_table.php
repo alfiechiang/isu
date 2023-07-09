@@ -15,6 +15,7 @@ return new class extends Migration
             $table->comment("商店員工資料");
 
             $table->uuid('id')->primary()->comment("商店員工ID");
+            $table->integer('role_id')->comment("角色ID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");

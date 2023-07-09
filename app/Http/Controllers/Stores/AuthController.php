@@ -3,61 +3,29 @@
 namespace App\Http\Controllers\Stores;
 
 use App\Enums\StatusCode;
+use App\Http\Response;
 use App\Services\StoreRole\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
+use App\Services\Stores\StorePrivilegeMenuService;
+
+
 class AuthController extends Controller
 {
-    /**
-     * The AuthService instance.
-     *
-     * @var AuthService
-     */
+    
     protected AuthService $authService;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @param AuthService $authService
-     */
-    public function __construct(AuthService $authService)
+    protected StorePrivilegeMenuService $storePrivilegeMenuService;
+
+    public function __construct(AuthService $authService,StorePrivilegeMenuService $storePrivilegeMenuService)
     {
+        $this->storePrivilegeMenuService=$storePrivilegeMenuService;
         $this->authService = $authService;
     }
 
-    /**
-     * 處理商店登入.
-     *
-     * @group Stores
-     *
-     * @bodyParam identifier string required 帳號.Example: isu.store
-     * @bodyParam password string required 用戶密碼.Example: password123
-     *
-     * @response scenario=success {
-     *   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImF...",
-     *   "token_type": "Bearer",
-     *   "expires_in": 3600
-     * }
-     * @response status=400 scenario="輸入參數錯誤" {
-     *   "errors": "The password field is required.",
-     *   "code": 1001
-     * }
-     * @response status=400 scenario="錯誤的登入資料" {
-     *   "errors": "輸入的帳號或密碼錯誤.",
-     *   "code": 106001
-     * }
-     * @response status=400 scenario="顧客帳戶停用" {
-     *   "errors": "帳戶已經停用.",
-     *   "code": 106002
-     * }
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function login(Request $request): Response
+    public function login(Request $request)
     {
         // 取得輸入數據
         $credentials = $request->only('identifier', 'password');
@@ -70,61 +38,27 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                throw new InvalidArgumentException(
-                    $validator->errors()->first(),
-                    StatusCode::INVALID_ARGUMENT->value
-                );
+                return Response::errorMsg(StatusCode::INVALID_ARGUMENT->value);
             }
 
-            // 呼叫 AuthService 的 login 方法進行身份驗證
-            $result = $this->authService->login($credentials);
-            $result['user'] = $this->authService->user();
-
+            $token = $this->authService->login($credentials);
             // 返回成功響應
-            return response($result);
+            return Response::format(200,['access_token'=>$token],'請求成功');
 
         } catch (\Exception $e) {
             // 返回失敗響應
-            return response(['errors' => $e->getMessage(), 'code' => $e->getCode()], 400);
+            return Response::errorFormat($e);
         }
     }
 
-    /**
-     * 登出當前已認證的商店.
-     *
-     * @group Stores
-     *
-     * @authenticated
-     *
-     * @response scenario=success {
-     *     "message": "成功登出"
-     * }
-     *
-     * @return Response
-     */
-    public function logout(): Response
+    public function logout()
     {
         $this->authService->logout();
 
         return response(['message' => 'Successfully logged out']);
     }
 
-    /**
-     * 刷新商店的訪問令牌.
-     *
-     * @group Stores
-     *
-     * @authenticated
-     *
-     * @response scenario=success {
-     *   "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImF...",
-     *   "token_type": "Bearer",
-     *   "expires_in": 3600
-     * }
-     *
-     * @return Response
-     */
-    public function refresh(): Response
+    public function refresh()
     {
         try {
             // 呼叫 AuthService 的 refresh 方法進行令牌刷新
@@ -136,5 +70,11 @@ class AuthController extends Controller
             // 返回失敗響應
             return response(['errors' => $e->getMessage(), 'code' => $e->getCode()], 400);
         }
+    }
+
+    public function privilegeMenuList(Request $request){
+       $res= $this->storePrivilegeMenuService->list();
+       return Response::format(200,$res,'請求成功');
+
     }
 }

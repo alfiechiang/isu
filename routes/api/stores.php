@@ -11,6 +11,8 @@ Route::group([
     'middleware' => 'auth:employee',
 ], function ($router) {
     Route::post('logout', [Stores\AuthController::class, 'logout']);
+    Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
+
     Route::post('refresh', [Stores\AuthController::class, 'refresh']);
 
     Route::resource('customers', Stores\CustomerController::class, ['only' => ['index', 'show', 'destroy']]);
