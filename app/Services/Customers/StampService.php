@@ -7,7 +7,7 @@ use App\Models\Customer;
 use App\Models\StampCustomer;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StampCustomerType;
-
+use Illuminate\Support\Facades\DB;
 
 class StampService
 {
@@ -37,11 +37,9 @@ class StampService
 
     public function pageList($data)
     {
-
         $Builder = new  StampCustomer();
-        $auth =Auth::user();
-
-        $Builder= $Builder->where('customer_id',$auth->id);
+        $auth = Auth::user();
+        $Builder = $Builder->where('customer_id', $auth->id);
         $now = date('Y-m-d H:i:s');
 
         if ($data['search'] == 'USE') {
@@ -51,11 +49,14 @@ class StampService
         }
 
         if ($data['search'] == 'HAVE_USE_OR_EXPIRE') {
-            $Builder = $Builder->where('expired_at', '<=', $now)->orwhereNotNull('consumed_at')
-            ->where('customer_id',$auth->id)
-            ->orderBy('consumed_at', 'desc');
-        }
 
+            $Builder = $Builder->where(function ($query) use ($now) {
+                $query->where('expired_at', '<=', $now)
+                ->orwhereNotNull('consumed_at');
+            })
+                ->where('customer_id', $auth->id)
+                ->orderBy('consumed_at', 'desc');
+        }
 
         return $Builder->paginate($data['per_page']);
     }

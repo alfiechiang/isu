@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Stores;
 use App\Enums\StatusCode;
 use App\Http\Response;
 use App\Services\StoreRole\AuthService;
+use App\Services\Stores\StoreEmployeeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 
 use App\Services\Stores\StorePrivilegeMenuService;
-
+use Exception;
 
 class AuthController extends Controller
 {
@@ -19,10 +20,13 @@ class AuthController extends Controller
 
     protected StorePrivilegeMenuService $storePrivilegeMenuService;
 
-    public function __construct(AuthService $authService,StorePrivilegeMenuService $storePrivilegeMenuService)
+    protected StoreEmployeeService  $storeEmployeeService;
+
+    public function __construct(AuthService $authService,StorePrivilegeMenuService $storePrivilegeMenuService,StoreEmployeeService $storeEmployeeService)
     {
         $this->storePrivilegeMenuService=$storePrivilegeMenuService;
         $this->authService = $authService;
+        $this->storeEmployeeService =$storeEmployeeService;
     }
 
     public function login(Request $request)
@@ -75,6 +79,5 @@ class AuthController extends Controller
     public function privilegeMenuList(Request $request){
        $res= $this->storePrivilegeMenuService->list();
        return Response::format(200,$res,'請求成功');
-
     }
 }

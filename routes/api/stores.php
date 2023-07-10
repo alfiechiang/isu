@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Stores;
@@ -28,9 +27,11 @@ Route::group([
     Route::get('customers/{customer_id}/stamps', [Stores\StampCustomerController::class, 'index']);
     Route::post('stamp-customer/quantity', [Stores\StampCustomerController::class, 'quantity']);
 
-    Route::resource('employees', Stores\StoreEmployeeController::class, ['only' => [
-        'index', 'store', 'show', 'update', 'destroy'
-    ]]);
+    // Route::resource('employees', Stores\StoreEmployeeController::class, ['only' => [
+    //     'index', 'store', 'show', 'update', 'destroy'
+    // ]]);
 
-    Route::resource('stores', Stores\StoreController::class, ['only' => ['index']]);
+    Route::post('employees', [Stores\StoreEmployeeController::class, 'create']);
+
+  //  Route::resource('stores', Stores\StoreController::class, ['only' => ['index']]);
 });

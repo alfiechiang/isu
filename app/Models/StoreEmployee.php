@@ -23,7 +23,7 @@ class StoreEmployee extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'username', 'email', 'password', 'store_id',
+        'name', 'username', 'email', 'password', 'store_id','role_id',
     ];
 
     /**
