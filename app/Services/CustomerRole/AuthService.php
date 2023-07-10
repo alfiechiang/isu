@@ -174,6 +174,7 @@ class AuthService
             'phone' => $data['phone'] ?? null,
             'password' => $data['password'],
             'status' => CustomerStatus::ENABLED->value,
+            'guid'=>'ISU'.date('Ymd').rand(1000000,9999999)
         ]);
     }
 
