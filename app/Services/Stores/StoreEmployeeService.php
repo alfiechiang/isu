@@ -5,6 +5,7 @@ namespace App\Services\Stores;
 use App\Enums\EmployeeRole;
 use App\Exceptions\ErrException;
 use App\Helpers\Utils;
+use App\Models\StoreEmployee;
 use App\Models\StorePrivilegeRole;
 use App\Repositories\Stores\StoreEmployeeRepository;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +22,13 @@ class StoreEmployeeService
 
     public function create($data)
     {
+
         $operatorRole = Utils::storeRole(); //操作者角色
         if ($operatorRole->id > $data['role_id']) {  //id越小權限越大
             throw new ErrException('沒有此權限操作');
         }
 
-        if($operatorRole->name==EmployeeRole::COUNTER){
+        if ($operatorRole->name == EmployeeRole::COUNTER->value) {
             throw new ErrException('櫃檯沒有此權限操作');
         }
 
@@ -40,13 +42,49 @@ class StoreEmployeeService
                 break;
             case EmployeeRole::COUNTER->value:
                 ##只有店家才能新增櫃檯
-                if( $operatorRole->name==EmployeeRole::TOP){
+                if ($operatorRole->name == EmployeeRole::TOP->value) {
                     throw new ErrException('最高權限沒有此權限操作');
                 }
-                $employee =Auth::user();
-                $store_id=$employee->store_id;
-                $this->repository->counterRoleCreate($data,$store_id);
+                $employee = Auth::user();
+                $store_id = $employee->store_id;
+                $this->repository->counterRoleCreate($data, $store_id);
                 break;
         }
     }
+
+    public function  pageList($data)
+    {
+        $Builder = new StoreEmployee();
+        $operatorRole = Utils::storeRole(); //操作者角色
+        if ($operatorRole->name == EmployeeRole::COUNTER->value) {
+            throw new ErrException('櫃檯沒有此權限操作');
+        }
+        if ($operatorRole->name != EmployeeRole::TOP->value) {
+            $auth = Auth::user();
+            //店家
+            if ($operatorRole->name == EmployeeRole::STORE->value) {
+                $role = StorePrivilegeRole::where('name', EmployeeRole::STORE)->first();
+                $Builder = $Builder->where('store_id', $auth->store_id)->where('role_id', '>', $role->id);
+            }
+        }
+
+        return $Builder->orderBy('created_at', 'desc')->paginate($data['per_page']);
+    }
+
+    public function  findOne($uid)
+    {
+        return StoreEmployee::where('uid',$uid)->first();
+    }
+
+    public function  delete($uid)
+    {
+        StoreEmployee::where('uid',$uid)->delete();
+    }
+
+    public function update($uid,$data){
+        $employee=StoreEmployee::where('uid',$uid)->first();
+        $employee->fill($data);
+    }
+
+
 }

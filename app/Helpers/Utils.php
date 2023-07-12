@@ -20,7 +20,7 @@ class Utils
         return null;
     }
 
-    public static  function storeRole():StorePrivilegeRole{
+    public static  function storeRole(){
         $auth=Auth::user();
         $id=$auth->id;
         $employee =StoreEmployee::where('id',$id)->first();

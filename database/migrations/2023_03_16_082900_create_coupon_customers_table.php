@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary()->comment("紀錄ID");
             $table->timestamp('created_at')->nullable()->comment("領取時間");
             $table->timestamp('expired_at')->nullable()->comment("到期時間");
+            $table->timestamp('consumed_at')->nullable()->comment("兌換日期");
             $table->tinyInteger('status')->default(0)->nullable()->comment("狀態 1可使用 2已使用");
             $table->string('memo')->nullable()->comment("備註");
             $table->uuid('coupon_id')->nullable()->comment("優惠券ID");

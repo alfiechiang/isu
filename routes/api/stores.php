@@ -30,8 +30,13 @@ Route::group([
     // Route::resource('employees', Stores\StoreEmployeeController::class, ['only' => [
     //     'index', 'store', 'show', 'update', 'destroy'
     // ]]);
-
     Route::post('employees', [Stores\StoreEmployeeController::class, 'create']);
+    Route::delete('employees/{uid}', [Stores\StoreEmployeeController::class, 'delete']);
+    Route::put('employees/{uid}', [Stores\StoreEmployeeController::class, 'update']);
+    Route::get('employees/{uid}/findone', [Stores\StoreEmployeeController::class, 'findone']);
+    Route::get('employees', [Stores\StoreEmployeeController::class, 'pageList']);
+
+    Route::get('privilege/role', [Stores\PrivilegeRoleController::class, 'list']);
 
   //  Route::resource('stores', Stores\StoreController::class, ['only' => ['index']]);
 });
