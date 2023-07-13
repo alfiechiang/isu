@@ -24,7 +24,6 @@ Route::group([
   Route::post('point-customer/amount', [Stores\PointCustomerController::class, 'amount']);
 
   Route::get('customers/{customer_id}/stamps', [Stores\StampCustomerController::class, 'index']);
-  Route::post('stamp-customer/quantity', [Stores\StampCustomerController::class, 'quantity']);
 
   Route::post('employees', [Stores\StoreEmployeeController::class, 'create']);
   Route::delete('employees/{uid}', [Stores\StoreEmployeeController::class, 'delete']);
@@ -37,5 +36,10 @@ Route::group([
   Route::get('customers/{guid}/findone', [Stores\CustomerController::class, 'findone']);
   Route::put('customers/{guid}', [Stores\CustomerController::class, 'update']);
   Route::get('customers/social', [Stores\CustomerController::class, 'social']);
+
+  Route::post('stamp-customer', [Stores\StampCustomerController::class, 'create']);
+  Route::get('stamp-customer', [Stores\StampCustomerController::class, 'list']);
+  Route::get('stamp-customer/log', [Stores\StampCustomerController::class, 'logList']);
+  Route::delete('stamp-customer/{stamp_id}', [Stores\StampCustomerController::class, 'delete']);
 
 });
