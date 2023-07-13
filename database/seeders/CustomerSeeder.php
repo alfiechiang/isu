@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coupon;
 use App\Models\CouponCustomer;
 use App\Models\Customer;
 use App\Models\PointCustomer;
@@ -41,7 +42,20 @@ class CustomerSeeder extends Seeder
             ['name' => 'rice003', 'guid' => 'ISU202307051234569', 'phone' => '938905079', 'password' => '123456']
         );
         $this->stampCustomers($r4->id);
+        $this->coupon();
 
+    }
+
+    private function coupon(){
+        DB::table('coupons')->delete(); 
+        $insertData =[
+            ['id'=>'B20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
+            ['id'=>'F20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
+            ['id'=>'C20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
+            ['id'=>'M20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
+        ];
+
+        Coupon::insert($insertData);
     }
 
     private function stampCustomers($id){
@@ -90,12 +104,12 @@ class CustomerSeeder extends Seeder
 
     private function couponCustomers($id){
         $insertData=[
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'生日大禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'B20230707','customer_id'=>$id],
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'好久不見','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'F20230707','customer_id'=>$id],
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id],
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id],
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-05-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id],
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-05-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-06-07 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'生日大禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'B20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'好久不見','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'F20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-05-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-05-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-06-07 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
         ];
         CouponCustomer::insert($insertData);
     }

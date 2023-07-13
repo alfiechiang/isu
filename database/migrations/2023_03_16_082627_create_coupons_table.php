@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->string('name')->nullable()->comment("優惠券名稱");
             $table->string('description')->nullable()->comment("優惠券描述");
+            $table->string('content_desc')->nullable()->comment("內容說明");
+            $table->string('notice_desc')->nullable()->comment("內容說明");
             $table->string('mode',64)->comment("模式");
             $table->string('type',64)->index()->comment("類型");
             $table->integer('validity')->nullable()->comment("優惠券代碼有效期限，以分鐘為單位");

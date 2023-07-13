@@ -26,11 +26,11 @@ class CouponService
         }
 
         if ($data['status'] == 2) {
-            $Builder = $Builder->where('expired_at', '<=', $now)
-            ->orderBy('created_at', 'desc')
-            ->orWhere('status', 2)
-            ->where('customer_id', $auth->id)
-            ->orderBy('created_at', 'desc');
+            $Builder = $Builder->where(function ($query) use ($now) {
+                $query->where('expired_at', '<=', $now)
+                    ->orWhere('status', 2);
+            })
+                ->orderBy('created_at', 'desc');
         }
 
         return $Builder->get();
@@ -50,13 +50,14 @@ class CouponService
         }
 
         if ($data['status'] == 2) {
-            $Builder = $Builder->where('expired_at', '<=', $now)
-                ->orderBy('created_at', 'desc')
-                ->orWhere('status', 2)
-                ->where('customer_id', $auth->id)
+
+            $Builder = $Builder->where(function ($query) use ($now) {
+                $query->where('expired_at', '<=', $now)
+                    ->orWhere('status', 2);
+            })
                 ->orderBy('created_at', 'desc');
         }
 
-        return $Builder->paginate($data['per_page']);
+        return $Builder->with('coupon')->paginate($data['per_page']);
     }
 }

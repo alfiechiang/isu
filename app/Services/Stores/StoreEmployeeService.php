@@ -84,6 +84,7 @@ class StoreEmployeeService
     public function update($uid,$data){
         $employee=StoreEmployee::where('uid',$uid)->first();
         $employee->fill($data);
+        $employee->save();
     }
 
 
