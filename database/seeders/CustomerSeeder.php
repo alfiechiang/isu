@@ -61,13 +61,13 @@ class CustomerSeeder extends Seeder
     private function stampCustomers($id){
         $insertData = [
             ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-12-16 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-06-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-05-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-14 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-13 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-12 23:59:59', 'expired_at' => '2023-12-16 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-11 23:59:59', 'expired_at' => '2023-06-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-10 23:59:59', 'expired_at' => '2023-05-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-09 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
+            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-08 23:59:59', 'expired_at' => '2023-09-23 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
         ];
         StampCustomer::insert($insertData);
         $this->pointCustomers($id);
