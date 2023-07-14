@@ -17,7 +17,6 @@ class TestController extends Controller
     public function axcd(Request $request)
     {
         DB::table('coupon_codes')->delete();
-        DB::table('coupon_customer_redeems')->delete();
         DB::table('coupon_customers')->delete();
         DB::table('coupons')->delete();
         DB::table('customers')->delete();
