@@ -38,7 +38,7 @@ class Otp extends Model
     const SEND_INTERVAL = 600;
     const SEND_LIMIT = 5;
 
-    const AUTH_CODE_TTL = 600;
+    const AUTH_CODE_TTL = 900;
 
     protected $country_code = 'sssss';
 
