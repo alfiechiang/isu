@@ -5,6 +5,7 @@ namespace App\Services\Stores;
 use App\Enums\StampCustomerType;
 use App\Enums\StampLogType;
 use App\Models\Customer;
+use App\Models\PointLog;
 use App\Models\StampCustomer;
 use App\Models\StampLog;
 use Illuminate\Support\Facades\Auth;
@@ -75,7 +76,7 @@ class StampCustomerService
     public function logPageList($data)
     {
         $customer = Customer::where('guid', $data['guid'])->first();
-        return  StampLog::where('type', $data['type'])->where('customer_id', $customer->id)
+        return  PointLog::where('type', $data['type'])->where('customer_id', $customer->id)
             ->paginate($data['per_page']);
     }
 }

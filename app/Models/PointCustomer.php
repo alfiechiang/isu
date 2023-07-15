@@ -18,7 +18,7 @@ class PointCustomer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'expired_at', 'point_balance', 'memo', 'value', 'is_redeem', 'customer_id', 'source',
+        'expired_at', 'point_balance', 'desc', 'value', 'is_redeem', 'customer_id', 'source',
         'operator_type', 'operator_id', 'reference_type', 'reference_id',
     ];
 

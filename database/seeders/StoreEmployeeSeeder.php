@@ -23,6 +23,7 @@ class StoreEmployeeSeeder extends Seeder
             'uid'=>'ISU'. rand(100000, 999999),
             'email'=>'i44711015@gmail.com',
             'password'=>'12345678',
+            'name'=>'才敢讚聲',
             'role_id'=>1,
         ]);
         
