@@ -1,14 +1,6 @@
 <x-mail::message>
-# 驗證您的電子郵件地址
-
-{{ config('app.name') }} 收到您註冊為 {{ config('app.name') }} 帳戶的要求。
-
-請使用這個驗證碼完成電子郵件地址的驗證程序：
-
+【愛嬉遊聯盟】您的驗證碼為：
 <div style="text-align:center;font-size:36px;margin:30px 0;">{{$code}}</div>
-
-驗證碼將於 10 分鐘後失效。
-
-Thanks,<br>
-{{ config('app.name') }}
+，限15分鐘內有效。
+請勿將此驗證碼提供給其他人或愛嬉遊聯盟員工。
 </x-mail::message>

@@ -45,7 +45,7 @@ class VerifyEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: config('app.name') . ' 驗證碼',
+            subject:   '愛嘻遊驗證碼',
         );
     }
 

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Stores;
 
 Route::post('login', [Stores\AuthController::class, 'login']);
+Route::post('otp/send', [Stores\MailController::class, 'sendOtp']);
+Route::post('otp/check', [Stores\MailController::class, 'checkOtp']);
 
 Route::group([
   'middleware' => 'auth:employee',
