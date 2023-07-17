@@ -59,16 +59,19 @@ class CustomerSeeder extends Seeder
     }
 
     private function stampCustomers($id){
-        $insertData = [
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-14 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-13 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-12 23:59:59', 'expired_at' => '2023-12-16 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-11 23:59:59', 'expired_at' => '2023-06-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-10 23:59:59', 'expired_at' => '2023-05-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-09 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
-            ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-08 23:59:59', 'expired_at' => '2023-09-23 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'],
-        ];
+       
+
+        for($i=0;$i<130;$i++){
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-14 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-13 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-12 23:59:59', 'expired_at' => '2023-12-16 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-11 23:59:59', 'expired_at' => '2023-06-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]= ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-10 23:59:59', 'expired_at' => '2023-05-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
+            $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-09 23:59:59', 'expired_at' => '2023-09-22 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'];
+            $insertData[]= ['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-08 23:59:59', 'expired_at' => '2023-09-23 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => '2023-03-01 23:59:59'];
+        }
+
         StampCustomer::insert($insertData);
         $this->pointCustomers($id);
         $this->couponCustomers($id);
@@ -76,28 +79,12 @@ class CustomerSeeder extends Seeder
 
     private function pointCustomers($id){
         ## type 1 進店掃描 2消費認證
-        $insertData=[
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50],
-            ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>60],
-        ];
+        for($i=0;$i<130;$i++){
+            $insertData[]=['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50];
+            $insertData[]= ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50];
+            $insertData[]=['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50];
+            $insertData[]= ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50];
+        }
 
         PointCustomer::insert($insertData);
     }
