@@ -80,4 +80,15 @@ class AuthController extends Controller
        $res= $this->storePrivilegeMenuService->list();
        return Response::format(200,$res,'請求成功');
     }
+
+    public function forgetpassword(Request $request){
+        try {
+            $this->storeEmployeeService->resetPassword($request->all());
+            return Response::format(200,[],'請求成功');
+        } catch (\Exception $e) {
+            // 返回失敗響應
+            return Response::errorFormat($e);
+        }
+
+    }
 }

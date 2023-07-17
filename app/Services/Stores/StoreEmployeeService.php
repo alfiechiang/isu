@@ -87,5 +87,11 @@ class StoreEmployeeService
         $employee->save();
     }
 
+    public function resetPassword($data){
+        $employee=StoreEmployee::where('email',$data['email'])->first();
+        $employee->password=$data['password'];
+        $employee->save();
+    }
+
 
 }

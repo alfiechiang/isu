@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Stores;
 
 Route::post('login', [Stores\AuthController::class, 'login']);
+Route::post('forgetpassword', [Stores\AuthController::class, 'forgetpassword']);
 Route::post('otp/send', [Stores\MailController::class, 'sendOtp']);
 Route::post('otp/check', [Stores\MailController::class, 'checkOtp']);
 
@@ -13,7 +14,6 @@ Route::group([
 ], function ($router) {
   Route::post('logout', [Stores\AuthController::class, 'logout']);
   Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
-
   Route::post('refresh', [Stores\AuthController::class, 'refresh']);
   Route::get('customers/{customer_id}/coupons', [Stores\CouponCustomerController::class, 'index']);
   Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);
