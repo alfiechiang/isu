@@ -34,10 +34,37 @@ class PrizeService
         return Prize::find($prize_id);
     }
 
-    public function list($data)
+    public function pageList($data)
     {
         $auth = Auth::user();
-        return  Prize::where('store_uid', $auth->uid)->paginate($data['per_page']);
+        $role=StorePrivilegeRole::find($auth->role_id);
+        $store_uid ='';
+        switch($role->name){
+            case EmployeeRole::STORE->value:
+                $store_uid=$auth->uid;
+                break;
+            case EmployeeRole::COUNTER->value:
+                $store_uid=$auth->store_id;
+                break;
+        }
+
+        return  Prize::where('store_uid', $store_uid)->paginate($data['per_page']);
+    }
+
+    public function list()
+    {
+        $auth = Auth::user();
+        $role=StorePrivilegeRole::find($auth->role_id);
+        $store_uid ='';
+        switch($role->name){
+            case EmployeeRole::STORE->value:
+                $store_uid=$auth->uid;
+                break;
+            case EmployeeRole::COUNTER->value:
+                $store_uid=$auth->store_id;
+                break;
+        }
+        return  Prize::where('store_uid', $store_uid)->get();
     }
 
     public function update($prize_id, $data)

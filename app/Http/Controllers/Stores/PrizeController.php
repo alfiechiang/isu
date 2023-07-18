@@ -19,7 +19,12 @@ class PrizeController extends Controller
 
     public function list(Request $request){
         try {
-            $res=$this->prizeService->list($request->all());
+
+            if(isset($request->page)){
+                $res=$this->prizeService->pageList($request->all());
+            }else{
+                $res=$this->prizeService->list();
+            }
             return Response::format(200, $res, '請求成功');
         }catch(Exception $e){
             return Response::errorFormat($e);

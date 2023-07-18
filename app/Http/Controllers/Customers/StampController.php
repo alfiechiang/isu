@@ -38,4 +38,14 @@ class StampController extends Controller
             return Response::errorFormat($e);
         }
     }
+
+    public function exchangeStamp(Request $request){
+        try {
+            $this->stampService->exchangeStamp($request->all());
+            return Response::format(200,[],'請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
+
+    }
 }
