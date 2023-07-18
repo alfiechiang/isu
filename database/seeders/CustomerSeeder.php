@@ -61,7 +61,7 @@ class CustomerSeeder extends Seeder
     private function stampCustomers($id){
        
 
-        for($i=0;$i<130;$i++){
+        for($i=0;$i<500;$i++){
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-14 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-13 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'reference_type' => '系統發放', 'type' => 1, 'consumed_at' => null];
