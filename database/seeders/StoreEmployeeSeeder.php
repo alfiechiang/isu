@@ -53,7 +53,6 @@ class StoreEmployeeSeeder extends Seeder
             ["store_uid"=>$store_uid,"exchange_num"=>5,"spend_stamp_num"=>3,"stock"=>10,"item_name"=>"毛巾"],
         ];
         Prize::insert($insertData);
-
     }
 
     

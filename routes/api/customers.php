@@ -11,7 +11,7 @@ Route::get('whosyourdaddy', [Customers\TestController::class, 'axcd']);
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);
 Route::post('register/check', [Customers\AuthController::class, 'checkRegister']);
-
+Route::post('token/check', [Customers\AuthController::class, 'checkToken']);
 Route::post('socialaccount/check', [Customers\SocialLoginController::class, 'checkoutSocailAccount']);
 
 Route::post('forgetpassword', [Customers\AuthController::class, 'forgetPassword']);

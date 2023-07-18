@@ -13,6 +13,7 @@ use App\Services\CustomerRole\AuthService;
 use App\Services\CustomerRole\OtpService;
 use Illuminate\Http\Request;
 use App\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -218,13 +219,19 @@ class AuthController extends Controller
         }
     }
 
-    public function checkRegister(Request $request){
+    public function checkRegister(Request $request)
+    {
         try {
             $register = $this->authService->checkRegister($request->phone);
-            return Response::format(200,['register'=>$register], "請求成功");
+            return Response::format(200, ['register' => $register], "請求成功");
         } catch (\Exception $e) {
             return Response::error();
         }
+    }
 
+    public function checkToken()
+    {   
+        $isValidToken = Auth::guard('customers')->check();
+        return Response::format(200, ['isValid' => $isValidToken], "請求成功");
     }
 }
