@@ -19,6 +19,8 @@ class CustomerService
 
     public function update($data, $guid)
     {
+
+        
         $customer =  Customer::where('guid', $guid)->first();
         $customer->fill($data);
         $customer->save();

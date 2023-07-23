@@ -4,23 +4,28 @@ namespace App\Http\Controllers\Stores;
 
 use App\Http\Response;
 use App\Services\Stores\StoreEmployeeService;
+use App\Services\Stores\OperatorLogService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StoreEmployeeController extends Controller
 {
 
     protected StoreEmployeeService  $storeEmployeeService;
 
+    protected OperatorLogService $operatorLogService;
+
+
     public function __invoke()
     {
         // Controller logic here
     }
 
-    public function __construct(StoreEmployeeService $storeEmployeeService)
+    public function __construct(StoreEmployeeService $storeEmployeeService,OperatorLogService $operatorLogService)
     {
         $this->storeEmployeeService = $storeEmployeeService;
+        $this->operatorLogService=$operatorLogService;
     }
 
     public function create(Request $request)
@@ -45,7 +50,12 @@ class StoreEmployeeController extends Controller
 
     public function update(Request $request,$uid){
         try {
-            $this->storeEmployeeService->update($uid,$request->all());
+            DB::transaction(function () use ($request, $uid) {
+                $this->storeEmployeeService->update($uid, $request->all());
+                $data= $request->all();
+                $data['type']='update';
+                $this->operatorLogService->create('account_mamage',$uid,$data);
+            });
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);

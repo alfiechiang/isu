@@ -25,28 +25,24 @@ Route::group([
   Route::put('employees/{uid}', [Stores\StoreEmployeeController::class, 'update']);
   Route::get('employees/{uid}/findone', [Stores\StoreEmployeeController::class, 'findone']);
   Route::get('employees', [Stores\StoreEmployeeController::class, 'pageList']);
+  Route::get('operaterlog/latest', [Stores\OperatorLogController::class, 'findLatestOne']);
   Route::get('privilege/role', [Stores\PrivilegeRoleController::class, 'list']);
-
   Route::get('customers', [Stores\CustomerController::class, 'list']);
   Route::get('customers/{guid}/findone', [Stores\CustomerController::class, 'findone']);
   Route::put('customers/{guid}', [Stores\CustomerController::class, 'update']);
   Route::get('customers/social', [Stores\CustomerController::class, 'social']);
-
   Route::post('stamp-customer', [Stores\StampCustomerController::class, 'create']);
   Route::get('stamp-customer', [Stores\StampCustomerController::class, 'list']);
   Route::get('stamp-customer/log', [Stores\StampCustomerController::class, 'logList']);
   Route::delete('stamp-customer/{stamp_id}', [Stores\StampCustomerController::class, 'delete']);
-
   Route::post('prize', [Stores\PrizeController::class, 'create']);
   Route::get('prize/{prize_id}/findone', [Stores\PrizeController::class, 'findone']);
   Route::get('prize', [Stores\PrizeController::class, 'list']);
   Route::put('prize/{prize_id}', [Stores\PrizeController::class, 'update']);
-
   Route::get('point-customers', [Stores\PointCustomerController::class, 'list']);
   Route::post('point-customers', [Stores\PointCustomerController::class, 'create']);
   Route::delete('point-customers/{point_id}', [Stores\PointCustomerController::class, 'delete']);
   Route::get('point-customers/totalPoints', [Stores\PointCustomerController::class, 'totalPoints']);
   Route::get('point-customers/log', [Stores\StampCustomerController::class, 'logList']);
-
 
 });

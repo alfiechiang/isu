@@ -68,30 +68,65 @@ class StoreEmployeeService
             }
         }
 
-        return $Builder->orderBy('created_at', 'desc')->paginate($data['per_page']);
+
+        if (!empty($data['search'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                if ($data['search'] == '最高') {
+                   $role= StorePrivilegeRole::where('name',EmployeeRole::TOP->value)->first();
+                }
+
+                if ($data['search'] == '店家') {
+                    $role= StorePrivilegeRole::where('name',EmployeeRole::STORE->value)->first();
+                 }
+                $query->where('email', $data['email'])->orWhere('name', $data['search'])
+                    ->orWhere('phone', $data['phone'])->orWhere('created_at', $data['search'])
+                    ->orWhere('updated_at', $data['search'])->orWhere('role_id',$role->id);
+            });
+        }
+
+        if (!empty($data['sort'])) {
+
+            switch($data['sort']){
+                case 'email':
+                    $Builder=$Builder->orderBy('email','asc');
+                    break;
+                case 'name':
+                    $Builder=$Builder->orderBy('name','asc');
+                    break;
+                case 'phone':
+                    $Builder=$Builder->orderBy('phone','asc');
+                    break;
+                case 'role':
+                    $Builder=$Builder->orderBy('role_id','asc');
+                    break;
+            }
+
+        }
+
+        return $Builder->paginate($data['per_page']);
     }
 
     public function  findOne($uid)
     {
-        return StoreEmployee::where('uid',$uid)->first();
+        return StoreEmployee::where('uid', $uid)->first();
     }
 
     public function  delete($uid)
     {
-        StoreEmployee::where('uid',$uid)->delete();
+        StoreEmployee::where('uid', $uid)->delete();
     }
 
-    public function update($uid,$data){
-        $employee=StoreEmployee::where('uid',$uid)->first();
+    public function update($uid, $data)
+    {
+        $employee = StoreEmployee::where('uid', $uid)->first();
         $employee->fill($data);
         $employee->save();
     }
 
-    public function resetPassword($data){
-        $employee=StoreEmployee::where('email',$data['email'])->first();
-        $employee->password=$data['password'];
+    public function resetPassword($data)
+    {
+        $employee = StoreEmployee::where('email', $data['email'])->first();
+        $employee->password = $data['password'];
         $employee->save();
     }
-
-
 }
