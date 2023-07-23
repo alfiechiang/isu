@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string("operator_type")->nullable()->comment("操作人員類型");
             $table->uuid("operator_id")->nullable()->comment("操作人員ID");
             $table->index(["operator_type", "operator_id"], "operator");
+            $table->string("source")->comment("來源");
             $table->string("reference_type")->nullable()->comment("引用物件類型");
             $table->uuid("reference_id")->nullable()->comment("引用物件ID");
             $table->index(["reference_type", "reference_id"], "reference");

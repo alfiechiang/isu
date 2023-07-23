@@ -8,7 +8,6 @@ use App\Services\StoreRole\AuthService;
 use App\Services\Stores\StoreEmployeeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use InvalidArgumentException;
 
 use App\Services\Stores\StorePrivilegeMenuService;
 use Exception;
@@ -89,6 +88,5 @@ class AuthController extends Controller
             // 返回失敗響應
             return Response::errorFormat($e);
         }
-
     }
 }

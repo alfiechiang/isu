@@ -43,6 +43,6 @@ Route::group([
   Route::post('point-customers', [Stores\PointCustomerController::class, 'create']);
   Route::delete('point-customers/{point_id}', [Stores\PointCustomerController::class, 'delete']);
   Route::get('point-customers/totalPoints', [Stores\PointCustomerController::class, 'totalPoints']);
-  Route::get('point-customers/log', [Stores\StampCustomerController::class, 'logList']);
+  Route::get('point-customers/log', [Stores\PointCustomerController::class, 'logList']);
 
 });

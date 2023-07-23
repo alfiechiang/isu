@@ -5,7 +5,6 @@ namespace App\Services\Stores;
 use App\Enums\StampCustomerType;
 use App\Enums\StampLogType;
 use App\Models\Customer;
-use App\Models\PointLog;
 use App\Models\StampCustomer;
 use App\Models\StampLog;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +63,14 @@ class StampCustomerService
                 ->orderBy('consumed_at', 'desc');
         }
 
+        if (!empty($data['keyword'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                $query->where('created_at', 'like', '%' . $data['keyword'] . '%')
+                ->orwhere('expired_at', 'like', '%' . $data['keyword'] . '%')
+                ->orwhere('source', 'like', '%' . $data['keyword'] . '%');
+            });
+        }
+
         return $Builder->paginate($data['per_page']);
     }
 
@@ -76,7 +83,19 @@ class StampCustomerService
     public function logPageList($data)
     {
         $customer = Customer::where('guid', $data['guid'])->first();
-        return  PointLog::where('type', $data['type'])->where('customer_id', $customer->id)
+
+        $Builder =new StampLog();
+
+        if (!empty($data['keyword'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                $query->where('created_at', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('expired_at', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('operator', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('desc', 'like', '%' . $data['keyword'] . '%');
+            });
+        }
+
+        return   $Builder->where('type', $data['type'])->where('customer_id', $customer->id)
             ->paginate($data['per_page']);
     }
 }

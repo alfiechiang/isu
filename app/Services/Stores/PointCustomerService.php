@@ -58,8 +58,15 @@ class PointCustomerService
     public function list($data)
     {
         $customer = Customer::where('guid', $data['guid'])->first();
-        $point = PointCustomer::where('customer_id', $customer->id)->paginate($data['per_page']);
-        return $point;
+        $Builder = PointCustomer::where('customer_id', $customer->id);
+        if (!empty($data['keyword'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                $query->where('created_at', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('source', 'like', '%' . $data['keyword'] . '%');
+            });
+        }
+
+        return $Builder->orderBy('created_at','desc')->paginate($data['per_page']);
     }
 
     public function totalPoints($data)
@@ -77,7 +84,15 @@ class PointCustomerService
     public function logPageList($data)
     {
         $customer = Customer::where('guid', $data['guid'])->first();
-        return  PointLog::where('type', $data['type'])->where('customer_id', $customer->id)
-            ->paginate($data['per_page']);
+
+        $Builder=PointLog::where('type', $data['type'])->where('customer_id', $customer->id);
+        if (!empty($data['keyword'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                $query->where('created_at', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('operator', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('desc', 'like', '%' . $data['keyword'] . '%');
+            });
+        }
+        return $Builder->orderBy('created_at','desc')->paginate($data['per_page']);
     }
 }

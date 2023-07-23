@@ -69,38 +69,27 @@ class StoreEmployeeService
         }
 
 
-        if (!empty($data['search'])) {
+        if (!empty($data['keyword'])) {
             $Builder = $Builder->where(function ($query) use ($data) {
-                if ($data['search'] == '最高') {
-                   $role= StorePrivilegeRole::where('name',EmployeeRole::TOP->value)->first();
-                }
-
-                if ($data['search'] == '店家') {
-                    $role= StorePrivilegeRole::where('name',EmployeeRole::STORE->value)->first();
-                 }
-                $query->where('email', $data['email'])->orWhere('name', $data['search'])
-                    ->orWhere('phone', $data['phone'])->orWhere('created_at', $data['search'])
-                    ->orWhere('updated_at', $data['search'])->orWhere('role_id',$role->id);
+                $query->where('email', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('name', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('phone', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('created_at', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('updated_at', 'like', '%' . $data['keyword'] . '%');
             });
         }
 
         if (!empty($data['sort'])) {
 
-            switch($data['sort']){
-                case 'email':
-                    $Builder=$Builder->orderBy('email','asc');
-                    break;
-                case 'name':
-                    $Builder=$Builder->orderBy('name','asc');
-                    break;
-                case 'phone':
-                    $Builder=$Builder->orderBy('phone','asc');
-                    break;
+            switch ($data['sort']) {
                 case 'role':
-                    $Builder=$Builder->orderBy('role_id','asc');
+                    $Builder = $Builder->orderBy('role_id', 'asc');
+                    break;
+                case 'time':
+                    $Builder = $Builder->orderBy('created_at', 'desc')
+                        ->orderBy('updated_at', 'desc');
                     break;
             }
-
         }
 
         return $Builder->paginate($data['per_page']);
