@@ -40,6 +40,16 @@ class StorePrivilegeIntermediateSeeder extends Seeder
         foreach( $menu_ids as $menu_id){
             $insertData[]=['role_id'=> $store_id,'menu_id'=>$menu_id];
         }
+
+        $counter =StorePrivilegeRole::where('name','COUNTER')->first();
+        $counter_id=$counter->id;
+        $menu_cn_names=[
+            '會員管理','集章管理','點數管理','兌換優惠卷','玩家帶路',
+        ];
+        $menu_ids =StorePrivilegeMenu::whereIn('cn_name',$menu_cn_names)->pluck('id');
+        foreach( $menu_ids as $menu_id){
+            $insertData[]=['role_id'=> $counter_id,'menu_id'=>$menu_id];
+        }
         StorePrivilegeIntermediate::insert($insertData);
 
     }

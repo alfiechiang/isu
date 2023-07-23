@@ -21,6 +21,7 @@ class StorePrivilegeMenuSeeder extends Seeder
             ['name'=>'stamp_item_mamage','cn_name'=>'集章品項管理'],
             ['name'=>'point_mamage','cn_name'=>'點數管理'],
             ['name'=>'coupon_mamage','cn_name'=>'優惠卷管理'],
+            ['name'=>'exchange_coupon','cn_name'=>'兌換優惠卷'],
             ['name'=>'reserve_room','cn_name'=>'訂房去'],
             ['name'=>'follow_player','cn_name'=>'玩家帶路'],
             ['name'=>'latest_news','cn_name'=>'最新消息'],
