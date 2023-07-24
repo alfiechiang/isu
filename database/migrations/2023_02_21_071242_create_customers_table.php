@@ -29,6 +29,7 @@ return new class extends Migration
             $table->enum('status', ['disabled', 'enabled', 'unverified'])->nullable()->comment("狀態");
             $table->enum('gender', ['male', 'female'])->nullable()->comment("性別");
             $table->date('birthday')->index()->nullable()->comment("生日");
+            $table->string('desc')->nullable()->comment("備註");
             $table->string('country')->nullable()->comment("國家");
             $table->string('county')->nullable()->comment("縣市");
             $table->string('district')->nullable()->comment("區");
