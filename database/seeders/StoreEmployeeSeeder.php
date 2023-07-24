@@ -26,6 +26,7 @@ class StoreEmployeeSeeder extends Seeder
             'password'=>'12345678',
             'name'=>'才敢讚聲',
             'role_id'=>1,
+            'country_code'=>'886'
         ]);
 
         $store=Store::create([
@@ -37,7 +38,8 @@ class StoreEmployeeSeeder extends Seeder
             'password'=>'12345678',
             'name'=>'碳水',
             'role_id'=>2,
-            'store_id'=>$store->id
+            'store_id'=>$store->id,
+            'country_code'=>'886'
         ]);
         $this->prize($employee->uid);
         

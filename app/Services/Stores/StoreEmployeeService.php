@@ -32,6 +32,16 @@ class StoreEmployeeService
             throw new ErrException('櫃檯沒有此權限操作');
         }
 
+       $check1= StoreEmployee::where('phone',$data['phone'])->get();
+       if($check1->isNotEmpty()){
+        throw new ErrException('手機號碼重複');
+       }
+
+       $check2= StoreEmployee::where('email',$data['email'])->get();
+       if($check2->isNotEmpty()){
+        throw new ErrException('信箱重複');
+       }
+
         $role = StorePrivilegeRole::find($data['role_id']);
         switch ($role->name) {
             case EmployeeRole::TOP->value:

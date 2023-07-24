@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");
             $table->string('name', 64)->nullable()->comment("姓名");
+            $table->string('country_code', 10)->nullable()->comment("國碼");
             $table->string('phone', 10)->unique()->nullable()->comment("手機");
             $table->string('email')->unique()->nullable()->comment("Email");
             $table->string('password')->comment("密碼");
