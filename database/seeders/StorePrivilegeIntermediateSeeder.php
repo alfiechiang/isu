@@ -22,7 +22,7 @@ class StorePrivilegeIntermediateSeeder extends Seeder
         $top =StorePrivilegeRole::where('name','TOP')->first();
         $top_id=$top->id;
         $menu_cn_names=[
-            '帳號管理','會員管理','集章管理','集章品項管理','點數管理',
+            '帳號管理','會員管理','集章管理','點數管理',
             '優惠卷管理','訂房去','玩家帶路','最新消息',
             '好康推薦'
         ];
