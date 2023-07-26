@@ -25,8 +25,7 @@ class StorePrivilegeMenuSeeder extends Seeder
             ['name'=>'reserve_room','cn_name'=>'訂房去'],
             ['name'=>'follow_player','cn_name'=>'玩家帶路'],
             ['name'=>'latest_news','cn_name'=>'最新消息'],
-            ['name'=>'recommend_store','cn_name'=>'推薦店家'],
-            ['name'=>'mall','cn_name'=>'商城'],
+            ['name'=>'recommend_store','cn_name'=>'好康推薦'],
         ];
 
         StorePrivilegeMenu::insert($insertData);

@@ -24,7 +24,7 @@ class StorePrivilegeIntermediateSeeder extends Seeder
         $menu_cn_names=[
             '帳號管理','會員管理','集章管理','集章品項管理','點數管理',
             '優惠卷管理','訂房去','玩家帶路','最新消息',
-            '推薦店家','商城'
+            '好康推薦'
         ];
         $menu_ids =StorePrivilegeMenu::whereIn('cn_name',$menu_cn_names)->pluck('id');
         foreach( $menu_ids as $menu_id){
@@ -34,7 +34,7 @@ class StorePrivilegeIntermediateSeeder extends Seeder
         $store =StorePrivilegeRole::where('name','STORE')->first();
         $store_id=$store->id;
         $menu_cn_names=[
-            '會員管理','集章管理','集章品項管理','點數管理',
+            '帳號管理','會員管理','集章管理','集章品項管理','點數管理','兌換優惠卷','玩家帶路','好康推薦'
         ];
         $menu_ids =StorePrivilegeMenu::whereIn('cn_name',$menu_cn_names)->pluck('id');
         foreach( $menu_ids as $menu_id){
