@@ -41,6 +41,7 @@ Route::group([
   Route::get('prize/{prize_id}/findone', [Stores\PrizeController::class, 'findone']);
   Route::get('prize', [Stores\PrizeController::class, 'list']);
   Route::put('prize/{prize_id}', [Stores\PrizeController::class, 'update']);
+  Route::delete('prize/{prize_id}', [Stores\PrizeController::class, 'delete']);
   Route::get('point-customers', [Stores\PointCustomerController::class, 'list']);
   Route::post('point-customers', [Stores\PointCustomerController::class, 'create']);
   Route::delete('point-customers/{point_id}', [Stores\PointCustomerController::class, 'delete']);

@@ -73,4 +73,10 @@ class PrizeService
         $prize->fill($data);
         $prize->save();
     }
+
+    public function delete($prize_id)
+    {
+        $prize = Prize::find($prize_id);
+        $prize->delete();
+    }
 }

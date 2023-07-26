@@ -58,4 +58,13 @@ class PrizeController extends Controller
         }
     }
 
+    public function delete($prize_id){
+        try {
+            $this->prizeService->delete($prize_id);
+            return Response::format(200, [], '請求成功');
+        }catch(Exception $e){
+            return Response::errorFormat($e);
+        }
+    }
+
 }
