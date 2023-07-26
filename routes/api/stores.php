@@ -14,6 +14,8 @@ Route::group([
 ], function ($router) {
   Route::post('logout', [Stores\AuthController::class, 'logout']);
   Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
+  Route::get('dignity', [Stores\AuthController::class, 'dignity']);
+
   Route::post('refresh', [Stores\AuthController::class, 'refresh']);
   Route::get('customers/{customer_id}/coupons', [Stores\CouponCustomerController::class, 'index']);
   Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);

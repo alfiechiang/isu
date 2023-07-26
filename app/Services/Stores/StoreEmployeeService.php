@@ -39,7 +39,7 @@ class StoreEmployeeService
 
        $check2= StoreEmployee::where('email',$data['email'])->get();
        if($check2->isNotEmpty()){
-        throw new ErrException('信箱重複');
+            throw new ErrException('信箱重複');
        }
 
         $role = StorePrivilegeRole::find($data['role_id']);

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Services\Stores\StorePrivilegeMenuService;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -78,6 +79,14 @@ class AuthController extends Controller
     public function privilegeMenuList(Request $request){
        $res= $this->storePrivilegeMenuService->list();
        return Response::format(200,$res,'請求成功');
+    }
+
+    public function dignity(){
+        try {
+            return Response::format(200, Auth::user(), '請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
     }
 
     public function forgetpassword(Request $request){
