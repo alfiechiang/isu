@@ -76,8 +76,21 @@ class StampCustomerService
 
     public function delete($stamp_id)
     {
-        $stamp = StampCustomer::find($stamp_id);
-        $stamp->delete();
+        DB::transaction(function () use ($stamp_id) {
+
+            $created_at = date('Y-m-d H:i:s');
+            $expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
+            $stamp = StampCustomer::find($stamp_id);
+            $stamp->delete();
+            $auth = Auth::user();
+            StampLog::create([
+                'customer_id' => $stamp->customer_id,
+                'created_at' => $created_at,
+                'expired_at' => $expire_at,
+                'operator' => $auth->name,
+                'type' => StampLogType::DELETE->value,
+            ]);
+        });
     }
 
     public function logPageList($data)

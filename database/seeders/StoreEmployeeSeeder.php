@@ -32,14 +32,17 @@ class StoreEmployeeSeeder extends Seeder
         $store=Store::create([
             'name'=>"測試商店"
         ]);
+
+        $uid='ISU'. rand(100000, 999999);
        $employee= StoreEmployee::create([
-            'uid'=>'ISU'. rand(100000, 999999),
+            'uid'=>$uid,
             'email'=>'k44711015@gmail.com',
             'password'=>'12345678',
             'name'=>'碳水',
             'role_id'=>2,
             'store_id'=>$store->id,
-            'country_code'=>'886'
+            'store_uid'=>$uid,
+            'country_code'=>'886',
         ]);
         $this->prize($employee->uid);
         

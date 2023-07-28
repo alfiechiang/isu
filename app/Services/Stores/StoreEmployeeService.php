@@ -57,7 +57,8 @@ class StoreEmployeeService
                 }
                 $employee = Auth::user();
                 $store_id = $employee->store_id;
-                $this->repository->counterRoleCreate($data, $store_id);
+                $store_uid=$employee->store_uid;
+                $this->repository->counterRoleCreate($data, $store_id,$store_uid);
                 break;
         }
     }

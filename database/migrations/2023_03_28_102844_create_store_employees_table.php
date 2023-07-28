@@ -15,6 +15,7 @@ return new class extends Migration
             $table->comment("商店員工資料");
             $table->uuid('id')->primary()->comment("商店員工ID");
             $table->string('uid', 64)->nullable()->comment("流水號");
+            $table->string('store_uid', 64)->nullable()->comment("商店流水號");
             $table->integer('role_id')->comment("角色ID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");

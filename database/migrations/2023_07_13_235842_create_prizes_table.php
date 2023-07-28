@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('spend_stamp_num')->nullable()->comment("一次可兌換的數量");
             $table->integer('stock')->nullable()->comment("一次可兌換的數量");
             $table->string('item_name')->nullable()->comment("品項名稱");
+            $table->string('desc')->nullable()->comment("備註");
             $table->timestamps();
         });
     }

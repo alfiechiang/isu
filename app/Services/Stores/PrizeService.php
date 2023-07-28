@@ -61,7 +61,7 @@ class PrizeService
                 $store_uid=$auth->uid;
                 break;
             case EmployeeRole::COUNTER->value:
-                $store_uid=$auth->store_id;
+                $store_uid=$auth->store_uid;
                 break;
         }
         return  Prize::where('store_uid', $store_uid)->get();

@@ -41,11 +41,12 @@ class StoreEmployeeRepository {
             'role_id'=>$role->id,
             'store_id'=>$store->id,
             'uid'=>$uid,
+            'store_uid'=>$uid
         ]);
 
     }
 
-    public function counterRoleCreate($data,$store_id){
+    public function counterRoleCreate($data,$store_id,$store_uid){
         $role= StorePrivilegeRole::where('name','COUNTER')->first();
         $uid='ISU'. rand(100000, 999999);
         StoreEmployee::create([
@@ -56,6 +57,7 @@ class StoreEmployeeRepository {
             'desc'=>$data['desc'],
             'role_id'=>$role->id,
             'store_id'=>$store_id,
+            'store_uid'=>$store_uid,
             'uid'=>$uid,
         ]);
 
