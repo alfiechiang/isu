@@ -47,5 +47,14 @@ Route::group([
   Route::delete('point-customers/{point_id}', [Stores\PointCustomerController::class, 'delete']);
   Route::get('point-customers/totalPoints', [Stores\PointCustomerController::class, 'totalPoints']);
   Route::get('point-customers/log', [Stores\PointCustomerController::class, 'logList']);
+  Route::get('county', [Stores\CountyController::class, 'list']);
+
+  Route::post('hotel', [Stores\HotelController::class, 'create']);
+  Route::delete('hotel/{hotel_id}', [Stores\HotelController::class, 'delete']);
+  Route::put('hotel/{hotel_id}', [Stores\HotelController::class, 'update']);
+  Route::get('hotel', [Stores\HotelController::class, 'list']);
+  Route::put('hotel/img/{hotel_id}', [Stores\HotelController::class, 'batchImgUpdate']);
+  Route::get('hotel/img', [Stores\HotelController::class, 'imgList']);
+
 
 });
