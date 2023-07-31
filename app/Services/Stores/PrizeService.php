@@ -25,7 +25,8 @@ class PrizeService
             'exchange_num' => $data['exchange_num'],
             'spend_stamp_num' => $data['spend_stamp_num'],
             'stock' => $data['stock'],
-            'item_name' => $data['item_name']
+            'item_name' => $data['item_name'],
+            'desc'=>$data['desc']
         ]);
     }
 
