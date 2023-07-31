@@ -22,7 +22,7 @@ class StampCustomer extends Model
     protected $fillable = [
         'customer_id', 'type', 'expired_at', 'memo',
         'operator_type', 'operator_id', 'reference_type', 'reference_id',
-        'remain_quantity', 'value', 'is_redeem', 'store_id', 'consumed_at',
+        'remain_quantity', 'value', 'is_redeem', 'store_id', 'consumed_at','created_at',
     ];
 
     const UPDATED_AT = null;
@@ -32,6 +32,11 @@ class StampCustomer extends Model
         'expired_at' => 'datetime:Y-m-d H:i:s',
         'created_at' => 'datetime:Y-m-d H:i:s',
     ];
+
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i');
+    }
 
     public function customer(): BelongsTo
     {

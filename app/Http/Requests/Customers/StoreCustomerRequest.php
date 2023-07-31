@@ -18,7 +18,6 @@ class StoreCustomerRequest extends ApiRequest
             'name' => 'max:255',
             'email' => 'email',
             'phone' => 'regex:/^09\d{8}$/',
-            'gender' => 'in:male,female',
             'birthday' => 'date_format:"Y-m-d"',
             'address' => 'nullable|string',
             'interest' => 'nullable|array',

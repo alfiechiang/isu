@@ -43,7 +43,6 @@ class StampCustomerController extends Controller
 
     public function delete($stamp_id)
     {
-
         try {
             $this->stampCustomerService->delete($stamp_id);
             return Response::format(200, [], '請求成功');
