@@ -129,7 +129,7 @@ class SocialLoginController extends Controller
 
             $user = $this->authService->createCustomer([
                 'phone' => $phone,
-                'country_cde' => $country_code,
+                'country_code' => $country_code,
                 'password' => $password,
             ]);
 
