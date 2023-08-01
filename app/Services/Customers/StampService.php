@@ -79,8 +79,21 @@ class StampService
             throw new ErrException("數量不足");
         }
 
+        $created_at = date('Y-m-d H:i:s');
         StampCustomer::where('customer_id', $from_cutomer)->limit($data['stamp_num'])
-            ->orderBy('expired_at', 'asc')->update(['customer_id' => $to_cutomer,'source'=>$cutomer->guid]);
+            ->orderBy('expired_at', 'asc')->update([
+                'customer_id' => $to_cutomer,
+                'source'=>$cutomer->guid,
+                'type'=>3 //他人贈送
+            ]);
+
+        for($i=0;$i<$data['stamp_num'];$i++){
+            StampCustomer::create([
+                'customer_id'=>$from_cutomer,
+                'type'=>7, //7:已使用（我方贈予）
+                'consumed_at'=>date('Y-m-d H:i:s')
+            ]);
+        }
     }
 
     public function exchangeStamp($data)
