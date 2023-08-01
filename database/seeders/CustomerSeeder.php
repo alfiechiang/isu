@@ -61,7 +61,7 @@ class CustomerSeeder extends Seeder
     private function stampCustomers($id){
        
 
-        for($i=0;$i<500;$i++){
+        for($i=0;$i<10;$i++){
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-15 23:59:59', 'expired_at' => '2023-11-30 23:59:59', 'source' => '系統發放', 'type' => 1, 'consumed_at' => null];
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-14 23:59:59', 'expired_at' => '2023-11-25 23:59:59', 'source' => '系統發放', 'type' => 1, 'consumed_at' => null];
             $insertData[]=['id'=>Str::uuid(),'customer_id' => $id, 'created_at' => '2023-05-13 23:59:59', 'expired_at' => '2023-12-25 23:59:59', 'source' => '系統發放', 'type' => 1, 'consumed_at' => null];
@@ -79,7 +79,7 @@ class CustomerSeeder extends Seeder
 
     private function pointCustomers($id){
         ## type 1 進店掃描 2消費認證
-        for($i=0;$i<130;$i++){
+        for($i=0;$i<20;$i++){
             $insertData[]=['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-07-07 12:35:30','source'=>'北門喔薄褸','type'=>1,'value'=>50];
             $insertData[]= ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-05-07 12:35:30','source'=>'嘿嘿嘿','type'=>1,'value'=>50];
             $insertData[]=['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50];
