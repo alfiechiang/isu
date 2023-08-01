@@ -20,7 +20,7 @@ class StampCustomer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'customer_id', 'type', 'expired_at', 'memo',
+        'customer_id', 'type', 'expired_at', 'memo','source',
         'operator_type', 'operator_id', 'reference_type', 'reference_id',
         'remain_quantity', 'value', 'is_redeem', 'store_id', 'consumed_at','created_at',
     ];

@@ -21,13 +21,14 @@ class StampCustomerService
             $customer = Customer::where('guid', $data['guid'])->first();
             $auth = Auth::user();
             $created_at = date('Y-m-d H:i:s');
-           // $expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
+            // $expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
             $expire_at = date('Y-m-d H:i:s', strtotime("+1 hour", strtotime($created_at)));
             StampCustomer::create([
                 'customer_id' => $customer->id,
                 'created_at' => $created_at,
                 'expired_at' => $expire_at,
-                'type' => StampCustomerType::SYSTEMCREATE->value
+                'type' => StampCustomerType::SYSTEMCREATE->value,
+                'source' => '系統發放'
             ]);
 
             StampLog::create([
