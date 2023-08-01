@@ -85,7 +85,6 @@ class CustomerSeeder extends Seeder
             $insertData[]=['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-06-11 12:35:30','source'=>'其實我很Ｘ','type'=>1,'value'=>50];
             $insertData[]= ['id'=>Str::uuid(),'customer_id'=>$id,'created_at'=>'2023-02-07 12:35:30','source'=>'背包41','type'=>1,'value'=>50];
         }
-
         PointCustomer::insert($insertData);
     }
 

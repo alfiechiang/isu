@@ -21,6 +21,7 @@ class StoreEmployeeRepository {
             'desc'=>$data['desc'],
             'role_id'=>$role->id,
             'uid'=>$uid,
+            'country_code'=>$data['country_code']
         ]);
     }
 
@@ -41,7 +42,8 @@ class StoreEmployeeRepository {
             'role_id'=>$role->id,
             'store_id'=>$store->id,
             'uid'=>$uid,
-            'store_uid'=>$uid
+            'store_uid'=>$uid,
+            'country_code'=>$data['country_code']
         ]);
 
     }
@@ -59,6 +61,7 @@ class StoreEmployeeRepository {
             'store_id'=>$store_id,
             'store_uid'=>$store_uid,
             'uid'=>$uid,
+            'country_code'=>$data['country_code']
         ]);
 
     }
