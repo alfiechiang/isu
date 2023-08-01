@@ -80,7 +80,7 @@ class StampService
         }
 
         StampCustomer::where('customer_id', $from_cutomer)->limit($data['stamp_num'])
-            ->orderBy('expired_at', 'asc')->update(['customer_id' => $to_cutomer]);
+            ->orderBy('expired_at', 'asc')->update(['customer_id' => $to_cutomer,'source'=>$cutomer->guid]);
     }
 
     public function exchangeStamp($data)
