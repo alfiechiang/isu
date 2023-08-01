@@ -74,6 +74,8 @@ class StampCustomerService
             });
         }
 
+        $Builder=$Builder->with('customer');
+
         return $Builder->paginate($data['per_page']);
     }
 
