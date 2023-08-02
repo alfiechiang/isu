@@ -13,11 +13,12 @@ class CustomerController extends Controller
 
     protected CustomerService $customerService;
 
+    protected  OperatorLogService $operatorLogService;
 
-
-    public function __construct(CustomerService $customerService,OperatorLogService $operatorLogService)
+    public function __construct(CustomerService $customerService, OperatorLogService $operatorLogService)
     {
         $this->customerService = $customerService;
+        $this->operatorLogService = $operatorLogService;
     }
 
     public function list(Request $request)
@@ -42,8 +43,15 @@ class CustomerController extends Controller
 
     public function update(Request $request, $guid)
     {
+
         try {
-                $this->customerService->update($request->all(), $guid);
+
+            $this->customerService->update($request->all(), $guid);
+            $data = $request->all();
+            
+            $data['type'] = 'update';
+
+            $this->operatorLogService->createCustomerLog('customer_manage', $guid, $data);
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
@@ -59,5 +67,4 @@ class CustomerController extends Controller
             return Response::errorFormat($e);
         }
     }
-        
 }

@@ -54,7 +54,7 @@ class StoreEmployeeController extends Controller
                 $this->storeEmployeeService->update($uid, $request->all());
                 $data= $request->all();
                 $data['type']='update';
-                $this->operatorLogService->create('account_mamage',$uid,$data);
+                $this->operatorLogService->createStoreEmployeeLog('account_mamage',$uid,$data);
             });
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {

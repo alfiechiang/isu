@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('operater_logs', function (Blueprint $table) {
             $table->id();
             $table->string('operator_email')->comment("操作者信箱");
-            $table->string('email')->comment("信箱");
+            $table->string('email')->nullable()->comment("信箱");
+            $table->string('guid')->nullable()->comment("會員GUID");
             $table->string("area")->comment("模塊區域");
             $table->string("column")->comment("欄位");
             $table->string("type")->comment("新增 create 刪除delete 更新update");

@@ -10,7 +10,7 @@ class OperaterLog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'operator_email','email', 'area', 'column', 'type','created_at'
+        'operator_email','email', 'area', 'column', 'type','created_at','guid'
     ];
 
     const UPDATED_AT = null;
