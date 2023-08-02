@@ -83,15 +83,15 @@ class StampService
         StampCustomer::where('customer_id', $from_cutomer)->limit($data['stamp_num'])
             ->orderBy('expired_at', 'asc')->update([
                 'customer_id' => $to_cutomer,
-                'source'=>$cutomer->guid,
-                'type'=>3 //他人贈送
+                'source' => $auth->guid,
+                'type' => 3 //他人贈送
             ]);
 
-        for($i=0;$i<$data['stamp_num'];$i++){
+        for ($i = 0; $i < $data['stamp_num']; $i++) {
             StampCustomer::create([
-                'customer_id'=>$from_cutomer,
-                'type'=>7, //7:已使用（我方贈予）
-                'consumed_at'=>date('Y-m-d H:i:s')
+                'customer_id' => $from_cutomer,
+                'type' => 7, //7:已使用（我方贈予）
+                'consumed_at' => date('Y-m-d H:i:s')
             ]);
         }
     }
@@ -106,21 +106,20 @@ class StampService
             $prize->stock = $prize->stock - $data['exchange_num'];
             $prize->save();
 
-            $spend_stamp_num =$data['spend_stamp_num'];
+            $spend_stamp_num = $data['spend_stamp_num'];
 
             $customer = Customer::where("guid", $data['guid'])->first();
-            $stamps=StampCustomer::where("customer_id", $customer->id)->whereNull("consumed_at")
-            ->orderBy("expired_at")->limit($spend_stamp_num)->get();
+            $stamps = StampCustomer::where("customer_id", $customer->id)->whereNull("consumed_at")
+                ->orderBy("expired_at")->limit($spend_stamp_num)->get();
 
-            if($stamps->count() < $spend_stamp_num){
+            if ($stamps->count() < $spend_stamp_num) {
                 throw new ErrException("品項庫存不足");
             }
 
-            foreach($stamps as $stamp){
-                $stamp->consumed_at=date('Y-m-d H:i:s');
+            foreach ($stamps as $stamp) {
+                $stamp->consumed_at = date('Y-m-d H:i:s');
                 $stamp->save();
             }
-
         });
     }
 

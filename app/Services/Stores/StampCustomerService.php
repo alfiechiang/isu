@@ -2,6 +2,8 @@
 
 namespace App\Services\Stores;
 
+use App\Enums\EmployeeRole;
+use App\Enums\EmployeeRoleNumber;
 use App\Enums\StampCustomerType;
 use App\Enums\StampLogType;
 use App\Models\Customer;
@@ -21,14 +23,25 @@ class StampCustomerService
             $customer = Customer::where('guid', $data['guid'])->first();
             $auth = Auth::user();
             $created_at = date('Y-m-d H:i:s');
-            // $expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
+            //$expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
             $expire_at = date('Y-m-d H:i:s', strtotime("+1 hour", strtotime($created_at)));
 
+            $type='';
+            switch($auth->role_id){
+                case EmployeeRoleNumber::TOP->value:
+                    $type= StampCustomerType::SYSTEM_SEND->value;
+                    break;
+                case EmployeeRoleNumber::STORE->value:
+                case EmployeeRoleNumber::COUNTER->value:
+                    $type= StampCustomerType::STAY->value;
+                    break;
+            }
+            
             StampCustomer::create([
                 'customer_id' => $customer->id,
                 'created_at' => $created_at,
                 'expired_at' => $expire_at,
-                'type' => StampCustomerType::SYSTEMCREATE->value,
+                'type' => $type,
                 'source' => $auth->name
             ]);
 
@@ -40,6 +53,7 @@ class StampCustomerService
                 'type' => StampLogType::CREATE->value,
                 'desc'=>$data['desc']
             ]);
+
         });
     }
 
