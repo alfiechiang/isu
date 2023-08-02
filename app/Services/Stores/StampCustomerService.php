@@ -67,7 +67,7 @@ class StampCustomerService
         if ($data['search'] == 'USE') {
             $Builder = $Builder->where('created_at', '<=', $now)
                 ->where('expired_at', '>=', $now)->whereNull('consumed_at')
-                ->orderBy('expired_at', 'asc');
+                ->orderBy('created_at', 'desc');
         }
 
         if ($data['search'] == 'HAVE_USE_OR_EXPIRE') {
