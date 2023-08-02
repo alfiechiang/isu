@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('district')->nullable()->comment("區");
             $table->string('postal')->nullable()->comment("郵遞區號");
             $table->string('address')->nullable()->comment("地址");
-            $table->string('interest')->nullable()->comment("興趣");
+            $table->text('interest')->nullable()->comment("興趣");
             $table->integer('point_balance')->default(0)->comment("現有點數");
             $table->integer('stamps')->default(0)->comment("現有集章");
 
