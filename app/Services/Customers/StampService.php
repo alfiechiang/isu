@@ -121,6 +121,7 @@ class StampService
             foreach ($stamps as $stamp) {
                 $stamp->consumed_at = date('Y-m-d H:i:s');
                 $stamp->source=$souce_name;
+                $stamp->type=StampCustomerType::ALREADY_USE;
                 $stamp->save();
             }
         });
