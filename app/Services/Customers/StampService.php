@@ -8,6 +8,7 @@ use App\Models\StampCustomer;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StampCustomerType;
 use App\Models\Prize;
+use App\Models\StoreEmployee;
 use Illuminate\Support\Facades\DB;
 
 class StampService
@@ -113,11 +114,13 @@ class StampService
                 ->orderBy("expired_at")->limit($spend_stamp_num)->get();
 
             if ($stamps->count() < $spend_stamp_num) {
-                throw new ErrException("品項庫存不足");
+                throw new ErrException("集章不足");
             }
 
+            $souce_name= StoreEmployee::where('uid',$data['uid'])->pluck('name')[0];
             foreach ($stamps as $stamp) {
                 $stamp->consumed_at = date('Y-m-d H:i:s');
+                $stamp->source=$souce_name;
                 $stamp->save();
             }
         });
