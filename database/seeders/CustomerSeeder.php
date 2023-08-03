@@ -29,17 +29,17 @@ class CustomerSeeder extends Seeder
         $this->stampCustomers($r1->id);
 
         $r2=Customer::create(
-            ['name' => 'rice002', 'guid' => 'ISU202307071234566', 'phone' => '911902984', 'password' => '123456']
+            ['name' => 'rice002', 'guid' => 'ISU202307071735526', 'phone' => '911902984', 'password' => '123456']
         );
         $this->stampCustomers($r2->id);
 
        $r3= Customer::create(
-            ['name' => 'zack', 'guid' => 'ISU202307051234566', 'phone' => '938905077', 'password' => '123456']
+            ['name' => 'zack', 'guid' => 'ISU202307051236012', 'phone' => '938905077', 'password' => '123456']
         );
         $this->stampCustomers($r3->id);
 
         $r4=Customer::create(
-            ['name' => 'rice003', 'guid' => 'ISU202307051234569', 'phone' => '938905079', 'password' => '123456']
+            ['name' => 'rice003', 'guid' => 'ISU202307051204569', 'phone' => '938905079', 'password' => '123456']
         );
         $this->stampCustomers($r4->id);
         $this->coupon();
