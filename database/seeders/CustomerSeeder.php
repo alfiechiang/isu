@@ -42,6 +42,53 @@ class CustomerSeeder extends Seeder
             ['name' => 'rice003', 'guid' => 'ISU202307051204569', 'phone' => '938905079', 'password' => '123456']
         );
         $this->stampCustomers($r4->id);
+
+        $r5=Customer::create(
+            ['name' => 'tensor01', 'guid' => 'ISU202307050206788', 'phone' => '975400413', 'password' => '123456']
+        );
+        $this->stampCustomers($r5->id);
+
+        $r6=Customer::create(
+            ['name' => 'tensor01', 'guid' => 'ISU202307050209603', 'phone' => '907891616', 'password' => '123456']
+        );
+        $this->stampCustomers($r6->id);
+
+        $r7=Customer::create(
+            ['name' => 'tensor02', 'guid' => 'ISU202307050202361', 'phone' => '985312895', 'password' => '123456']
+        );
+        $this->stampCustomers($r7->id);
+
+        $r8=Customer::create(
+            ['name' => 'tensor03', 'guid' => 'ISU202307050201350', 'phone' => '981373824', 'password' => '123456']
+        );
+        $this->stampCustomers($r8->id);
+
+        $r9=Customer::create(
+            ['name' => 'tensor04', 'guid' => 'ISU202307050206790', 'phone' => '929330276', 'password' => '123456']
+        );
+        $this->stampCustomers($r9->id);
+
+        $r10=Customer::create(
+            ['name' => 'tensor05', 'guid' => 'ISU2023070502064177', 'phone' => '965454825', 'password' => '123456']
+        );
+        $this->stampCustomers($r10->id);
+
+
+        $r11=Customer::create(
+            ['name' => 'tensor06', 'guid' => 'ISU2023070502060203', 'phone' => '994826389', 'password' => '123456']
+        );
+        $this->stampCustomers($r11->id);
+
+        $r12=Customer::create(
+            ['name' => 'tensor07', 'guid' => 'ISU2023070502061612', 'phone' => '967229640', 'password' => '123456']
+        );
+        $this->stampCustomers($r12->id);
+
+        $r13=Customer::create(
+            ['name' => 'tensor08', 'guid' => 'ISU2023070502061612', 'phone' => '973390350', 'password' => '123456']
+        );
+        $this->stampCustomers($r13->id);
+
         $this->coupon();
 
     }
