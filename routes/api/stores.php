@@ -56,10 +56,12 @@ Route::group([
   Route::post('followplayer', [Stores\FollowPlayerController::class, 'create']);
   Route::put('followplayer/{follow_id}', [Stores\FollowPlayerController::class, 'update']);
   Route::get('followplayer', [Stores\FollowPlayerController::class, 'list']);
-
-
   Route::post('news', [Stores\NewsController::class, 'create']);
   Route::put('news/{news_id}', [Stores\NewsController::class, 'update']);
   Route::get('news', [Stores\NewsController::class, 'list']);
+  Route::post('recommend', [Stores\RecommendController::class, 'create']);
+  Route::put('recommend/{recommend_id}/findone', [Stores\RecommendController::class, 'findone']);
+  Route::put('recommend/{recommend_id}', [Stores\RecommendController::class, 'create']);
+  Route::get('recommend', [Stores\RecommendController::class, 'list']);
 
 });
