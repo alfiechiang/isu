@@ -99,7 +99,6 @@ class StoreEmployeeSeeder extends Seeder
         ]);
         $this->prize($employee->uid);
 
-
         StoreEmployee::create([
             'uid' => 'ISU' . rand(100000, 999999),
             'email' => 'n44711015@gmail.com',

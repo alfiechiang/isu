@@ -15,7 +15,6 @@ Route::group([
   Route::post('logout', [Stores\AuthController::class, 'logout']);
   Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
   Route::get('dignity', [Stores\AuthController::class, 'dignity']);
-
   Route::post('refresh', [Stores\AuthController::class, 'refresh']);
   Route::get('customers/{customer_id}/coupons', [Stores\CouponCustomerController::class, 'index']);
   Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);
@@ -48,13 +47,19 @@ Route::group([
   Route::get('point-customers/totalPoints', [Stores\PointCustomerController::class, 'totalPoints']);
   Route::get('point-customers/log', [Stores\PointCustomerController::class, 'logList']);
   Route::get('county', [Stores\CountyController::class, 'list']);
-
   Route::post('hotel', [Stores\HotelController::class, 'create']);
   Route::delete('hotel/{hotel_id}', [Stores\HotelController::class, 'delete']);
   Route::put('hotel/{hotel_id}', [Stores\HotelController::class, 'update']);
   Route::get('hotel', [Stores\HotelController::class, 'list']);
   Route::put('hotel/img/{hotel_id}', [Stores\HotelController::class, 'batchImgUpdate']);
   Route::get('hotel/img', [Stores\HotelController::class, 'imgList']);
+  Route::post('followplayer', [Stores\FollowPlayerController::class, 'create']);
+  Route::put('followplayer/{follow_id}', [Stores\FollowPlayerController::class, 'update']);
+  Route::get('followplayer', [Stores\FollowPlayerController::class, 'list']);
 
+
+  Route::post('news', [Stores\NewsController::class, 'create']);
+  Route::put('news/{news_id}', [Stores\NewsController::class, 'update']);
+  Route::get('news', [Stores\NewsController::class, 'list']);
 
 });
