@@ -14,6 +14,7 @@ class HotelService
         Hotel::create([
             'hotel_name'=>$data['hotel_name'],
             'phone'=>$data['phone'],
+            'house_phone'=>$data['house_phone'],
             'hotel_url'=>$data['hotel_url'],
             'hotel_desc'=>$data['hotel_desc'],
             'district'=>$data['district'],
@@ -21,7 +22,6 @@ class HotelService
             'county'=>$data['county'],
             'google_map_url'=>$data['google_map_url'],
             'address'=>$data['address'],
-            'desc'=>$data['desc']
         ]);
     }
 
