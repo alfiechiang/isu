@@ -42,4 +42,6 @@ Route::group([
     Route::get('points/totalPoints', [Customers\PointController::class, 'totalPoints']);
     Route::post('points/exchangeToStamps', [Customers\PointController::class, 'exchangeToStamps']);
 
+    Route::get('hotel', [Customers\HotelController::class, 'list']);
+    Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
 });

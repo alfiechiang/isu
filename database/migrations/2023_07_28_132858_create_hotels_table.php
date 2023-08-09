@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('hotel_name')->nullable()->comment('店家名稱');
             $table->string('phone')->nullable()->comment('電話');
+            $table->string('house_phone')->nullable()->comment('室內電話');
             $table->string('hotel_url')->nullable()->comment('店家網址');
             $table->longText('hotel_desc')->nullable()->comment('店家簡述');
             $table->string('district')->nullable()->nullable()->comment("區");
