@@ -44,4 +44,8 @@ Route::group([
 
     Route::get('hotel', [Customers\HotelController::class, 'list']);
     Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
+    Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
+    Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
+    Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 'stronghold']);
+
 });

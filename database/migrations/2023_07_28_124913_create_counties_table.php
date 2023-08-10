@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cn_name');
+            $table->string('region');
         });
     }
 
