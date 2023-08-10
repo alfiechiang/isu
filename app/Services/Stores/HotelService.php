@@ -34,6 +34,7 @@ class HotelService
         $hotel =  Hotel::find($hotel_id);
         $hotel->fill($data);
         $hotel->save();
+        return ['hotel_id'=>$hotel->id];
     }
 
     public function pageList($data){

@@ -43,8 +43,8 @@ class HotelController extends Controller
 
     public function update(Request $request, $hotel_id){
         try {
-            $this->hotelService->update($hotel_id,$request->all());
-            return Response::format(200, [], '請求成功');
+            $res= $this->hotelService->update($hotel_id,$request->all());
+            return Response::format(200, $res, '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
