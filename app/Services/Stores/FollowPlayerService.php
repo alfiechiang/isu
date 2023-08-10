@@ -43,6 +43,12 @@ class FollowPlayerService
         $follower->save();
     }
 
+    public function findone($follow_id)
+    {
+        $follower =FollowPlayer::find($follow_id);
+        return $follower;
+    }
+
     public function pageList($data)
     {
         $Builder = new FollowPlayer();

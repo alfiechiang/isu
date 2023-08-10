@@ -18,43 +18,47 @@ class FollowPlayerController extends Controller
         $this->followPlayerService = $followPlayerService;
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         try {
             $this->followPlayerService->create($request->all());
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
-      
     }
 
-    public function update(Request $request, $follow_id){
+    public function update(Request $request, $follow_id)
+    {
         try {
-            $this->followPlayerService->update($follow_id,$request->all());
+            $this->followPlayerService->update($follow_id, $request->all());
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
-    
     }
 
-    public function list(Request $request){
+    public function findone($follow_id)
+    {
         try {
-            $res=$this->followPlayerService->pageList($request->all());
+            $res = $this->followPlayerService->findone($follow_id);
             return Response::format(200, $res, '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
     }
 
-    public function delete( $hotel_id){
-       
-      
+    public function list(Request $request)
+    {
+        try {
+            $res = $this->followPlayerService->pageList($request->all());
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
     }
 
-
-
-  
-
-
+    public function delete($hotel_id)
+    {
+    }
 }
