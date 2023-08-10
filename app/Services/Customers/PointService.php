@@ -45,8 +45,12 @@ class PointService
             ->where('customer_id', $auth->id)->where('is_redeem', false)
             ->groupBy('customer_id')->get();
 
-        $total = intval($rows[0]->total);
+        if($rows->isEmpty()){
+            return ['total' => 0];
 
+        }
+
+        $total = intval($rows[0]->total);
         return ['total' => $total];
     }
 
