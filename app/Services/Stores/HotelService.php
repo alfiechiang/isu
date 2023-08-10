@@ -11,7 +11,7 @@ class HotelService
 {
     public function create($data){
 
-        Hotel::create([
+       $hotel= Hotel::create([
             'hotel_name'=>$data['hotel_name'],
             'phone'=>$data['phone'],
             'house_phone'=>$data['house_phone'],
@@ -23,6 +23,8 @@ class HotelService
             'google_map_url'=>$data['google_map_url'],
             'address'=>$data['address'],
         ]);
+        return ['hotel_id'=>$hotel->id];
+
     }
 
     public function delete($hotel_id){
