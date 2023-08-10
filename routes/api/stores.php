@@ -49,6 +49,7 @@ Route::group([
   Route::get('county', [Stores\CountyController::class, 'list']);
   Route::post('hotel', [Stores\HotelController::class, 'create']);
   Route::delete('hotel/{hotel_id}', [Stores\HotelController::class, 'delete']);
+  Route::get('hotel/{hotel_id}/findone', [Stores\HotelController::class, 'findone']);
   Route::put('hotel/{hotel_id}', [Stores\HotelController::class, 'update']);
   Route::get('hotel', [Stores\HotelController::class, 'list']);
   Route::put('hotel/img/{hotel_id}', [Stores\HotelController::class, 'batchImgUpdate']);

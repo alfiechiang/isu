@@ -37,6 +37,12 @@ class HotelService
         return ['hotel_id'=>$hotel->id];
     }
 
+    public function findone($hotel_id){
+        $hotel =  Hotel::find($hotel_id);
+        return $hotel;
+    }
+
+
     public function pageList($data){
         $Builder =new Hotel();
         if (!empty($data['keyword'])) {

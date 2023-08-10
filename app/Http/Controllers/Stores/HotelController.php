@@ -41,6 +41,16 @@ class HotelController extends Controller
       
     }
 
+    public function findone( $hotel_id){
+        try {
+            $res= $this->hotelService->findone($hotel_id);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    
+    }
+
     public function update(Request $request, $hotel_id){
         try {
             $res= $this->hotelService->update($hotel_id,$request->all());
