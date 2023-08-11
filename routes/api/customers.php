@@ -15,7 +15,7 @@ Route::post('token/check', [Customers\AuthController::class, 'checkToken']);
 Route::post('socialaccount/check', [Customers\SocialLoginController::class, 'checkoutSocailAccount']);
 
 Route::post('forgetpassword', [Customers\AuthController::class, 'forgetPassword']);
-Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
+//Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
 Route::post('otp/check', [Customers\OtpController::class, 'checkOtp']);
 Route::post('login/{provider_name}/register', [Customers\SocialLoginController::class, 'register']);
 Route::post('login/{provider_name}', [Customers\SocialLoginController::class, 'auth']);
