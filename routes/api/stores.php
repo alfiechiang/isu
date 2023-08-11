@@ -13,6 +13,7 @@ Route::group([
   'middleware' => 'auth:employee',
 ], function ($router) {
   Route::post('logout', [Stores\AuthController::class, 'logout']);
+  Route::post('upload', [Stores\UploadFileController::class, 'upload']);
   Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
   Route::get('dignity', [Stores\AuthController::class, 'dignity']);
   Route::post('refresh', [Stores\AuthController::class, 'refresh']);
