@@ -7,19 +7,24 @@ use App\Http\Controllers\Customers;
 
 Route::get('whosyourdaddy', [Customers\TestController::class, 'axcd']);
 
-
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);
 Route::post('register/check', [Customers\AuthController::class, 'checkRegister']);
 Route::post('token/check', [Customers\AuthController::class, 'checkToken']);
 Route::post('socialaccount/check', [Customers\SocialLoginController::class, 'checkoutSocailAccount']);
-
 Route::post('forgetpassword', [Customers\AuthController::class, 'forgetPassword']);
 Route::post('otp/send', [Customers\OtpController::class, 'sendOtp']);
 Route::post('otp/check', [Customers\OtpController::class, 'checkOtp']);
 Route::post('login/{provider_name}/register', [Customers\SocialLoginController::class, 'register']);
 Route::post('login/{provider_name}', [Customers\SocialLoginController::class, 'auth']);
-
+Route::get('hotel', [Customers\HotelController::class, 'list']);
+Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
+Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
+Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
+Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 'stronghold']);
+Route::get('news', [Customers\NewsController::class, 'list']);
+Route::get('news/{news_id}/findone', [Customers\NewsController::class, 'findone']);
+Route::get('news/stronghold', [Customers\NewsController::class, 'stronghold']);
 
 Route::group([
     'middleware' => 'auth:customers',
@@ -41,11 +46,5 @@ Route::group([
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::get('points/totalPoints', [Customers\PointController::class, 'totalPoints']);
     Route::post('points/exchangeToStamps', [Customers\PointController::class, 'exchangeToStamps']);
-
-    Route::get('hotel', [Customers\HotelController::class, 'list']);
-    Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
-    Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
-    Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
-    Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 'stronghold']);
-
+  
 });
