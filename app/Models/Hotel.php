@@ -21,7 +21,8 @@ class Hotel extends Model
         'county',
         'google_map_url',
         'address',
-        'desc'
+        'desc',
+        'slogan'
     ];
 
     public function images(): HasMany
