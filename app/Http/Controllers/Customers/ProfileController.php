@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Customers;
 
-use App\Coupon\CouponEnums;
 use App\Coupon\CouponService;
-use App\Enums\CustomerCitizenship;
-use App\Enums\CustomerStatus;
-use App\Enums\StatusCode;
 use App\Exceptions\ErrException;
 use App\Http\Requests\Customers\StoreCustomerRequest;
-use App\Http\Resources\Customers\CustomerResource;
 use App\Http\Response;
+use App\Models\CouponCustomer;
 use App\Models\Customer;
+use App\Models\CustomerColumnChangeLog;
 use App\Services\CustomerRole\AuthService;
 use App\Services\CustomerRole\CustomerService;
-use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class ProfileController extends Controller
 {
@@ -49,7 +46,7 @@ class ProfileController extends Controller
     public function index()
     {
         $authUser = $this->authService->user();
-        return Response::format(200,$authUser,'請求成功');
+        return Response::format(200, $authUser, '請求成功');
     }
 
     public function store(StoreCustomerRequest $request)
@@ -75,15 +72,61 @@ class ProfileController extends Controller
                 throw new ErrException('手機號碼已經被註冊');
             }
 
-            $authUser->fill($data);
-            if ($authUser->isDirty()) {
-                $authUser->update();
-            }
+            DB::transaction(function () use ($data, $authUser) {
 
-            $issueCouponType = [CouponEnums::TYPE_INFORMATION_COMPLETE, CouponEnums::TYPE_BIRTHDAY];
-            foreach ($issueCouponType as $couponType) {
-                $this->couponService->generateCouponsForCustomer($couponType, $authUser);
-            }
+                if (isset($data['birthday'])) {
+                    $customer = Customer::find($authUser->id);
+                    if ($customer->birthday !== $data['birthday']) {
+                        $exist = CustomerColumnChangeLog::where('customer_id', $customer->id)->where('table_name', 'customers')
+                            ->where('column_name', 'birthday')->get();
+                        if ($exist->isNotEmpty()) {
+                            throw new ErrException('生日欄位只能更改一次');
+                        }
+                        CustomerColumnChangeLog::create([
+                            'customer_id' => $customer->id,
+                            'table_name' => 'customers',
+                            'column_name' => 'birthday'
+                        ]);
+                    }
+                }
+
+                $authUser->fill($data);
+                if ($authUser->isDirty()) {
+                    $authUser->update();
+                }
+
+                if(isset($data['birthday'])){
+                    $created_at =$authUser->created_at;
+
+                    $expire_at = date('Y-m-d H:i:s', strtotime("+1 month", strtotime($authUser->birthday)));
+
+                    if($created_at< $expire_at){
+
+                        $year_start_date=now()->startOfYear()->format('Y-m-d');
+                        $year_end_date = now()->endOfYear()->format('Y-m-d');
+                        $exist = CouponCustomer::where('customer_id', $authUser->id)->whereBetween('created_at', [$year_start_date, $year_end_date])
+                            ->where('coupon_id', config('coupon.birthday.coupon_id'))->get();
+                        if($exist->isEmpty()){
+                            CouponCustomer::create([
+                                'id'=>Str::uuid(),
+                                'code_script'=>'B'.date('Ymd'),
+                                'created_at'=>date('Y-m-d H:i:s'),
+                                'expired_at'=>$expire_at ,
+                                'status'=>1,
+                                'coupon_cn_name'=>'生日大禮',
+                                'customer_id'=>$authUser->id,
+                                'coupon_id'=>config('coupon.birthday.coupon_id')
+                            ]);
+
+                        }
+
+                    }
+
+                }
+             
+
+
+            });
             // 返回成功響應
             return Response::success();
         } catch (\Exception $e) {

@@ -12,8 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('coupons:birthday')->daily();
-        $schedule->command('coupons:sleeping')->daily();
+        $schedule->command('voucher:caculate')->everyMinute();
     }
 
     /**

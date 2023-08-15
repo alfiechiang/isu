@@ -89,20 +89,7 @@ class CustomerSeeder extends Seeder
         );
         $this->stampCustomers($r13->id);
 
-        $this->coupon();
 
-    }
-
-    private function coupon(){
-        DB::table('coupons')->delete(); 
-        $insertData =[
-            ['id'=>'B20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
-            ['id'=>'F20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
-            ['id'=>'C20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
-            ['id'=>'M20230707','content_desc'=>'此禮卷可以購買一棟全新大安區豪宅','notice_desc'=>'我帥在別人看不見的地方'],
-        ];
-
-        Coupon::insert($insertData);
     }
 
     private function stampCustomers($id){

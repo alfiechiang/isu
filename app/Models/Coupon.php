@@ -16,6 +16,6 @@ class Coupon extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'description', 'coupon_type', 'coupon_event', 'validity', 'start_at', 'end_at'
+        'name', 'description','code','coupon_type', 'coupon_event', 'validity', 'start_at', 'end_at'
     ];
 }

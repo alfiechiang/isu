@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             StorePrivilegeIntermediateSeeder::class,
             StoreEmployeeSeeder::class,
             CountySeeder::class,
+            CouponSeeder::class
         ]);
     }
 }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
             $table->softDeletes()->comment("刪除時間");
-
             $table->string('name')->nullable()->comment("優惠券名稱");
             $table->string('description')->nullable()->comment("優惠券描述");
             $table->string('content_desc')->nullable()->comment("內容說明");

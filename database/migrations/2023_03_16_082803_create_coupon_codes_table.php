@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('coupon_codes', function (Blueprint $table) {
             $table->comment("優惠券代碼");
-
             $table->uuid('id')->primary()->comment("代碼ID");
             $table->timestamp('created_at')->nullable()->comment("建立時間");
             $table->timestamp('updated_at')->nullable()->comment("更新時間");
-
             $table->string('code')->unique()->nullable()->comment("優惠券代碼");
-
+            $table->string('cn_name')->unique()->nullable()->comment("優惠券中文名稱");
+            $table->string('name')->unique()->nullable()->comment("優惠券名稱");
             $table->uuid('coupon_id')->nullable()->comment("優惠券ID");
             $table->foreign('coupon_id')->references('id')->on('coupons')->onDelete('SET NULL');
         });
