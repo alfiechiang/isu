@@ -22,6 +22,7 @@ class HotelService
             'county'=>$data['county'],
             'google_map_url'=>$data['google_map_url'],
             'address'=>$data['address'],
+            'slogan'=>$data['slogan']
         ]);
         return ['hotel_id'=>$hotel->id];
 
