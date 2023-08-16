@@ -95,13 +95,47 @@ class ProfileController extends Controller
                     $authUser->update();
                 }
 
+                $keysArray = ['name', 'birthday', 'county', 'phone', 'interest', 'postal', 'district', 'email', 'country', 'address', 'gender'];
+                $persent=true;
+                foreach ($authUser->getAttributes() as $key => $value) {
+                    foreach($keysArray as $k){
+                        if($k ==$key && empty($value)){
+                            $persent=false;
+                            break;
+                        }
+                    }
+                }
+
+                $exist=CouponCustomer::where('customer_id',$authUser->id)->where('coupon_id',config('coupon.customer.coupon_id'))->get();
+                if($exist->isNotEmpty()){
+                    $persent=false;
+                }
+
+                if($persent){
+                    $insertData=[];
+                    $created_at=date('Y-m-d H:i:s');
+                    $expire_at = date('Y-m-d', strtotime("+1 year", strtotime($created_at)));
+                    for($i=0 ;$i<10;$i++){
+                        $data=[
+                            'id'=>Str::uuid(),
+                            'code_script'=>'M'.date('Ymd'),
+                            'created_at'=>$created_at,
+                            'expired_at'=>$expire_at ,
+                            'status'=>1,
+                            'coupon_cn_name'=>'會員大禮包',
+                            'customer_id'=>$authUser->id,
+                            'coupon_id'=>config('coupon.customer.coupon_id')
+                        ];
+                        $insertData[]=$data;
+                    }
+                    DB::table('coupon_customers')->insert($insertData);
+                }
+
+
                 if(isset($data['birthday'])){
                     $created_at =$authUser->created_at;
-
                     $expire_at = date('Y-m-d H:i:s', strtotime("+1 month", strtotime($authUser->birthday)));
-
                     if($created_at< $expire_at){
-
                         $year_start_date=now()->startOfYear()->format('Y-m-d');
                         $year_end_date = now()->endOfYear()->format('Y-m-d');
                         $exist = CouponCustomer::where('customer_id', $authUser->id)->whereBetween('created_at', [$year_start_date, $year_end_date])
@@ -123,7 +157,7 @@ class ProfileController extends Controller
                     }
 
                 }
-             
+            
 
 
             });

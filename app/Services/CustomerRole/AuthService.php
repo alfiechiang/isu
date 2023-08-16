@@ -12,11 +12,14 @@ use App\Exceptions\ErrException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Helpers\Utils;
+use App\Models\CouponCustomer;
 use App\Models\SocialAccount;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class AuthService
 {
@@ -64,8 +67,6 @@ class AuthService
         // 返回 access_token、token 類型和到期時間.
         return $this->respondWithToken($token);
     }
-
-
     /**
      * 刷新 access_token.
      *
@@ -168,15 +169,27 @@ class AuthService
         if ($phone && Customer::wherePhone($phone)->exists()) {
             throw new ErrException("手機號碼已經被註冊");
         }
+        
+        $customer=DB::transaction(function () use ($data) {
 
-        // 創建新的用戶.
-        return Customer::create([
-            'phone' => $data['phone'] ?? null,
-            'password' => $data['password'],
-            'status' => CustomerStatus::ENABLED->value,
-            'guid'=>'ISU'.date('Ymd').rand(1000000,9999999),
-            'country_code'=>$data['country_code'],
-        ]);
+            $customer= Customer::create([
+                'phone' => $data['phone'] ?? null,
+                'password' => $data['password'],
+                'status' => CustomerStatus::ENABLED->value,
+                'guid'=>'ISU'.date('Ymd').rand(1000000,9999999),
+                'country_code'=>$data['country_code'],
+            ]);
+            CouponCustomer::create([
+                'id'=>Str::uuid(),
+                'code_script'=>'F'.date('Ymd'),
+                'created_at'=>date('Y-m-d H:i:s'),
+                'status'=>1,
+                'coupon_cn_name'=>'開卡禮',
+                'customer_id'=>$customer->id,
+                'coupon_id'=>config('coupon.open.coupon_id')
+            ]);
+        });
+        
     }
 
     public function forgetPassword(array $data)

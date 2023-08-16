@@ -169,7 +169,7 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 return Response::format(StatusCode::INVALID_ARGUMENT->value, [], "");
             }
-            $customer = $this->authService->createCustomer($request->all());
+            $this->authService->createCustomer($request->all());
             return Response::success();
             // 返回成功響應
         } catch (\Exception $e) {
