@@ -3,11 +3,13 @@
 namespace App\Repositories\Stores;
 
 use App\Models\FollowPlayer;
+use Illuminate\Support\Facades\Auth;
 
 class FollowPlayerRepository {
 
 
     public function adminRoleCreate($data){
+
        FollowPlayer::create([
             'title'=>$data['title'],
             'sub_title'=>$data['sub_title'],
@@ -15,7 +17,8 @@ class FollowPlayerRepository {
             'artist'=>$data['artist'],
             'link_url'=>$data['link_url'],
             'area'=>$data['area'],
-            'content'=>$data['content']
+            'content'=>$data['content'],
+            'operator'=>(Auth::user())->email
        ]);
   
     }
@@ -29,7 +32,8 @@ class FollowPlayerRepository {
             'artist'=>$data['artist'],
             'link_url'=>$data['link_url'],
             'area'=>$data['area'],
-            'content'=>$data['content']
+            'content'=>$data['content'],
+            'operator'=>(Auth::user())->email
        ]);
        
     }
@@ -44,7 +48,8 @@ class FollowPlayerRepository {
             'link_url'=>$data['link_url'],
             'area'=>$data['area'],
             'content'=>$data['content'],
-            'review'=>false
+            'review'=>false,
+            'operator'=>(Auth::user())->email
        ]);
        
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('area')->nullable()->comment('區域');
             $table->longText('content')->nullable()->comment('內文');
             $table->tinyInteger('review')->default(1)->comment('審核');
+            $table->string('operator')->nullable()->comment('操作者');
             $table->timestamps();
         });
     }

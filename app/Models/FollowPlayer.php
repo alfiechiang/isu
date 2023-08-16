@@ -11,6 +11,6 @@ class FollowPlayer extends Model
 
     protected $fillable = [
       'store_uid','title','sub_title','copyright','artist','link_url',
-      'area','content','review',
+      'area','content','review','operator'
     ];
 }
