@@ -41,8 +41,8 @@ class FollowPlayerService
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
         switch ($role->name) {
-            case EmployeeRole::COUNTER->value:
-                $data['review'] = false;
+            case EmployeeRole::STORE->value:
+                $data['review'] = true;
             break;
         }
         $follower =FollowPlayer::find($follow_id);
