@@ -38,6 +38,13 @@ class FollowPlayerService
     }
     public function update($follow_id,$data)
     {
+        $auth=Auth::user();
+        $role=StorePrivilegeRole::find($auth->role_id);
+        switch ($role->name) {
+            case EmployeeRole::COUNTER->value:
+                $data['review'] = false;
+            break;
+        }
         $follower =FollowPlayer::find($follow_id);
         $follower->fill($data);
         $follower->save();
