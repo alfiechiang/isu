@@ -3,8 +3,6 @@
 namespace App\Services\Stores;
 
 use App\Enums\EmployeeRole;
-use App\Exceptions\ErrException;
-use App\Models\Prize;
 use App\Models\Recommend;
 use App\Models\StorePrivilegeRole;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +15,6 @@ class RecommendService
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
         switch ($role->name) {
-            case EmployeeRole::TOP->value:
             case EmployeeRole::STORE->value:
                 $data['store_uid']=$auth->store_uid;
                 break;
@@ -56,10 +53,8 @@ class RecommendService
         $role=StorePrivilegeRole::find($auth->role_id);
         switch ($role->name) {
             case EmployeeRole::STORE->value:
+                $data['store_uid']=$auth->store_uid;
                 $Builder=$Builder->where('store_uid',$data['store_uid']);
-                break;
-            default:
-            $data['store_uid']=null;
                 break;
         }
 

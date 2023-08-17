@@ -63,8 +63,8 @@ Route::group([
   Route::put('news/{news_id}', [Stores\NewsController::class, 'update']);
   Route::get('news', [Stores\NewsController::class, 'list']);
   Route::post('recommend', [Stores\RecommendController::class, 'create']);
-  Route::put('recommend/{recommend_id}/findone', [Stores\RecommendController::class, 'findone']);
-  Route::put('recommend/{recommend_id}', [Stores\RecommendController::class, 'create']);
+  Route::get('recommend/{recommend_id}/findone', [Stores\RecommendController::class, 'findone']);
+  Route::put('recommend/{recommend_id}', [Stores\RecommendController::class, 'update']);
   Route::get('recommend', [Stores\RecommendController::class, 'list']);
 
 });

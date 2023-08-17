@@ -10,6 +10,6 @@ class Recommend extends Model
     use HasFactory;
     protected $fillable = [
         'type', 'open_start_time', 'open_end_time', 'name','precision','latitude',
-        'phone','address','official_website','content','desc','image'
+        'phone','address','official_website','content','desc','image','store_uid'
     ];
 }

@@ -25,6 +25,8 @@ Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 
 Route::get('news', [Customers\NewsController::class, 'list']);
 Route::get('news/{news_id}/findone', [Customers\NewsController::class, 'findone']);
 Route::get('news/stronghold', [Customers\NewsController::class, 'stronghold']);
+Route::get('recommend', [Customers\RecommendController::class, 'list']);
+
 
 Route::group([
     'middleware' => 'auth:customers',
@@ -46,5 +48,4 @@ Route::group([
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::get('points/totalPoints', [Customers\PointController::class, 'totalPoints']);
     Route::post('points/exchangeToStamps', [Customers\PointController::class, 'exchangeToStamps']);
-  
 });
