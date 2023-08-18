@@ -7,18 +7,17 @@ use App\Models\Customer;
 use App\Models\StampCustomer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 
-class VoucherCaculate extends Command
+class LongtimeCoupon extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'voucher:caculate';
+    protected $signature = 'longtime-coupon:caculate';
 
     /**
      * The console command description.
@@ -32,18 +31,13 @@ class VoucherCaculate extends Command
      */
     public function handle(): void
     {
-       //$this->birthdayCoupon();
-       $this->longtimeCoupon();
-    }
-
-    public function longtimeCoupon(){
         $customer_ids=[];
         Customer::chunk(1000,function ($chunk) use(&$customer_ids){
             foreach($chunk as $record){
                 $customer_ids[]=$record->id;
             }
         });
-
+    
         $today =date('Y-m-d H:i:s');
         $starttime = date('Y-m-d', strtotime("-180 days", strtotime($today)));
         $endtime =$today;
@@ -86,35 +80,7 @@ class VoucherCaculate extends Command
             ];
             $insertData[]=$data;
         }
-        DB::table('coupon_customers')->insert($insertData);
-    }
-
-    public function birthdayCoupon(){
-        $created_at = date('Y-m-d');
-        $birthday = date('Y-m-d', strtotime("+2 month", strtotime($created_at)));
-        $expire_at = date('Y-m-d', strtotime("+1 month", strtotime($birthday)));
-        $customers = Customer::where('birthday', 'LIKE', '%' . $birthday . '%')->get();
-        $customer_ids = $customers->pluck('id');
-        $year_start_date = now()->firstOfYear()->format('Y-m-d');
-        $year_end_date = now()->endOfYear()->format('Y-m-d');
-        $diff2 = CouponCustomer::whereIn('customer_id', $customer_ids)->whereBetween('created_at', [$year_start_date, $year_end_date])
-            ->where('coupon_id', config('coupon.birthday.coupon_id'))->pluck('customer_id');
-        $diff1 = collect($customer_ids);
-        $birth_coupon_customers = $diff1->diff($diff2);
-        $insertData=[];
-        foreach($birth_coupon_customers as $birth_coupon_customer){
-            $data=[
-                'id'=>Str::uuid(),
-                'code_script'=>'B'.date('Ymd'),
-                'created_at'=>$created_at,
-                'expired_at'=>$expire_at ,
-                'status'=>1,
-                'coupon_cn_name'=>'生日大禮',
-                'customer_id'=>$birth_coupon_customer,
-                'coupon_id'=>config('coupon.birthday.coupon_id')
-            ];
-            $insertData[]=$data;
-        }
+        
         DB::table('coupon_customers')->insert($insertData);
     }
 }

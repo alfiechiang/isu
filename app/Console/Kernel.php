@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('voucher:caculate')->everyMinute();
+        $schedule->command('birthday-coupon:caculate')->dailyAt('00:05');
+        $schedule->command('longtime-coupon:caculate')->dailyAt('00:05');
     }
 
     /**
