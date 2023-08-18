@@ -6,6 +6,7 @@ use App\Models\CouponCustomer;
 use App\Models\Customer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 
@@ -30,7 +31,7 @@ class BirthdayCoupon extends Command
      */
     public function handle(): void
     {
-        dd('Hello World');
+        Log::info('exec birthday-coupon:caculate');
         $created_at = date('Y-m-d');
         $birthday = date('Y-m-d', strtotime("+2 month", strtotime($created_at)));
         $expire_at = date('Y-m-d', strtotime("+1 month", strtotime($birthday)));

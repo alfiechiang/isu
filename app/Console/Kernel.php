@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('birthday-coupon:caculate')->dailyAt('00:05');
         $schedule->command('longtime-coupon:caculate')->dailyAt('00:05');
+       // $schedule->command('birthday-coupon:caculate')->everyMinute();
+      //  $schedule->command('longtime-coupon:caculate')->everyMinute();
     }
 
     /**

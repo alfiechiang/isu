@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\StampCustomer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 
@@ -31,6 +32,7 @@ class LongtimeCoupon extends Command
      */
     public function handle(): void
     {
+        Log::info('exec longtime-coupon:caculate');
         $customer_ids=[];
         Customer::chunk(1000,function ($chunk) use(&$customer_ids){
             foreach($chunk as $record){
