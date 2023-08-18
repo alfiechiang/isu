@@ -189,6 +189,8 @@ class AuthService
                 'coupon_id'=>config('coupon.open.coupon_id')
             ]);
         });
+
+        return $customer;
         
     }
 
