@@ -61,6 +61,7 @@ Route::group([
   Route::get('followplayer', [Stores\FollowPlayerController::class, 'list']);
   Route::post('news', [Stores\NewsController::class, 'create']);
   Route::put('news/{news_id}', [Stores\NewsController::class, 'update']);
+  Route::delete('news/{news_id}', [Stores\NewsController::class, 'delete']);
   Route::get('news/{news_id}/findone', [Stores\NewsController::class, 'findone']);
   Route::get('news', [Stores\NewsController::class, 'list']);
   Route::post('recommend', [Stores\RecommendController::class, 'create']);

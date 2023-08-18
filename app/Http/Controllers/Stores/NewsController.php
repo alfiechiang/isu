@@ -48,6 +48,16 @@ class NewsController extends Controller
     
     }
 
+    public function delete( $news_id){
+        try {
+            $this->newsService->delete($news_id);
+            return Response::format(200, [], '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    
+    }
+
     public function list(Request $request){
         try {
             $res=$this->newsService->pageList($request->all());

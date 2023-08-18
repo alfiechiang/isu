@@ -29,6 +29,13 @@ class NewsService
        return  News::find($news_id);
     }
 
+    public function delete($news_id){
+        $news =  News::find($news_id);
+        $news->delete();
+    }
+
+
+
     public function pageList($data)
     {
         $Builder = new News();
