@@ -25,6 +25,10 @@ class NewsService
         $news->save();
     }
 
+    public function findone($news_id){
+       return  News::find($news_id);
+    }
+
     public function pageList($data)
     {
         $Builder = new News();

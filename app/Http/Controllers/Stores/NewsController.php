@@ -38,6 +38,16 @@ class NewsController extends Controller
     
     }
 
+    public function findone( $news_id){
+        try {
+            $res=$this->newsService->findone($news_id);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    
+    }
+
     public function list(Request $request){
         try {
             $res=$this->newsService->pageList($request->all());
