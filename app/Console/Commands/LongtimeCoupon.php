@@ -27,6 +27,8 @@ class LongtimeCoupon extends Command
      */
     protected $description = 'Command description';
 
+    protected $starttimeString ="-180 days";
+
     /**
      * Execute the console command.
      */
@@ -39,11 +41,10 @@ class LongtimeCoupon extends Command
                 $customer_ids[]=$record->id;
             }
         });
-    
+        
         $today =date('Y-m-d H:i:s');
-        $starttime = date('Y-m-d', strtotime("-180 days", strtotime($today)));
+        $starttime = date('Y-m-d', strtotime($this->starttimeString, strtotime($today)));
         $endtime =$today;
-
         ## 180天內兌換集章會員
         $exchange1_ids=StampCustomer::whereBetween('consumed_at', [$starttime, $endtime])->pluck('customer_id');
 

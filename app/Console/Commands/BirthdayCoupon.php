@@ -26,6 +26,11 @@ class BirthdayCoupon extends Command
      */
     protected $description = 'Command description';
 
+    protected $birthdayTimeString ="+2 month";
+
+    protected $expireTimeString="+1 month";
+
+
     /**
      * Execute the console command.
      */
@@ -33,8 +38,8 @@ class BirthdayCoupon extends Command
     {
         Log::info('exec birthday-coupon:caculate');
         $created_at = date('Y-m-d');
-        $birthday = date('Y-m-d', strtotime("+2 month", strtotime($created_at)));
-        $expire_at = date('Y-m-d', strtotime("+1 month", strtotime($birthday)));
+        $birthday = date('Y-m-d', strtotime($this->birthdayTimeString, strtotime($created_at)));
+        $expire_at = date('Y-m-d', strtotime($this->expireTimeString, strtotime($birthday)));
         $customers = Customer::where('birthday', 'LIKE', '%' . $birthday . '%')->get();
         $customer_ids = $customers->pluck('id');
         $year_start_date = now()->firstOfYear()->format('Y-m-d');
