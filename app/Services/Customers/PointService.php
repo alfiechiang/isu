@@ -33,9 +33,19 @@ class PointService
     public function pageList($data)
     {
         $auth = Auth::user();
-        return PointCustomer::where('customer_id', $auth->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate($data['per_page']);
+        $Builder =PointCustomer::where('customer_id', $auth->id);
+        if(isset($data['sort'])){
+            switch ($data['sort']){
+                case 1:
+                    $Builder=$Builder->orderBy('created_at', 'desc');
+                    break;
+                case 2:
+                    $Builder=$Builder->orderBy('created_at', 'asc');
+                    break;
+            }
+        }
+
+        return $Builder->paginate($data['per_page']);
     }
 
     public function totalPoints()
