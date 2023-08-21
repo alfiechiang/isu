@@ -56,6 +56,12 @@ class FollowPlayerService
         return $follower;
     }
 
+    public function delete($follow_id)
+    {
+        $follower =FollowPlayer::find($follow_id);
+        $follower->delete();
+    }
+
     public function pageList($data)
     {
         $Builder = new FollowPlayer();

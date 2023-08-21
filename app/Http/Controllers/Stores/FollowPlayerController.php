@@ -48,6 +48,16 @@ class FollowPlayerController extends Controller
         }
     }
 
+    public function delete($follow_id)
+    {
+        try {
+            $this->followPlayerService->delete($follow_id);
+            return Response::format(200, [], '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
     public function list(Request $request)
     {
         try {
@@ -58,7 +68,5 @@ class FollowPlayerController extends Controller
         }
     }
 
-    public function delete($hotel_id)
-    {
-    }
+  
 }
