@@ -40,6 +40,7 @@ Route::group([
     Route::get('socialaccounts', [Customers\AuthController::class, 'socialAccounts']);
     Route::post('socialaccount/bind', [Customers\SocialLoginController::class, 'bindSocialAccount']);
     Route::get('coupons', [Customers\CouponController::class, 'index']);
+    Route::get('coupons/customer/one', [Customers\CouponController::class, 'findCutstmerCouponOne']);
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::post('scan-store/{store_id}', [Customers\PointController::class, 'scanStore']);
     Route::get('stamps', [Customers\StampController::class, 'index']);

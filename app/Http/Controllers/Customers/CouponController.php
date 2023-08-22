@@ -28,4 +28,13 @@ class CouponController extends Controller
        return Response::format(200,$res,'請求成功');
        
     }
+
+    public function findCutstmerCouponOne(Request $request){
+        try {
+            $res=$this->couponService->findCutstmerCouponOne();
+            return Response::format(200,$res,'請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
 }

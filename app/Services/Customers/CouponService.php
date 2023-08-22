@@ -60,4 +60,14 @@ class CouponService
 
         return $Builder->with('coupon')->paginate($data['per_page']);
     }
+
+    public function findCutstmerCouponOne()
+    {
+        $auth = Auth::user();
+        $Builder = new  CouponCustomer();
+        
+        return  $Builder->where('customer_id', $auth->id)->where('coupon_id', config('coupon.customer.coupon_id'))
+        ->first();
+    }
+
 }
