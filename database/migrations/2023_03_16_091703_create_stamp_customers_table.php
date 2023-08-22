@@ -26,12 +26,12 @@ return new class extends Migration
             $table->string("source")->comment("來源");
             $table->string("reference_type")->nullable()->comment("引用物件類型");
             $table->uuid("reference_id")->nullable()->comment("引用物件ID");
-            $table->index(["reference_type", "reference_id"], "reference");
             $table->integer('remain_quantity')->default(0)->comment("現有章數");
             $table->integer('value')->default(0)->comment("章數");
             $table->boolean('is_redeem')->default(false)->comment("是否兌換");
             $table->uuid('store_id')->nullable()->comment("商店ID");
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('SET NULL');
+            $table->index(['expired_at', 'type']);
         });
     }
 
