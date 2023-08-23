@@ -2,6 +2,7 @@
 
 namespace App\Services\Customers;
 
+use App\Enums\PotintCustomerTye;
 use App\Exceptions\ErrException;
 use App\Models\PointCustomer;
 use Illuminate\Support\Facades\Auth;
@@ -87,9 +88,9 @@ class PointService
                 $residue_points = $row->value - $exchangePoints;
                 $residue->value = $residue_points;
                 $residue->customer_id = $row->customer_id;
-                $residue->source ='點數兌換集章';
                 $residue->source =$row->id;
                 $exchangePoints=0;
+                $residue->type= PotintCustomerTye::SYSTEM_CREATE->value;
             }
 
             if ($exchangePoints == 0) {
@@ -107,7 +108,11 @@ class PointService
             if ($residue->value > 0) {
                 $residue->save();
             }
-            PointCustomer::whereIn('id', $point_ids)->update(['is_redeem' => true]);
+            PointCustomer::whereIn('id', $point_ids)->update([
+                'is_redeem' => true,
+                'type'=>PotintCustomerTye::EXCHANGE_STAMP,
+                'source'=>'點數兌換集章'
+            ]);
             $this->stampService->pointExchange(['stamps_num' => $stamps_num, 'customer_id' => $customer_id]);
         });
     }

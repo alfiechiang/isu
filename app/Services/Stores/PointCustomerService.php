@@ -2,10 +2,13 @@
 
 namespace App\Services\Stores;
 
+use App\Enums\EmployeeRole;
 use App\Enums\PointLogType;
+use App\Enums\PotintCustomerTye;
 use App\Models\Customer;
 use App\Models\PointCustomer;
 use App\Models\PointLog;
+use App\Models\StorePrivilegeRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -17,14 +20,32 @@ class PointCustomerService
         DB::transaction(function () use ($data) {
 
             $customer = Customer::where('guid', $data['guid'])->first();
+            $auth = Auth::user();
+            $role = StorePrivilegeRole::find($auth->role_id);
+            switch ($role->name) {
+                case EmployeeRole::TOP->value:
+                    $data['source'] = '系統發放';
+                    $data['type']=PotintCustomerTye::SYSTEM_CREATE->value;
+                    break;
+                case EmployeeRole::STORE->value:
+                    $data['source'] = $auth->name;
+                    $data['type']=PotintCustomerTye::CONSUME->value;
+                    break;
+                case EmployeeRole::COUNTER->value:
+                    $data['source'] = $auth->name;
+                    $data['type']=PotintCustomerTye::CONSUME->value;
+                    break;
+            }
+
             PointCustomer::create([
                 'value' => $data['points'],
                 'customer_id' => $customer->id,
                 'desc' => $data['desc'],
-                'source' => '系統發放'
+                'source' => $data['source'],
+                'type'=>$data['type']
             ]);
 
-            $auth = Auth::user();
+           
             PointLog::create([
                 'customer_id' => $customer->id,
                 'type' => PointLogType::CREATE->value,

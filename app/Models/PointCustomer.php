@@ -19,7 +19,7 @@ class PointCustomer extends Model
      */
     protected $fillable = [
         'expired_at', 'point_balance', 'desc', 'value', 'is_redeem', 'customer_id', 'source',
-        'operator_type', 'operator_id', 'reference_type', 'reference_id',
+        'operator_type', 'operator_id', 'reference_type', 'reference_id','type'
     ];
 
     const UPDATED_AT = null;
