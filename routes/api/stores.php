@@ -69,6 +69,7 @@ Route::group([
   Route::post('recommend', [Stores\RecommendController::class, 'create']);
   Route::get('recommend/{recommend_id}/findone', [Stores\RecommendController::class, 'findone']);
   Route::put('recommend/{recommend_id}', [Stores\RecommendController::class, 'update']);
+  Route::delete('recommend/{recommend_id}', [Stores\RecommendController::class, 'delete']);
   Route::get('recommend', [Stores\RecommendController::class, 'list']);
 
 });
