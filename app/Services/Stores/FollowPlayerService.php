@@ -4,8 +4,10 @@ namespace App\Services\Stores;
 
 use App\Enums\EmployeeRole;
 use App\Models\FollowPlayer;
+use App\Models\StoreEmployee;
 use App\Models\StorePrivilegeRole;
 use App\Repositories\Stores\FollowPlayerRepository;
+use ErrorException;
 use Illuminate\Support\Facades\Auth;
 
 class FollowPlayerService
@@ -40,12 +42,20 @@ class FollowPlayerService
     {
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
+        $follower =FollowPlayer::find($follow_id);
         switch ($role->name) {
             case EmployeeRole::STORE->value:
                 $data['review'] = true;
-            break;
+                break;
+            case EmployeeRole::COUNTER->value:
+                $operator =$follower->operator;
+                $dignity=StoreEmployee::where('email',$operator)->first();
+                $dignityRole=StorePrivilegeRole::find($dignity->role_id);
+                if($dignityRole->name ==EmployeeRole::STORE->value){
+                    throw new ErrorException("櫃檯沒有權限編輯店家文章") ;
+                }
+                break;
         }
-        $follower =FollowPlayer::find($follow_id);
         $follower->fill($data);
         $follower->save();
     }
@@ -77,6 +87,16 @@ class FollowPlayerService
         if(isset($data['review'])){
             $Builder= $Builder->where('review',$data['review']);
         }
+
+        if (isset($data['keyword'])) {
+            $Builder = $Builder->where(function ($query) use ($data) {
+                $query->where('title', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('sub_title', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('artist', 'like', '%' . $data['keyword'] . '%')
+                    ->orwhere('operator', 'like', '%' . $data['keyword'] . '%');
+            });
+        }
+        
         return $Builder->orderBy('created_at','desc')
         ->orderBy('updated_at','desc')->paginate($data['per_page']);
 
