@@ -28,7 +28,7 @@ class BirthdayCoupon extends Command
 
     protected $birthdayTimeString ="+2 month";
 
-    protected $expireTimeString="+1 month";
+    protected $expireTimeString="+1 days";
 
 
     /**
@@ -48,8 +48,8 @@ class BirthdayCoupon extends Command
             ->where('coupon_id', config('coupon.birthday.coupon_id'))->pluck('customer_id');
         $diff1 = collect($customer_ids);
         $birth_coupon_customers = $diff1->diff($diff2);
-        $insertData=[];
         
+        $insertData=[];
         foreach($birth_coupon_customers as $birth_coupon_customer){
             $data=[
                 'id'=>Str::uuid(),
