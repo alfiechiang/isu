@@ -38,6 +38,16 @@ class FollowPlayerController extends Controller
         }
     }
 
+    public function checkUpdatePermission( $follow_id)
+    {
+        try {
+            $res=$this->followPlayerService->checkUpdatePermission($follow_id);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
     public function findone($follow_id)
     {
         try {

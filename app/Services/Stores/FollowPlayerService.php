@@ -60,6 +60,31 @@ class FollowPlayerService
         $follower->save();
     }
 
+    public function checkUpdatePermission($follow_id){
+
+        $hasPermission=true;
+        $auth=Auth::user();
+        $role=StorePrivilegeRole::find($auth->role_id);
+        $follower =FollowPlayer::find($follow_id);
+
+        switch ($role->name) {
+            case EmployeeRole::COUNTER->value:
+                $operator =$follower->operator;
+                $dignity=StoreEmployee::where('email',$operator)->first();
+                $dignityRole=StorePrivilegeRole::find($dignity->role_id);
+                if($dignityRole->name ==EmployeeRole::STORE->value){
+                    $hasPermission=false;
+                }
+                break;
+            default:
+            break;
+        }
+
+        return ['hasPermission' =>$hasPermission];
+    }
+
+    
+
     public function findone($follow_id)
     {
         $follower =FollowPlayer::find($follow_id);

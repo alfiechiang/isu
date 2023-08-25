@@ -57,6 +57,8 @@ Route::group([
   Route::get('hotel/img', [Stores\HotelController::class, 'imgList']);
   Route::post('followplayer', [Stores\FollowPlayerController::class, 'create']);
   Route::put('followplayer/{follow_id}', [Stores\FollowPlayerController::class, 'update']);
+  Route::get('followplayer/check/updatepermission/{follow_id}', [Stores\FollowPlayerController::class, 'checkUpdatePermission']);
+
   Route::delete('followplayer/{follow_id}', [Stores\FollowPlayerController::class, 'delete']);
 
   Route::get('followplayer/{follow_id}/findone', [Stores\FollowPlayerController::class, 'findone']);
