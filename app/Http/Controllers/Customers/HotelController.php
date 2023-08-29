@@ -18,9 +18,16 @@ class HotelController extends Controller
     }
     public function list(Request $request)
     {
-        $res = $this->hotelService->list($request->all());
+        $res = $this->hotelService->pageList($request->all());
         return Response::format(200, $res, '請求成功');
     }
+
+    public function hallList(Request $request)
+    {
+        $res = $this->hotelService->hallList($request->all());
+        return Response::format(200, $res, '請求成功');
+    }
+
 
     public function stronghold(Request $request)
     {

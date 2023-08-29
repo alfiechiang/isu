@@ -19,6 +19,21 @@ class HotelService
       return Hotel::with('images')->get();
    }
 
+   public function pageList($data)
+   {
+      $Builder =  Hotel::with('images');
+      if (isset($data['county'])) {
+         $Builder = $Builder->where('county', $data['county']);
+      }
+      return  $Builder->paginate($data['per_page']);
+   }
+
+   public function hallList()
+   {
+      return Hotel::with('images')->groupBy('county')->get();
+   }
+
+
    public function stronghold()
    {
 

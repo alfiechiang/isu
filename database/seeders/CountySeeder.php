@@ -37,7 +37,7 @@ class CountySeeder extends Seeder
             ['name' => 'Taitung_County', 'cn_name' => '台東縣','region'=>'out_island'],
             ['name' => 'Kinmen_County', 'cn_name' => '金門縣','region'=>'out_island'],
             ['name' => 'Penghu_County', 'cn_name' => '澎湖縣','region'=>'out_island'],
-            ['name' => 'Lienchiang_County', 'cn_name' => '連江縣','region'=>'out_island'],
+            ['name' => 'Matsu', 'cn_name' => '馬祖','region'=>'out_island'],
             ['name' => 'Oversea', 'cn_name' => '海外','region'=>'oversea'],
         ];
         DB::table('counties')->insert($insertData);

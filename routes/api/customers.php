@@ -18,6 +18,10 @@ Route::post('otp/check', [Customers\OtpController::class, 'checkOtp']);
 Route::post('login/{provider_name}/register', [Customers\SocialLoginController::class, 'register']);
 Route::post('login/{provider_name}', [Customers\SocialLoginController::class, 'auth']);
 Route::get('hotel', [Customers\HotelController::class, 'list']);
+Route::get('hotel/hall', [Customers\HotelController::class, 'hallList']);
+Route::get('county', [Customers\CountyController::class, 'list']);
+
+
 Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
 Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
 Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
