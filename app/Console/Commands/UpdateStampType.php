@@ -31,7 +31,7 @@ class UpdateStampType extends Command
         Log::info('exec updatestamptype');
         $date = date('Y-m-d');
         $startTime = date('Y-m-d H:i:s', strtotime("-7 day", strtotime($date)));
-        $endTime = date('Y-m-d 23:59:59', strtotime("-1 day", strtotime($date)));
+        $endTime = date('Y-m-d H:i:s');
         StampCustomer::whereBetween('expired_at', [$startTime, $endTime])
             ->where('type', '!=', StampCustomerType::HAVE_EXPIRE->value)
             ->update(['type' => StampCustomerType::HAVE_EXPIRE->value]);
