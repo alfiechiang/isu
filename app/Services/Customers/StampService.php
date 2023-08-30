@@ -140,6 +140,7 @@ class StampService
         $stamp->created_at = $created_at;
         $stamp->reference_type = '系統發放';
         $stamp->expired_at=$expired_at;
+        $stamp->source='點數兌換集章';
         $stamp->save();
     }
 }
