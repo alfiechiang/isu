@@ -12,10 +12,7 @@ class FollowPlayerService
     {
 
         $Builder = new FollowPlayer();
-        if (isset($data['region'])) {
-            $areas = County::where('region', $data['region'])->pluck('cn_name')->toArray();
-        }
-        return $Builder->whereIn('area', $areas)->where('review', true)->get();
+        return $Builder->whereIn('area', $data['region'])->where('review', true)->get();
     }
 
     public function findone($follow_id)
