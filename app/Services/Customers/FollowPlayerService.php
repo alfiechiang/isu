@@ -8,11 +8,17 @@ use App\Models\FollowPlayer;
 class FollowPlayerService
 {
 
-    public function list($data)
+    public function pageList($data)
     {
 
         $Builder = new FollowPlayer();
-        return $Builder->where('area', 'LIKE', '%'.$data['region'].'%')->where('review', true)->get();
+
+
+        if(isset($data['region'])){
+            $Builder=$Builder->where('area', 'LIKE', '%'.$data['region'].'%');
+        }
+        //
+        return $Builder->where('review', true)->paginate($data['per_page']);
     }
 
     public function findone($follow_id)

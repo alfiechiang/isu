@@ -18,7 +18,7 @@ class FollowPlayerController extends Controller
 
     public function list(Request $request){
         try {
-            $res=$this->followPlayerService->list($request->all());
+            $res=$this->followPlayerService->pageList($request->all());
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
