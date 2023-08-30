@@ -25,7 +25,7 @@ class PointCustomerService
             switch ($role->name) {
                 case EmployeeRole::TOP->value:
                     $data['source'] = '系統發放';
-                    $data['type']=PotintCustomerTye::SYSTEM_CREATE->value;
+                    $data['type'] = 0;
                     break;
                 case EmployeeRole::STORE->value:
                     $data['source'] = $auth->name;
