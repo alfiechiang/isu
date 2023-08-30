@@ -119,8 +119,9 @@ class StampService
             }
 
             $souce_name= StoreEmployee::where('uid',$data['uid'])->pluck('name')[0];
+            $created_at=date('Y-m-d H:i:s');
             foreach ($stamps as $stamp) {
-                $stamp->consumed_at = date('Y-m-d H:i:s');
+                $stamp->consumed_at = $created_at;
                 $stamp->source=$souce_name;
                 $stamp->type=StampCustomerType::ALREADY_USE;
                 $stamp->save();
@@ -130,12 +131,15 @@ class StampService
 
     public function pointExchange($data)
     {
+        $created_at=date('Y-m-d H:i:s');
+        $expired_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
         $stamp = new StampCustomer();
         $stamp->customer_id = $data['customer_id'];
         $stamp->type = StampCustomerType::POINTSEXCHANGE;
         $stamp->value = $data['stamps_num'];
-        $stamp->created_at = date('Y-m-d H:i:s');
+        $stamp->created_at = $created_at;
         $stamp->reference_type = '系統發放';
+        $stamp->expired_at=$expired_at;
         $stamp->save();
     }
 }

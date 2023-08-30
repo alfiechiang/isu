@@ -23,7 +23,6 @@ class StampController extends Controller
             $res=$this->stampService->pageList($request->all()); 
         }else{
             $res=$this->stampService->list($request->all()); 
-
         }
 
        return Response::format(200,$res,'請求成功');
