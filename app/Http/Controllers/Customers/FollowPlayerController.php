@@ -36,6 +36,16 @@ class FollowPlayerController extends Controller
         return Response::format(200, $res, '請求成功');
     }
 
+    public function findothers(Request $request){
+        try {
+            $res=$this->followPlayerService->findothers($request->all());
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+
+        return Response::format(200, $res, '請求成功');
+    }
+
     public function stronghold(){
         try {
             $res=$this->followPlayerService->stronghold();

@@ -26,6 +26,12 @@ class FollowPlayerService
       return  FollowPlayer::find($follow_id);
     }
 
+
+    public function findothers($data){
+        $follower_ids=$data['follow_ids'];
+        return  FollowPlayer::whereIn('id',$follower_ids)->get();
+    }
+
     public function stronghold(){
 
         return [
