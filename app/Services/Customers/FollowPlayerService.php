@@ -28,8 +28,8 @@ class FollowPlayerService
 
 
     public function findothers($data){
-        $follower_ids=$data['follow_ids'];
-        return  FollowPlayer::whereIn('id',$follower_ids)->get();
+        $updated_at=$data['updated_at'];
+        return  FollowPlayer::where('review',1)->where('updated_at','>',$updated_at)->limit(3)->get();
     }
 
     public function stronghold(){

@@ -25,7 +25,7 @@ Route::get('county', [Customers\CountyController::class, 'list']);
 Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold']);
 Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
 Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
-Route::post('followplayer/findothers', [Customers\FollowPlayerController::class, 'findothers']);
+Route::get('followplayer/findothers', [Customers\FollowPlayerController::class, 'findothers']);
 
 Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 'stronghold']);
 Route::get('news', [Customers\NewsController::class, 'list']);
