@@ -26,10 +26,10 @@ Route::get('hotel/stronghold', [Customers\HotelController::class, 'stronghold'])
 Route::get('followplayer', [Customers\FollowPlayerController::class, 'list']);
 Route::get('followplayer/{follow_id}/findone', [Customers\FollowPlayerController::class, 'findone']);
 Route::get('followplayer/findothers', [Customers\FollowPlayerController::class, 'findothers']);
-
 Route::get('followplayer/stronghold', [Customers\FollowPlayerController::class, 'stronghold']);
 Route::get('news', [Customers\NewsController::class, 'list']);
 Route::get('news/{news_id}/findone', [Customers\NewsController::class, 'findone']);
+Route::get('news/findothers', [Customers\NewsController::class, 'findothers']);
 Route::get('news/stronghold', [Customers\NewsController::class, 'stronghold']);
 Route::get('recommend', [Customers\RecommendController::class, 'list']);
 

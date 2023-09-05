@@ -14,8 +14,12 @@ class NewsService
         if (isset($data['type'])) {
             $Builder = $Builder->where('type', $data['type']);
         }
+        return $Builder->orderBy('created_at','desc')->paginate($data['per_page']);
+    }
 
-        return $Builder->orderBy('created_at','desc')->get();
+    public function findothers($data){
+        $updated_at=$data['updated_at'];
+        return  News::where('updated_at','>',$updated_at)->limit(3)->get();
     }
 
     public function findone($news_id)
