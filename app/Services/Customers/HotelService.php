@@ -25,7 +25,7 @@ class HotelService
       if (isset($data['county'])) {
          $Builder = $Builder->where('county', $data['county']);
       }
-      return  $Builder->paginate($data['per_page']);
+      return  $Builder->orderBy('created_at', 'desc')->paginate($data['per_page']);
    }
 
    public function hallList()

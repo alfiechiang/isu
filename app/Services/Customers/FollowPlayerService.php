@@ -17,8 +17,8 @@ class FollowPlayerService
         if(isset($data['region'])){
             $Builder=$Builder->where('area', 'LIKE', '%'.$data['region'].'%');
         }
-        //
-        return $Builder->where('review', true)->paginate($data['per_page']);
+        
+        return $Builder->where('review', true)->orderBy('created_at', 'desc')->paginate($data['per_page']);
     }
 
     public function findone($follow_id)
