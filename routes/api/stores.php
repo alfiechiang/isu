@@ -9,6 +9,10 @@ Route::post('forgetpassword', [Stores\AuthController::class, 'forgetpassword']);
 Route::post('otp/send', [Stores\MailController::class, 'sendOtp']);
 Route::post('otp/check', [Stores\MailController::class, 'checkOtp']);
 
+
+Route::get('customers/export', [Stores\CustomerController::class, 'export']);
+
+
 Route::group([
   'middleware' => 'auth:employee',
 ], function ($router) {

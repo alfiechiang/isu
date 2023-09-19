@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Stores;
 
+use App\Exports\CustomersExport;
 use App\Http\Response;
+use App\Models\Customer;
 use App\Services\Stores\CustomerService;
 use App\Services\Stores\OperatorLogService;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -66,5 +69,9 @@ class CustomerController extends Controller
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
+    }
+
+    public function export(Request $request){
+        return Excel::download(new CustomersExport, 'customers.xlsx');
     }
 }
