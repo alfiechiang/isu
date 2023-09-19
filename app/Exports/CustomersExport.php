@@ -37,7 +37,7 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnWidths
             }
 
             $result['birthday']=$customer->birthday;
-            $result['interest']=$customer->interest;
+            $result['interest']=$this->interestFormat($customer->interest);
             $result['bind_platform'] = $this->bind_platform($customer->social_accounts->toArray());
             $result['country']=$customer->country;
             $result['county']=$customer->county;
@@ -53,6 +53,22 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnWidths
         return collect($results);
     }
 
+    private function interestFormat(  $interests ){
+
+        $str='';
+        if(empty($interests)){
+            return $str;
+        }
+        foreach($interests as $interest){
+            if($str==''){
+                $str.=$interest;
+            }else{
+                $str.=','.$interest;
+            }
+
+        }
+        return $str;
+    }
 
     private function bind_platform( array $socilal_accounts ){
 
