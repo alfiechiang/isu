@@ -113,7 +113,11 @@ class PointService
                 'type'=>PotintCustomerTye::EXCHANGE_STAMP,
                 'source'=>'點數兌換集章'
             ]);
-            $this->stampService->pointExchange(['stamps_num' => $stamps_num, 'customer_id' => $customer_id]);
+
+            for ($i = 1; $i <= $stamps_num; $i++) {
+                $this->stampService->pointExchange(['customer_id' => $customer_id]);
+            }
+
         });
     }
 }

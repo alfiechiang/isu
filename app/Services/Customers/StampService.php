@@ -131,16 +131,16 @@ class StampService
 
     public function pointExchange($data)
     {
-        $created_at=date('Y-m-d H:i:s');
+        $created_at = date('Y-m-d H:i:s');
         $expired_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
         $stamp = new StampCustomer();
         $stamp->customer_id = $data['customer_id'];
         $stamp->type = StampCustomerType::POINTSEXCHANGE;
-        $stamp->value = $data['stamps_num'];
+        $stamp->value = 1;
         $stamp->created_at = $created_at;
         $stamp->reference_type = '系統發放';
-        $stamp->expired_at=$expired_at;
-        $stamp->source='點數兌換集章';
+        $stamp->expired_at = $expired_at;
+        $stamp->source = '點數兌換集章';
         $stamp->save();
     }
 }
