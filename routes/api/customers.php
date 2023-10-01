@@ -33,6 +33,9 @@ Route::get('news/findothers', [Customers\NewsController::class, 'findothers']);
 Route::get('news/stronghold', [Customers\NewsController::class, 'stronghold']);
 Route::get('recommend', [Customers\RecommendController::class, 'list']);
 
+Route::get('home', [Customers\HomeController::class, 'list']);
+
+
 
 Route::group([
     'middleware' => 'auth:customers',
