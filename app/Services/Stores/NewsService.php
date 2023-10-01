@@ -15,6 +15,8 @@ class NewsService
             'sub_title'=>$data['sub_title'],
             'type'=>$data['type'],
             'content'=>$data['content'],
+            'web_cover_img'=>$data['web_cover_img'],
+            'phone_cover_img'=>$data['phone_cover_img'],
             'operator'=>$auth->name
         ]);
     }
