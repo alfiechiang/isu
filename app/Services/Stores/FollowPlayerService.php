@@ -40,6 +40,7 @@ class FollowPlayerService
     }
     public function update($follow_id,$data)
     {
+
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
         $follower =FollowPlayer::find($follow_id);
@@ -53,6 +54,10 @@ class FollowPlayerService
                 $dignityRole=StorePrivilegeRole::find($dignity->role_id);
                 if($dignityRole->name ==EmployeeRole::STORE->value){
                     throw new ErrorException("櫃檯沒有權限編輯店家文章") ;
+                }
+
+                if($follower->creator !== $auth->email){
+                    throw new ErrorException("櫃檯沒有權限編輯其他櫃檯文章") ;
                 }
                 break;
         }

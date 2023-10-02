@@ -39,6 +39,8 @@ class FollowPlayerRepository {
     }
 
     public function counterRoleCreate($data){
+
+        $email=(Auth::user())->email;
         FollowPlayer::create([
             'store_uid'=>$data['store_uid'],
             'title'=>$data['title'],
@@ -49,7 +51,8 @@ class FollowPlayerRepository {
             'area'=>$data['area'],
             'content'=>$data['content'],
             'review'=>false,
-            'operator'=>(Auth::user())->email
+            'operator'=>$email,
+            'creator'=>$email
        ]);
        
     }

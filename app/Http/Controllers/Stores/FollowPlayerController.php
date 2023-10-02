@@ -31,7 +31,11 @@ class FollowPlayerController extends Controller
     public function update(Request $request, $follow_id)
     {
         try {
-            $this->followPlayerService->update($follow_id, $request->all());
+            $data=$request->all();
+            if(isset($data['creator'])){
+                unset($data['creator']);
+            }
+            $this->followPlayerService->update($follow_id,$data);
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
