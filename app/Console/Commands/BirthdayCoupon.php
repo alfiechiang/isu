@@ -28,7 +28,7 @@ class BirthdayCoupon extends Command
 
     protected $birthdayTimeString ="+60 days";
 
-    protected $expireTimeString="+1 days";
+    protected $expireTimeString="+30 days";
 
 
     /**
@@ -41,6 +41,19 @@ class BirthdayCoupon extends Command
         if (is_null($date)) {
             $date = date('Y-m-d');
         }
+        $this->exec($date);
+        //檢查前幾天的schedule 是否有發放
+        for($i=1;$i<=3;$i++){
+            $checkDateString ="-$i days";
+            $checkDate = date('Y-m-d 23:59:59', strtotime($checkDateString, strtotime(date('Y-m-d'))));
+            $this->exec($checkDate);
+        }
+
+       
+    }
+
+    private function exec($date){
+
         $birthday = date('m-d', strtotime($this->birthdayTimeString, strtotime($date)));
         $expire_at = date('Y-m-d 23:59:59', strtotime($this->expireTimeString, strtotime(date('Y-m-d'))));
         $customers = Customer::where('birthday', 'LIKE', '%' . $birthday . '%')->get();
@@ -66,5 +79,6 @@ class BirthdayCoupon extends Command
             $insertData[]=$data;
         }
         DB::table('coupon_customers')->insert($insertData);
+
     }
 }
