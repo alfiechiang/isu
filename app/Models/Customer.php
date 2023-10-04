@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+
 /**
  * App\Models\Customer
  *
@@ -144,4 +145,11 @@ class Customer extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(SocialAccount::class);
     }
+
+    public function operatorlog(): HasMany
+    {
+        return $this->hasMany(OperaterLog::class,'guid','guid');
+    }
+
+    
 }

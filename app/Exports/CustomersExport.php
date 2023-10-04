@@ -16,7 +16,9 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnWidths
     */
     public function collection()
     {
-        $customers = Customer::with('social_accounts')->get();
+        $customers = Customer::with('social_accounts')->with('operatorlog',function($query){
+            return $query->orderBy('created_at','desc')->limit(1);
+        })->get();
 
         $results=[];
         foreach($customers as $customer){
@@ -47,10 +49,18 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnWidths
             $result['desc']=$customer->desc;
             $result['created_at']=$customer->created_at;
             $result['updated_at']=$customer->updated_at;
+            $result['updater']=$this->updater($customer->operatorlog);
             $results[]=$result;
         }
-
         return collect($results);
+    }
+
+    private function updater($log)
+    {
+        if ($log->isNotEmpty()) {
+            return $log[0]->operator_email;
+        }
+        return "";
     }
 
     private function interestFormat(  $interests ){
@@ -109,7 +119,8 @@ class CustomersExport implements FromCollection,WithHeadings,WithColumnWidths
             '地址',
             '備註',
             '創建日期時間',
-            '修改日期'
+            '修改日期',
+            '修改者名稱'
         ];
     }
 
