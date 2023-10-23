@@ -12,6 +12,10 @@ Route::post('otp/check', [Stores\MailController::class, 'checkOtp']);
 
 Route::get('customers/export', [Stores\CustomerController::class, 'export']);
 
+Route::get('custom/coupon/export/{coupon_code}', [Stores\CustomCouponController::class, 'export']);
+
+
+
 
 Route::group([
   'middleware' => 'auth:employee',
@@ -77,5 +81,17 @@ Route::group([
   Route::put('recommend/{recommend_id}', [Stores\RecommendController::class, 'update']);
   Route::delete('recommend/{recommend_id}', [Stores\RecommendController::class, 'delete']);
   Route::get('recommend', [Stores\RecommendController::class, 'list']);
+
+  Route::post('custom/coupon', [Stores\CustomCouponController::class, 'create']);
+  Route::get('custom/coupon', [Stores\CustomCouponController::class, 'pageList']);
+  Route::post('custom/coupon/send/{coupon_code}', [Stores\CustomCouponController::class, 'send']);
+  Route::get('custom/coupon/{coupon_code}/findone', [Stores\CustomCouponController::class, 'findone']);
+  Route::put('custom/coupon/{coupon_code}', [Stores\CustomCouponController::class, 'update']);
+  Route::post('custom/coupon/import', [Stores\CustomCouponController::class, 'import']);
+  Route::put('custom/coupon/disable/{coupon_code}', [Stores\CustomCouponController::class, 'findoneCouponDisable']);
+
+
+  Route::get('custom/coupon/customer', [Stores\CustomCouponCustomerController::class, 'pageList']);
+
 
 });

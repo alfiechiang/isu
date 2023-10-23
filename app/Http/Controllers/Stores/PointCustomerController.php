@@ -46,8 +46,6 @@ class PointCustomerController extends Controller
         }
     }
 
-
-
     public function totalPoints(Request $request){
         try {
             $res=$this->pointCustomerService->totalPoints($request->all());

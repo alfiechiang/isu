@@ -13,7 +13,6 @@ class FollowPlayerService
 
         $Builder = new FollowPlayer();
 
-
         if(isset($data['region'])){
             $Builder=$Builder->where('area', 'LIKE', '%'.$data['region'].'%');
         }
