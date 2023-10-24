@@ -6,6 +6,7 @@ use App\Exceptions\ErrException;
 use App\Models\CustomCoupon;
 use App\Models\CustomCouponCustomer;
 use App\Models\CustomCouponPeopleList;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CustomCouponService
@@ -38,6 +39,7 @@ class CustomCouponService
         $insertData = [];
         $items = CustomCouponPeopleList::where('coupon_code', $coupon_code)->get();
         $coupon =  CustomCoupon::where('code', $coupon_code)->first();
+        
         foreach ($items as $item) {
             for ($i = 0; $i < $coupon->per_people_volume; $i++) {
                 $data = [
@@ -82,12 +84,27 @@ class CustomCouponService
     }
 
 
-    public function findoneCouponDisable($coupon_code){
+    public function findoneCouponDisable($coupon_code,$operaterIp){
 
-        DB::transaction(function () use ($coupon_code) {
+        DB::transaction(function () use ($coupon_code,$operaterIp) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             $coupon->disable=true;
             CustomCouponCustomer::where('coupon_code',$coupon_code)->update(['disable'=>true]);
+            $insertData=[];
+            $auth =Auth::user();
+            $coupons= CustomCouponCustomer::where('coupon_code',$coupon_code)->get();
+            foreach($coupons as $coupon){
+                $insertData[]=[
+                    'guid'=>$coupon->guid,
+                    'coupon_code'=>$coupon->coupon_code,
+                    'coupon_name'=>$coupon->coupon_name,
+                    'operator'=>$auth->name,
+                    'disable_time'=>date('Y-m-d H:i:s'),
+                    'operator_ip'=>$operaterIp
+                ];
+            }
+
+            DB::table('coupon_disable_logs')->insert($insertData);
         });
 
     }

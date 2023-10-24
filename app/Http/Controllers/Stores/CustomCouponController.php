@@ -94,10 +94,11 @@ class CustomCouponController extends Controller
 
 
 
-    public function findoneCouponDisable($coupon_code) //全數失效
+    public function findoneCouponDisable(Request $request,$coupon_code) //全數失效
     {
         try {
-            $this->customCouponService->findoneCouponDisable($coupon_code);
+            $operaterIp=$request->ip();
+            $this->customCouponService->findoneCouponDisable($coupon_code,$operaterIp);
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);

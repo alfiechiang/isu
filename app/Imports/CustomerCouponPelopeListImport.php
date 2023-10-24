@@ -28,12 +28,8 @@ class CustomerCouponPelopeListImport implements ToCollection
      */
     public function collection(Collection $rows)
     {
-
         unset($rows[0]);
-
-        
         DB::transaction(function () use ($rows) {
-
             CustomCouponPeopleList::where('coupon_code',$this->coupon_code)->delete();
 
             foreach ($rows as $row) {
