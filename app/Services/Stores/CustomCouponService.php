@@ -8,6 +8,7 @@ use App\Models\CustomCouponCustomer;
 use App\Models\CustomCouponPeopleList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Uuid;
 
 class CustomCouponService
 {
@@ -39,14 +40,15 @@ class CustomCouponService
         $insertData = [];
         $items = CustomCouponPeopleList::where('coupon_code', $coupon_code)->get();
         $coupon =  CustomCoupon::where('code', $coupon_code)->first();
-        
+
         foreach ($items as $item) {
             for ($i = 0; $i < $coupon->per_people_volume; $i++) {
                 $data = [
+                    'id' => Uuid::uuid4(),
                     'guid' => $item->guid,
                     'coupon_code' => $item->coupon_code,
-                    'coupon_name'=>$item->coupon_name,
-                    'expire_time'=>$coupon->expire_time
+                    'coupon_name' => $item->coupon_name,
+                    'expire_time' => $coupon->expire_time
                 ];
                 $insertData[] = $data;
             }

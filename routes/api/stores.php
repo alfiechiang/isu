@@ -88,5 +88,5 @@ Route::group([
   Route::put('custom/coupon/disable/{coupon_code}', [Stores\CustomCouponController::class, 'findoneCouponDisable']);
   Route::get('custom/coupon/customer', [Stores\CustomCouponCustomerController::class, 'pageList']);
   Route::get('coupon/disablelog', [Stores\CouponDisableLogController::class, 'pageList']);
-
+  Route::post('coupon/exchange', [Stores\ExchangeCouponController::class, 'exchange']);
 });

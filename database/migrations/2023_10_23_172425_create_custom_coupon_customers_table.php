@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('custom_coupon_customers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary()->comment("優惠券ID");
             $table->string('guid')->comment("會員GUID");
             $table->string('coupon_code')->comment("優惠卷代碼");
             $table->string('coupon_name')->nullable()->comment("優惠卷名稱");
