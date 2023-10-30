@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('coupon_name')->comment('優惠價卷名稱');
 
             $table->string('guid')->comment("會員GUID");
-            $table->string('phone', 10)->unique()->nullable()->comment("手機");
-            $table->string('email')->unique()->nullable()->comment("Email");
+            $table->string('phone', 10)->nullable()->comment("手機");
+            $table->string('email')->nullable()->comment("Email");
             $table->timestamps();
         });
     }
