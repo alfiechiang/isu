@@ -18,8 +18,8 @@ class PointCustomer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'expired_at', 'point_balance', 'desc', 'value', 'is_redeem', 'customer_id', 'source',
-        'operator_type', 'operator_id', 'reference_type', 'reference_id','type'
+        'expired_at', 'desc', 'value', 'customer_id', 'source',
+        'operator', 'type'
     ];
 
     const UPDATED_AT = null;
@@ -33,13 +33,4 @@ class PointCustomer extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function reference(): MorphTo
-    {
-        return $this->morphTo('reference', 'reference_type', 'reference_id');
-    }
-
-    public function operator(): MorphTo
-    {
-        return $this->morphTo('operator', 'operator_type', 'operator_id');
-    }
 }

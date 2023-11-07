@@ -20,12 +20,14 @@ class PointCustomerService
         DB::transaction(function () use ($data) {
 
             $customer = Customer::where('guid', $data['guid'])->first();
+            $customer->point_balance+=$data['points'];
+            $customer->save();
             $auth = Auth::user();
             $role = StorePrivilegeRole::find($auth->role_id);
             switch ($role->name) {
                 case EmployeeRole::TOP->value:
-                    $data['source'] = '系統發放';
-                    $data['type'] = 0;
+                    $data['source'] = '系統';
+                    $data['type'] = PotintCustomerTye::SYSTEM_CREATE->value;
                     break;
                 case EmployeeRole::STORE->value:
                     $data['source'] = $auth->name;
@@ -42,7 +44,8 @@ class PointCustomerService
                 'customer_id' => $customer->id,
                 'desc' => $data['desc'],
                 'source' => $data['source'],
-                'type'=>$data['type']
+                'type'=>$data['type'],
+                'operator'=>$auth->email
             ]);
 
            
@@ -93,13 +96,8 @@ class PointCustomerService
     public function totalPoints($data)
     {
         $customer = Customer::where('guid', $data['guid'])->first();
-        $rows =  PointCustomer::select('customer_id', DB::raw('SUM(value) as total'))
-            ->where('customer_id', $customer->id)->where('is_redeem', false)
-            ->groupBy('customer_id')->get();
 
-        $total = intval($rows[0]->total);
-
-        return ['total' => $total];
+        return ['total' => $customer->point_balance];
     }
 
     public function logPageList($data)

@@ -18,16 +18,10 @@ return new class extends Migration
             $table->timestamp('expired_at')->nullable()->comment("點數到期時間");
             $table->string('source')->index()->nullable()->comment("點數來源");
             $table->tinyInteger('type')->comment("類型 1:兌換集章2:進店掃描3:消費認證4:系統新增");
-            $table->string("operator_type")->nullable()->comment("操作人員類型");
-            $table->uuid("operator_id")->nullable()->comment("操作人員ID");
-            $table->index(["operator_type", "operator_id"], "operator");
-            $table->string("reference_type")->nullable()->comment("引用物件類型");
-            $table->uuid("reference_id")->nullable()->comment("引用物件ID");
-            $table->index(["reference_type", "reference_id"], "reference");
+            $table->string("operator")->nullable()->comment("操作人員");
+            $table->index( "operator");
             $table->string('desc')->nullable()->comment("備註");
-            $table->integer('point_balance')->default(0)->comment("現有點數");
             $table->integer('value')->default(0)->comment("點數");
-            $table->boolean('is_redeem')->default(false)->comment("是否兌換");
             $table->uuid('customer_id')->nullable()->comment("顧客ID");
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });

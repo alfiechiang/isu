@@ -8,8 +8,7 @@ use App\Models\PointCustomer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Enums\Stamp;
-
-
+use App\Models\Customer;
 
 class PointService
 {
@@ -49,69 +48,33 @@ class PointService
         return $Builder->paginate($data['per_page']);
     }
 
-    public function totalPoints()
-    {
-        $auth = Auth::user();
-        $rows =  PointCustomer::select('customer_id', DB::raw('SUM(value) as total'))
-            ->where('customer_id', $auth->id)->where('is_redeem', false)
-            ->groupBy('customer_id')->get();
-
-        if($rows->isEmpty()){
-            return ['total' => 0];
-
-        }
-
-        $total = intval($rows[0]->total);
-        return ['total' => $total];
-    }
 
     public function exchangeToStamps($data)
     {
-        $auth = Auth::user();
-        $customer_id = $auth->id;
-        $rows = PointCustomer::where('customer_id', $customer_id)->where('is_redeem', false)
-            ->orderBy('created_at', 'asc')->get();
-        $exchangePoints = $data['exchangePoints'];
-        $stamps_num = $data['exchangePoints'] / Stamp::ONESTAMPVALUEPOINTS->value;
-        $point_ids = [];
-        $residue = new PointCustomer();
-        foreach ($rows as $row) {
+        //類型 1:兌換集章2:進店掃描3:消費認證4:系統新增
+        DB::transaction(function () use ($data) {
+            $auth = Auth::user();
+            $customer_id = $auth->id;
+            $stamps_num =intval( $data['exchangePoints'] / Stamp::ONESTAMPVALUEPOINTS->value);
+            $point_val=($stamps_num*Stamp::ONESTAMPVALUEPOINTS->value);
+            $customer=Customer::where('id',$customer_id)->first();
 
-            if ($row->value <= $exchangePoints) {
-                $exchangePoints -= $row->value;
-                $point_ids[] = $row->id;
-                continue;
+            if($customer->point_balance<$point_val){
+                throw new ErrException('兌換點數超過現有點數');
+            }
+            
+            if($stamps_num==0){
+                throw new ErrException('兌換點數小於1000點');
             }
 
-            if ($row->value > $exchangePoints) {
-                $point_ids[] = $row->id;
-                $residue_points = $row->value - $exchangePoints;
-                $residue->value = $residue_points;
-                $residue->customer_id = $row->customer_id;
-                $residue->source =$row->id;
-                $exchangePoints=0;
-                $residue->type= PotintCustomerTye::SYSTEM_CREATE->value;
-            }
+            $customer->point_balance-=$point_val;
+            $customer->save();
 
-            if ($exchangePoints == 0) {
-                break;
-            }
-        }
-
-
-        if ($exchangePoints > 0) {
-            throw new ErrException('點數無法兌換此數量集章');
-        }
-
-        DB::transaction(function () use ($point_ids, $stamps_num, $customer_id, $residue) {
-
-            if ($residue->value > 0) {
-                $residue->save();
-            }
-            PointCustomer::whereIn('id', $point_ids)->update([
-                'is_redeem' => true,
-                'type'=>PotintCustomerTye::EXCHANGE_STAMP,
-                'source'=>'點數兌換集章'
+            PointCustomer::create([
+                'source'=>'系統',
+                'type'=>PotintCustomerTye::EXCHANGE_STAMP->value,
+                'value'=>-$point_val,
+                'customer_id'=>$customer_id
             ]);
 
             for ($i = 1; $i <= $stamps_num; $i++) {
