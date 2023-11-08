@@ -58,7 +58,7 @@ class PointService
 
     public function exchangeToStamps($data)
     {
-        //類型 1:兌換集章2:進店掃描3:消費認證4:系統新增
+        //類型 1:兌換集章2:進店掃描3:消費認證4:系統新增 //
         DB::transaction(function () use ($data) {
             $auth = Auth::user();
             $customer_id = $auth->id;
