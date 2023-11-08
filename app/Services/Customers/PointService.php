@@ -48,6 +48,13 @@ class PointService
         return $Builder->paginate($data['per_page']);
     }
 
+    public function totalPoints($data){
+        $auth=Auth::user();
+        $customer_id = $auth->id;
+        $customer=Customer::where('id',$customer_id)->first();
+        return ['totalPoints'=>$customer->point_balance];
+    }
+
 
     public function exchangeToStamps($data)
     {

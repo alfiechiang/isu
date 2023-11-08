@@ -11,6 +11,8 @@ use App\Models\PointLog;
 use App\Models\StorePrivilegeRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\ErrException;
+
 
 class PointCustomerService
 {
@@ -63,10 +65,10 @@ class PointCustomerService
     public function delete($point_id, $data)
     {
         DB::transaction(function () use ($point_id, $data) {
-
             $customer = Customer::where('guid', $data['guid'])->first();
             $point = PointCustomer::find($point_id);
-            $point->delete();
+            $customer->point_balance-=$point->value;
+            $customer->save();
             $auth = Auth::user();
             PointLog::create([
                 'customer_id' => $customer->id,
@@ -78,6 +80,27 @@ class PointCustomerService
             ]);
         });
     }
+
+
+    public function minus($data)
+    {
+
+
+        DB::transaction(function () use ($data) {
+            $customer = Customer::where('guid', $data['guid'])->first();
+            $customer->point_balance-=$data['points'];
+            if($customer->point_balance<0){
+                throw new ErrException('扣除點數超過持有點數');
+            }
+            $customer->save();
+            //類型 1:兌換集章2:進店掃描3:消費認證4:系統新增5系統扣除
+        });
+
+    
+    }
+
+
+    
 
     public function list($data)
     {

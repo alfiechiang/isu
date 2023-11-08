@@ -8,4 +8,6 @@ enum PotintCustomerTye:int
     case STORE_SCAN = 2;
     case CONSUME =3;
     case SYSTEM_CREATE =4;
+
+    case SYSTEM_DELETE =5;
 }

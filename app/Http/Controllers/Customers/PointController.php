@@ -38,7 +38,18 @@ class PointController extends Controller
         }
         
        return Response::format(200,$res,'請求成功');
-    } 
+    }
+    
+    public function totalPoints(Request $request)
+    {
+        try {
+            $res=$this->pointService->totalPoints($request->all());
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
 
     public function exchangeToStamps(Request $request)
     {
