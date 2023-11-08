@@ -52,7 +52,7 @@ class PointService
         $auth=Auth::user();
         $customer_id = $auth->id;
         $customer=Customer::where('id',$customer_id)->first();
-        return ['totalPoints'=>$customer->point_balance];
+        return ['total'=>$customer->point_balance];
     }
 
 
