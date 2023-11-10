@@ -19,9 +19,11 @@ return new class extends Migration
             $table->string('source')->index()->nullable()->comment("點數來源");
             $table->tinyInteger('type')->comment("類型 1:兌換集章2:進店掃描3:消費認證4:系統新增");
             $table->string("operator")->nullable()->comment("操作人員");
+            $table->string('operator_ip')->nullable()->comment("操作人員ip");
             $table->index( "operator");
             $table->string('desc')->nullable()->comment("備註");
             $table->integer('value')->default(0)->comment("點數");
+
             $table->uuid('customer_id')->nullable()->comment("顧客ID");
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });

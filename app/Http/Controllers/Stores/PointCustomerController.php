@@ -30,7 +30,9 @@ class PointCustomerController extends Controller
 
     public function create(Request $request){
         try {
-            $this->pointCustomerService->create($request->all());
+            $data=$request->all();
+            $data['operator_ip']=request()->ip();
+            $this->pointCustomerService->create($data);
             return Response::format(200, [], '請求成功');
         }catch(Exception $e){
             return Response::errorFormat($e);
@@ -39,7 +41,9 @@ class PointCustomerController extends Controller
 
     public function delete(Request $request){
         try {
-            $this->pointCustomerService->delete($request->all());
+            $data=$request->all();
+            $data['operator_ip']=request()->ip();
+            $this->pointCustomerService->delete($data);
             return Response::format(200, [], '請求成功');
         }catch(Exception $e){
             return Response::errorFormat($e);

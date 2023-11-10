@@ -47,10 +47,10 @@ class PointCustomerService
                 'desc' => $data['desc'],
                 'source' => $data['source'],
                 'type'=>$data['type'],
-                'operator'=>$auth->email
+                'operator'=>$auth->email,
+                'operator_ip'=>$data['operator_ip']
             ]);
 
-           
             PointLog::create([
                 'customer_id' => $customer->id,
                 'type' => PointLogType::CREATE->value,
@@ -78,16 +78,14 @@ class PointCustomerService
                 'desc' => $data['desc'],
                 'source' => '系統',
                 'type'=>PotintCustomerTye::SYSTEM_DELETE->value,
-                'operator'=>$auth->email
+                'operator'=>$auth->email,
+                'operator_ip'=>$data['operator_ip']
             ]);
         });
     }
 
-
     public function minus($data)
     {
-
-
         DB::transaction(function () use ($data) {
             $customer = Customer::where('guid', $data['guid'])->first();
             $customer->point_balance-=$data['points'];
@@ -97,12 +95,7 @@ class PointCustomerService
             $customer->save();
             //類型 1:兌換集章2:進店掃描3:消費認證4:系統新增5系統扣除
         });
-
-    
     }
-
-
-    
 
     public function list($data)
     {

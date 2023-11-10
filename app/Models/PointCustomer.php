@@ -19,7 +19,7 @@ class PointCustomer extends Model
      */
     protected $fillable = [
         'expired_at', 'desc', 'value', 'customer_id', 'source',
-        'operator', 'type'
+        'operator', 'type','operator_ip'
     ];
 
     const UPDATED_AT = null;
