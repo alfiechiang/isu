@@ -37,9 +37,9 @@ class PointCustomerController extends Controller
         }
     }
 
-    public function delete(Request $request,$point_id){
+    public function delete(Request $request){
         try {
-            $this->pointCustomerService->delete($point_id,$request->all());
+            $this->pointCustomerService->delete($request->all());
             return Response::format(200, [], '請求成功');
         }catch(Exception $e){
             return Response::errorFormat($e);

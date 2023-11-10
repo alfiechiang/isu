@@ -62,21 +62,23 @@ class PointCustomerService
         });
     }
 
-    public function delete($point_id, $data)
+    public function delete( $data)
     {
-        DB::transaction(function () use ($point_id, $data) {
+        DB::transaction(function () use ( $data) {
             $customer = Customer::where('guid', $data['guid'])->first();
-            $point = PointCustomer::find($point_id);
-            $customer->point_balance-=$point->value;
+            $customer->point_balance-=$data['points'];
+            if ($customer->point_balance < 0) {
+                throw new ErrException('扣除點數已超過已有點數');
+            }
             $customer->save();
             $auth = Auth::user();
-            PointLog::create([
+            PointCustomer::create([
+                'value' => -$data['points'],
                 'customer_id' => $customer->id,
-                'type' => PointLogType::DELETE->value,
-                'created_at' => date('Y-m-d H:i:s'),
-                'points_num' => $point->value,
-                'operator' => $auth->name,
-                'desc' => $data['desc']
+                'desc' => $data['desc'],
+                'source' => '系統',
+                'type'=>PotintCustomerTye::SYSTEM_DELETE->value,
+                'operator'=>$auth->email
             ]);
         });
     }
