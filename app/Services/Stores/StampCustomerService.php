@@ -50,7 +50,8 @@ class StampCustomerService
                 'expired_at' => $expire_at,
                 'operator' => $auth->name,
                 'type' => StampLogType::CREATE->value,
-                'desc'=>$data['desc']
+                'desc'=>$data['desc'],
+                'operator_ip'=>$data['operator_ip']
             ]);
 
         });
@@ -92,9 +93,9 @@ class StampCustomerService
         return $Builder->paginate($data['per_page']);
     }
 
-    public function delete($stamp_id)
+    public function delete($stamp_id,$operator_ip)
     {
-        DB::transaction(function () use ($stamp_id) {
+        DB::transaction(function () use ($stamp_id,$operator_ip) {
 
             $created_at = date('Y-m-d H:i:s');
             $expire_at = date('Y-m-d H:i:s', strtotime("+1 year", strtotime($created_at)));
@@ -105,8 +106,9 @@ class StampCustomerService
                 'customer_id' => $stamp->customer_id,
                 'created_at' => $created_at,
                 'expired_at' => $expire_at,
-                'operator' => $auth->name,
+                'operator' => $auth->name,  
                 'type' => StampLogType::DELETE->value,
+                'operator_ip'=>$operator_ip
             ]);
         });
     }

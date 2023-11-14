@@ -23,7 +23,9 @@ class StampCustomerController extends Controller
 
             $stamp_num = $request->get('stamp_num');
             for ($i = 0; $i < $stamp_num; $i++) {
-                $this->stampCustomerService->create($request->all());
+                $data=$request->all();
+                $data['operator_ip']=request()->ip();
+                $this->stampCustomerService->create($data);
             }
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
@@ -44,7 +46,9 @@ class StampCustomerController extends Controller
     public function delete($stamp_id)
     {
         try {
-            $this->stampCustomerService->delete($stamp_id);
+            $operator_ip=request()->ip();
+
+            $this->stampCustomerService->delete($stamp_id,$operator_ip);
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);

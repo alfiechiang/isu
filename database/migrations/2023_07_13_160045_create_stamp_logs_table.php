@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable()->comment("生成時間");
             $table->timestamp('expired_at')->nullable()->comment("到期時間");
             $table->string('operator')->nullable()->comment("操作人");
+            $table->string('operator_ip')->nullable()->comment("操作者ip");
             $table->string('desc')->nullable()->comment("備註");
         });
     }
