@@ -3,6 +3,7 @@
 namespace App\Services\Stores;
 
 use App\Enums\EmployeeRole;
+use App\Models\County;
 use App\Models\FollowPlayer;
 use App\Models\StoreEmployee;
 use App\Models\StorePrivilegeRole;
@@ -19,6 +20,8 @@ class FollowPlayerService
     {
         $this->repository = $repository;
     }
+
+
 
     public function create($data)
     {
@@ -44,6 +47,17 @@ class FollowPlayerService
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
         $follower =FollowPlayer::find($follow_id);
+
+        if(isset($data['area'])){
+            $areas = County::select('region')->groupBy('region')->pluck('region')->toArray();
+            if(!in_array($data['area'], $areas)){
+                throw new ErrorException("傳送資料有誤");
+            }
+        }
+
+       
+
+        if( $follower->area )
         switch ($role->name) {
             case EmployeeRole::STORE->value:
                 $data['review'] = true;
@@ -58,6 +72,10 @@ class FollowPlayerService
 
                 if($follower->creator !== $auth->email){
                     throw new ErrorException("櫃檯沒有權限編輯其他櫃檯文章") ;
+                }
+                if($follower->review){
+                    throw new ErrorException("已發布櫃檯沒有權限編輯") ;
+
                 }
                 break;
         }
@@ -99,6 +117,16 @@ class FollowPlayerService
     public function delete($follow_id)
     {
         $follower =FollowPlayer::find($follow_id);
+        $auth=Auth::user();
+
+        $role=StorePrivilegeRole::find($auth->role_id);
+        switch ($role->name) {
+            case EmployeeRole::COUNTER->value:
+                if($follower->creator!==$auth->email){
+                    throw new ErrorException("櫃檯沒有權限刪除其他櫃檯文章") ;
+                }
+            break;
+        }
         $follower->delete();
     }
 
@@ -129,6 +157,28 @@ class FollowPlayerService
         
         return $Builder->orderBy('created_at','desc')
         ->orderBy('updated_at','desc')->paginate($data['per_page']);
+
+    }
+
+    //自己所屬的文章
+    public function ownList($data)
+    {
+        $auth=Auth::user();
+        $role=StorePrivilegeRole::find($auth->role_id);
+        $Builder = new FollowPlayer();
+        $follower_ids=[];
+        $email=(Auth::user())->email;
+        switch ($role->name) {
+            case EmployeeRole::STORE->value:
+                $follower_ids=$Builder->where('store_uid',$auth->store_uid)->pluck('id');
+                break;
+            case EmployeeRole::COUNTER->value:
+                $follower_ids=$Builder->where('store_uid',$auth->store_uid)
+                ->where('creator',$email)->pluck('id');
+                break;
+        }
+
+        return ['follower_ids'=>$follower_ids];
 
     }
 

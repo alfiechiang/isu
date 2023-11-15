@@ -82,5 +82,15 @@ class FollowPlayerController extends Controller
         }
     }
 
+    public function ownList(Request $request)
+    {
+        try {
+            $res = $this->followPlayerService->ownList($request->all());
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
   
 }

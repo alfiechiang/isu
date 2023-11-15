@@ -50,7 +50,6 @@ class CouponService
         }
 
         if ($data['status'] == 2) {
-
             $Builder = $Builder->where(function ($query) use ($now) {
                 $query->where('expired_at', '<=', $now)
                     ->orWhere('status', 2);

@@ -33,13 +33,20 @@ class FollowPlayerService
 
     public function stronghold(){
 
+        $north=FollowPlayer::where('area', 'LIKE', '%'.'north'.'%')->where('review', true)->get()->count();
+        $middle=FollowPlayer::where('area', 'LIKE', '%'.'middle'.'%')->where('review', true)->get()->count();
+        $south=FollowPlayer::where('area', 'LIKE', '%'.'south'.'%')->where('review', true)->get()->count();
+        $east=FollowPlayer::where('area', 'LIKE', '%'.'east'.'%')->where('review', true)->get()->count();
+        $out_island=FollowPlayer::where('area', 'LIKE', '%'.'out_island'.'%')->where('review', true)->get()->count();
+        $oversea=FollowPlayer::where('area', 'LIKE', '%'.'oversea'.'%')->where('review', true)->get()->count();
+
         return [
-            'north'=>FollowPlayer::where('area', 'LIKE', '%'.'north'.'%')->get()->count(),
-            'middle'=>FollowPlayer::where('area', 'LIKE', '%'.'middle'.'%')->get()->count(),
-            'south'=>FollowPlayer::where('area', 'LIKE', '%'.'south'.'%')->get()->count(),
-            'east'=>FollowPlayer::where('area', 'LIKE', '%'.'east'.'%')->get()->count(),
-            'out_island'=>FollowPlayer::where('area', 'LIKE', '%'.'out_island'.'%')->get()->count(),
-            'oversea'=>FollowPlayer::where('area', 'LIKE', '%'.'oversea'.'%')->get()->count()
+            'north'=>$north,
+            'middle'=>$middle,
+            'south'=>$south,
+            'east'=>$east,
+            'out_island'=>$out_island,
+            'oversea'=>$oversea
         ];
 
     }
