@@ -39,14 +39,15 @@ class FollowPlayerService
         $east=FollowPlayer::where('area', 'LIKE', '%'.'east'.'%')->where('review', true)->get()->count();
         $out_island=FollowPlayer::where('area', 'LIKE', '%'.'out_island'.'%')->where('review', true)->get()->count();
         $oversea=FollowPlayer::where('area', 'LIKE', '%'.'oversea'.'%')->where('review', true)->get()->count();
-
+        $total=FollowPlayer::where('review', true)->get()->count();
         return [
             'north'=>$north,
             'middle'=>$middle,
             'south'=>$south,
             'east'=>$east,
             'out_island'=>$out_island,
-            'oversea'=>$oversea
+            'oversea'=>$oversea,
+            'total'=>$total
         ];
 
     }

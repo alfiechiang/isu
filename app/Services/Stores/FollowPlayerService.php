@@ -3,6 +3,7 @@
 namespace App\Services\Stores;
 
 use App\Enums\EmployeeRole;
+use App\Exceptions\ErrException;
 use App\Models\County;
 use App\Models\FollowPlayer;
 use App\Models\StoreEmployee;
@@ -25,8 +26,19 @@ class FollowPlayerService
 
     public function create($data)
     {
+        if(isset($data['area'])){
+            $areas = County::select('region')->groupBy('region')->pluck('region')->toArray();
+            $parts = explode(',', $data['area']);
+            foreach($parts as $part){
+                if(!in_array($part, $areas)){
+                    throw new ErrException("區域欄位格式不對");
+                }
+            }
+        }
+
         $auth=Auth::user();
         $role=StorePrivilegeRole::find($auth->role_id);
+        
         switch ($role->name) {
             case EmployeeRole::TOP->value:
                 $this->repository->adminRoleCreate($data);
@@ -50,12 +62,13 @@ class FollowPlayerService
 
         if(isset($data['area'])){
             $areas = County::select('region')->groupBy('region')->pluck('region')->toArray();
-            if(!in_array($data['area'], $areas)){
-                throw new ErrorException("傳送資料有誤");
+            $parts = explode(',', $data['area']);
+            foreach($parts as $part){
+                if(!in_array($part, $areas)){
+                    throw new ErrException("區域欄位格式不對");
+                }
             }
         }
-
-       
 
         if( $follower->area )
         switch ($role->name) {
