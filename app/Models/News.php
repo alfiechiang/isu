@@ -19,4 +19,8 @@ class News extends Model
         'phone_cover_img'
     ];
 
+    const CREATED_AT = null;
+
+    const UPDATED_AT = null;
+
 }
