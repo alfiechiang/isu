@@ -18,31 +18,17 @@ class News extends Model
         'content',
         'operator',
         'web_cover_img',
-        'phone_cover_img',
-        'created_at',
-        'updated_at'
+        'phone_cover_img'
     ];
 
     public function getCreatedAtAttribute($value)
     {
-      $dateTime = Carbon::parse($value, 'UTC');
-  
-          // 轉換時區到台灣標準時間 (UTC+8)
-          $dateTime->setTimezone('Asia/Taipei');
-  
-          // 返回轉換後的時間格式
-          return $dateTime->format('Y-m-d H:i:s');
+      return Carbon::parse($value)->timezone(config('app.timezone'))->format('Y-m-d H:i:s');
     }
   
     public function getUpdatedAtAttribute($value)
     {
-      $dateTime = Carbon::parse($value, 'UTC');
-  
-          // 轉換時區到台灣標準時間 (UTC+8)
-          $dateTime->setTimezone('Asia/Taipei');
-  
-          // 返回轉換後的時間格式
-          return $dateTime->format('Y-m-d H:i:s');
+      return Carbon::parse($value)->timezone(config('app.timezone'))->format('Y-m-d H:i:s');
     }
 
 
