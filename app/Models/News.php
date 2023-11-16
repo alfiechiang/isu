@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
 
 class News extends Model
 {
@@ -16,11 +18,24 @@ class News extends Model
         'content',
         'operator',
         'web_cover_img',
-        'phone_cover_img'
+        'phone_cover_img',
+        'created_at',
+        'updated_at'
     ];
 
-    const CREATED_AT = null;
+    public function getCreatedAtAttribute($value)
+    {
+        $dateTime = Carbon::parse($value, 'UTC');
 
-    const UPDATED_AT = null;
+        return $dateTime->format('Y-m-d H:i:s');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        $dateTime = Carbon::parse($value, 'UTC');
+        return $dateTime->format('Y-m-d H:i:s');
+    }
+
+
 
 }

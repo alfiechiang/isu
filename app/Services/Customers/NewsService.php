@@ -29,6 +29,8 @@ class NewsService
             $res = $res2->merge($res);
         }
 
+        return $res;
+
     }
 
     public function findone($news_id)

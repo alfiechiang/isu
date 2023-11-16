@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,9 +15,18 @@ class FollowPlayer extends Model
       'area','content','review','operator','creator','updated_at','created_at'
     ];
 
-    const CREATED_AT = null;
+    public function getCreatedAtAttribute($value)
+    {
+        $dateTime = Carbon::parse($value, 'UTC');
+        return $dateTime->format('Y-m-d H:i:s');
+    }
 
+    public function getUpdatedAtAttribute($value)
+    {
+        $dateTime = Carbon::parse($value, 'UTC');
+        return $dateTime->format('Y-m-d H:i:s');
+    }
 
-    const UPDATED_AT = null;
+   
 
 }
