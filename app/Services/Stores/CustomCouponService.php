@@ -15,7 +15,7 @@ class CustomCouponService
     public function create($data)
     {
         $code = $data['code'] . date('Ymd');
-        CustomCoupon::create([
+        $coupon=CustomCoupon::create([
             'name' => $data['name'],
             'code' => $code,
             'img' => $data['img'],
@@ -27,6 +27,9 @@ class CustomCouponService
             'notice_desc' => $data['notice_desc'],
             'notify' => $data['notify'],
         ]);
+
+        return ['coupon_id'=>$coupon->id];
+
     }
 
     public function findone($coupon_code)
@@ -63,7 +66,7 @@ class CustomCouponService
 
     public function update($coupon_code, $data)
     {
-        DB::transaction(function () use ($data, $coupon_code) {
+        return DB::transaction(function () use ($data, $coupon_code) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             if( $coupon->shelve){
                 throw new ErrException('此優惠卷已上架');
@@ -82,6 +85,7 @@ class CustomCouponService
 
             $coupon->fill($data);
             $coupon->save();
+            return ['coupon_id'=>$coupon->id];
         });
     }
 

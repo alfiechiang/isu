@@ -28,8 +28,8 @@ class CustomCouponController extends Controller
     {
 
         try {
-            $this->customCouponService->create($request->all());
-            return Response::format(200, [], '請求成功');
+            $res=$this->customCouponService->create($request->all());
+            return Response::format(200, $res, '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
@@ -50,8 +50,8 @@ class CustomCouponController extends Controller
     {
         try {
             $data = $request->all();
-            $this->customCouponService->update($coupon_code, $data);
-            return Response::format(200, [], '請求成功');
+            $res=$this->customCouponService->update($coupon_code, $data);
+            return Response::format(200, $res, '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
