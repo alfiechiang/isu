@@ -18,8 +18,17 @@ class NewsService
     }
 
     public function findothers($data){
+
+        $total_count=3;
         $updated_at=$data['updated_at'];
-        return  News::where('updated_at','>',$updated_at)->limit(3)->get();
+        $res=News::where('updated_at','>',$updated_at)->limit($total_count)->get();
+        if( $total_count-$res->count()>0){
+            $early_time=News::orderBy('updated_at')->limit(1)->first()->updated_at;
+            $residue_count=$total_count-$res->count();
+            $res2=News::where('updated_at','>=',$early_time)->limit($residue_count)->get();
+            $res = $res2->merge($res);
+        }
+
     }
 
     public function findone($news_id)
