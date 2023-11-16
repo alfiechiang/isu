@@ -36,10 +36,10 @@ class FollowPlayerService
         
 
         if( $total_count-$res->count()>0){
-            // $early_time=FollowPlayer::where('review',1)->orderBy('updated_at')->limit(1)->first()->updated_at;
-            // $residue_count=$total_count-$res->count();
-            // $res2=FollowPlayer::where('review',1)->where('updated_at','>=',$early_time)->limit($residue_count)->get();
-            // $res = $res2->merge($res);
+            $early_time=FollowPlayer::where('review',1)->orderBy('updated_at')->limit(1)->first()->updated_at;
+            $residue_count=$total_count-$res->count();
+            $res2=FollowPlayer::where('review',1)->where('updated_at','>=',$early_time)->limit($residue_count)->get();
+            $res = $res2->merge($res);
         }
 
         return $res;
