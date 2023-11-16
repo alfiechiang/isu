@@ -28,7 +28,7 @@ class CustomCouponService
             'notify' => $data['notify'],
         ]);
 
-        return ['coupon_id'=>$coupon->id];
+        return ['coupon_code'=>$coupon->code];
 
     }
 
@@ -80,12 +80,13 @@ class CustomCouponService
                 $number = $number_matches[0];
                 $code = $text . $number;
                 $data['code'] = $code;
+                
                 CustomCouponPeopleList::where('coupon_code', $coupon_code)->update(['coupon_code' => $code]);
             }
 
             $coupon->fill($data);
             $coupon->save();
-            return ['coupon_id'=>$coupon->id];
+            return ['coupon_code'=>$coupon->code];
         });
     }
 

@@ -71,11 +71,9 @@ class CustomCouponController extends Controller
     {
 
         try {
-
-            $coupon_id = $request->coupon_id;
-
-            $coupon = CustomCoupon::where('code', $coupon_id)->first();
-            Excel::import(new CustomerCouponPelopeListImport($coupon_id, $coupon->name), request()->file('import'));
+            $coupon_code = $request->coupon_code;
+            $coupon = CustomCoupon::where('code', $coupon_code)->first();
+            Excel::import(new CustomerCouponPelopeListImport($coupon_code, $coupon->name), request()->file('import'));
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);
