@@ -25,15 +25,24 @@ class News extends Model
 
     public function getCreatedAtAttribute($value)
     {
-        $dateTime = Carbon::parse($value, 'UTC');
-
-        return $dateTime->format('Y-m-d H:i:s');
+      $dateTime = Carbon::parse($value, 'UTC');
+  
+          // 轉換時區到台灣標準時間 (UTC+8)
+          $dateTime->setTimezone('Asia/Taipei');
+  
+          // 返回轉換後的時間格式
+          return $dateTime->format('Y-m-d H:i:s');
     }
-
+  
     public function getUpdatedAtAttribute($value)
     {
-        $dateTime = Carbon::parse($value, 'UTC');
-        return $dateTime->format('Y-m-d H:i:s');
+      $dateTime = Carbon::parse($value, 'UTC');
+  
+          // 轉換時區到台灣標準時間 (UTC+8)
+          $dateTime->setTimezone('Asia/Taipei');
+  
+          // 返回轉換後的時間格式
+          return $dateTime->format('Y-m-d H:i:s');
     }
 
 
