@@ -80,13 +80,13 @@ class StampService
             throw new ErrException("數量不足");
         }
 
-        $created_at = date('Y-m-d H:i:s');
         StampCustomer::where('customer_id', $from_cutomer)->limit($data['stamp_num'])
             ->whereNull('consumed_at')
             ->orderBy('expired_at', 'asc')->update([
                 'customer_id' => $to_cutomer,
                 'source' => $auth->guid,
-                'type' => 3 //他人贈送
+                'type' => 3, //他人贈送
+                'created_at'=>date('Y-m-d H:i:s')
             ]);
 
         for ($i = 0; $i < $data['stamp_num']; $i++) {
