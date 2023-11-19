@@ -25,10 +25,6 @@ Route::group([
   Route::get('menu', [Stores\AuthController::class, 'privilegeMenuList']);
   Route::get('dignity', [Stores\AuthController::class, 'dignity']);
   Route::post('refresh', [Stores\AuthController::class, 'refresh']);
-  Route::get('customers/{customer_id}/coupons', [Stores\CouponCustomerController::class, 'index']);
-  Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);
-  Route::get('coupon-customer/{coupon_code}', [Stores\CouponCustomerController::class, 'show']);
-  Route::post('coupon-customer/{coupon_code}/redeem', [Stores\CouponCustomerController::class, 'redeem']);
   Route::get('customers/{customer_id}/stamps', [Stores\StampCustomerController::class, 'index']);
   Route::post('employees', [Stores\StoreEmployeeController::class, 'create']);
   Route::delete('employees/{uid}', [Stores\StoreEmployeeController::class, 'delete']);
@@ -91,4 +87,9 @@ Route::group([
   Route::get('custom/coupon/customer', [Stores\CustomCouponCustomerController::class, 'pageList']);
   Route::get('coupon/disablelog', [Stores\CouponDisableLogController::class, 'pageList']);
   Route::post('coupon/exchange', [Stores\ExchangeCouponController::class, 'exchange']);
+  Route::get('coupon', [Stores\CouponCustomerController::class, 'pageList']);
+  Route::get('coupon/peoplist/{coupon_code}', [Stores\CouponCustomerController::class, 'peoplePageList']);
+
+  Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);
+  Route::post('coupon-customer/{coupon_code}/redeem', [Stores\CouponCustomerController::class, 'redeem']);
 });
