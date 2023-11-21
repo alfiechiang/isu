@@ -9,6 +9,14 @@ use App\Models\Customer;
 class CustomCouponCustomerService
 {
 
+
+    public function peoplePageList($data,$coupon_code)
+    {
+      return  CustomCouponCustomer::where('coupon_code',$coupon_code)->paginate($data['per_page']);
+    }
+
+
+
     public function pageList($data)
     {
 

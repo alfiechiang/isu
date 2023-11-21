@@ -35,4 +35,16 @@ class CustomCouponCustomerController extends Controller
         }
     }
 
+    public function peoplePageList(Request $request,$coupon_code) 
+    {
+        try {
+            $res=$this->customCouponCustomerService->peoplePageList($request->all(),$coupon_code);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
+
+
 }
