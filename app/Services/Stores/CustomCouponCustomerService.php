@@ -4,6 +4,7 @@ namespace App\Services\Stores;
 
 use App\Models\CouponCustomer;
 use App\Models\CustomCouponCustomer;
+use App\Models\CustomCouponPeopleList;
 use App\Models\Customer;
 
 class CustomCouponCustomerService
@@ -12,7 +13,7 @@ class CustomCouponCustomerService
 
     public function peoplePageList($data,$coupon_code)
     {
-      return  CustomCouponCustomer::where('coupon_code',$coupon_code)->paginate($data['per_page']);
+      return  CustomCouponPeopleList::where('coupon_code',$coupon_code)->with('customers')->paginate($data['per_page']);
     }
 
 
