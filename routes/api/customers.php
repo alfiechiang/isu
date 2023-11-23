@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Stores;
 
 use App\Http\Controllers\Customers;
 
@@ -49,6 +50,7 @@ Route::group([
     Route::get('socialaccounts', [Customers\AuthController::class, 'socialAccounts']);
     Route::post('socialaccount/bind', [Customers\SocialLoginController::class, 'bindSocialAccount']);
     Route::get('coupons', [Customers\CouponController::class, 'index']);
+    Route::get('custom/coupon', [Stores\CustomCouponController::class, 'pageList']);
     Route::get('coupons/customer/one', [Customers\CouponController::class, 'findCutstmerCouponOne']);
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::post('scan-store/{store_id}', [Customers\PointController::class, 'scanStore']);
