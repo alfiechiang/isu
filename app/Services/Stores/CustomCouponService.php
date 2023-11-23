@@ -91,12 +91,12 @@ class CustomCouponService
     }
 
 
-    public function findoneCouponDisable($coupon_code,$operaterIp){
+    public function findoneCouponDisable($coupon_code,$operaterIp,$desc=null){
 
-        DB::transaction(function () use ($coupon_code,$operaterIp) {
+        DB::transaction(function () use ($coupon_code,$operaterIp,$desc) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             $coupon->disable=true;
-            CustomCouponCustomer::where('coupon_code',$coupon_code)->update(['disable'=>true]);
+            CustomCouponCustomer::where('coupon_code',$coupon_code)->update(['disable'=>true,'desc'=>$desc]);
             $insertData=[];
             $auth =Auth::user();
             $coupons= CustomCouponCustomer::where('coupon_code',$coupon_code)->get();
@@ -107,7 +107,36 @@ class CustomCouponService
                     'coupon_name'=>$coupon->coupon_name,
                     'operator'=>$auth->name,
                     'disable_time'=>date('Y-m-d H:i:s'),
-                    'operator_ip'=>$operaterIp
+                    'operator_ip'=>$operaterIp,
+                    'desc'=>$desc
+                ];
+            }
+
+            DB::table('coupon_disable_logs')->insert($insertData);
+        });
+
+    }
+
+
+    //特定會員某張優惠卷失效
+    public function findoneCouponDisableByMember($coupon_code,$operaterIp,$desc,$coupon_id){
+        
+        DB::transaction(function () use ($coupon_code,$operaterIp,$desc,$coupon_id) {
+            $coupon =  CustomCoupon::where('code', $coupon_code)->first();
+            $coupon->disable=true;
+            CustomCouponCustomer::where('coupon_code',$coupon_code)->where('id',$coupon_id)->update(['disable'=>true,'desc'=>$desc]);
+            $insertData=[];
+            $auth =Auth::user();
+            $coupons= CustomCouponCustomer::where('coupon_code',$coupon_code)->where('id',$coupon_id)->get();
+            foreach($coupons as $coupon){
+                $insertData[]=[
+                    'guid'=>$coupon->guid,
+                    'coupon_code'=>$coupon->coupon_code,
+                    'coupon_name'=>$coupon->coupon_name,
+                    'operator'=>$auth->name,
+                    'disable_time'=>date('Y-m-d H:i:s'),
+                    'operator_ip'=>$operaterIp,
+                    'desc'=>$desc
                 ];
             }
 

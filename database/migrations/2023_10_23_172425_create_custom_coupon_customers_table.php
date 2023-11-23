@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('exchange_time')->nullable()->comment("兌換時間");
             $table->string('exchange_place')->nullable()->comment("兌換時間");
             $table->string('exchanger')->nullable()->comment("兌換人員");
+            $table->string('desc')->nullable()->comment("備註");
             $table->timestamp('expire_time')->nullable()->comment('優惠卷到期時間');
             $table->tinyInteger('exchange')->default(0)->comment("兌換:1 未兌換:0");
             $table->tinyInteger('disable')->default(0)->comment("失效 0:未失效 1:失效");

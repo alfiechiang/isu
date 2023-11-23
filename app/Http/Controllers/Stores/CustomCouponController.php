@@ -96,7 +96,22 @@ class CustomCouponController extends Controller
     {
         try {
             $operaterIp=$request->ip();
-            $this->customCouponService->findoneCouponDisable($coupon_code,$operaterIp);
+            $desc=$request->desc;
+            $this->customCouponService->findoneCouponDisable($coupon_code,$operaterIp,$desc);
+            return Response::format(200, [], '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
+
+    public function findoneCouponDisableByMember(Request $request,$coupon_code) //全數失效
+    {
+        try {
+            $operaterIp=$request->ip();
+            $desc=$request->desc;
+            $coupon_id=$request->coupon_id;
+            $this->customCouponService->findoneCouponDisableByMember($coupon_code,$operaterIp,$desc,$coupon_id);
             return Response::format(200, [], '請求成功');
         } catch (Exception $e) {
             return Response::errorFormat($e);

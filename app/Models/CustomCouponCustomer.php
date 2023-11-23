@@ -10,9 +10,8 @@ class CustomCouponCustomer extends Model
     use HasFactory;
     public $incrementing = false;
     protected $fillable = [
-
        'guid', 'coupon_code', 'disable', 'coupon_name', 'customer_name','phone' ,'email',
-        'exchange_tome','exchange_place','exchanger','exchange'
+        'exchange_tome','exchange_place','exchanger','exchange','desc'
     ];
 
 }
