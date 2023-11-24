@@ -85,6 +85,8 @@ Route::group([
   Route::post('custom/coupon/import', [Stores\CustomCouponController::class, 'import']);
   Route::put('custom/coupon/disable/{coupon_code}', [Stores\CustomCouponController::class, 'findoneCouponDisable']);
   Route::put('custom/coupon/disable/{coupon_code}/{coupon_id}', [Stores\CustomCouponController::class, 'findoneCouponDisableByMember']);
+  Route::get('custom/coupon/{coupon_code}/{coupon_id}/findone', [Stores\CustomCouponController::class, 'findoneCouponByMember']);
+
   Route::get('custom/coupon/customer', [Stores\CustomCouponCustomerController::class, 'pageList']);
   Route::get('custom/coupon/peoplist/{coupon_code}', [Stores\CustomCouponCustomerController::class, 'peoplePageList']);
 

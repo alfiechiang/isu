@@ -120,7 +120,7 @@ class CustomCouponService
 
     //特定會員某張優惠卷失效
     public function findoneCouponDisableByMember($coupon_code,$operaterIp,$desc,$coupon_id){
-        
+
         DB::transaction(function () use ($coupon_code,$operaterIp,$desc,$coupon_id) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             $coupon->disable=true;
@@ -144,6 +144,12 @@ class CustomCouponService
         });
 
     }
+
+    public function findoneCouponByMember($coupon_code,$coupon_id){
+       return  CustomCouponCustomer::where('coupon_code',$coupon_code)->with('coupon')
+        ->where('id',$coupon_id)->first();
+    }
+
 
 
     public function pageList($data)

@@ -118,6 +118,17 @@ class CustomCouponController extends Controller
         }
     }
 
+    public function findoneCouponByMember(Request $request,$coupon_code) //全數失效
+    {
+        try {
+            $coupon_id=$request->coupon_id;
+            $res=$this->customCouponService->findoneCouponByMember($coupon_code,$coupon_id);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
     public function pageList(Request $request) 
     {
         try {

@@ -36,8 +36,6 @@ Route::get('recommend', [Customers\RecommendController::class, 'list']);
 
 Route::get('home', [Customers\HomeController::class, 'list']);
 
-
-
 Route::group([
     'middleware' => 'auth:customers',
 ], function ($router) {
