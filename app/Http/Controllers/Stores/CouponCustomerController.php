@@ -27,6 +27,15 @@ class CouponCustomerController extends Controller
         }
     }
 
+    public function findoneCouponByMember($coupon_code,$coupon_id){
+        try {
+            $res =  $this->couponService->findoneCouponByMember($coupon_code,$coupon_id);
+            return Response::format(200, $res, '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+     }
+
     public function peoplePageList(Request $request,$coupon_code){
         try {
             $res =  $this->couponService->peoplePageList($request->all(),$coupon_code);

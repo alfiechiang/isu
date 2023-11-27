@@ -94,6 +94,7 @@ Route::group([
   Route::post('coupon/exchange', [Stores\ExchangeCouponController::class, 'exchange']);
   Route::get('coupon', [Stores\CouponCustomerController::class, 'pageList']);
   Route::get('coupon/peoplist/{coupon_code}', [Stores\CouponCustomerController::class, 'peoplePageList']);
+  Route::get('coupon/{coupon_code}/{coupon_id}/findone', [Stores\CouponCustomerController::class, 'findoneCouponByMember']);
 
   Route::post('coupon-customer/send', [Stores\CouponCustomerController::class, 'send']);
   Route::post('coupon-customer/{coupon_code}/redeem', [Stores\CouponCustomerController::class, 'redeem']);
