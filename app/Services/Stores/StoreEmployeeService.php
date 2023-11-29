@@ -7,8 +7,10 @@ use App\Exceptions\ErrException;
 use App\Helpers\Utils;
 use App\Models\StoreEmployee;
 use App\Models\StorePrivilegeRole;
+use App\Models\StorePrivilegeRoleLog;
 use App\Repositories\Stores\StoreEmployeeRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StoreEmployeeService
 {
@@ -32,15 +34,15 @@ class StoreEmployeeService
             throw new ErrException('櫃檯沒有此權限操作');
         }
 
-       $check1= StoreEmployee::where('phone',$data['phone'])->get();
-       if($check1->isNotEmpty()){
-        throw new ErrException('手機號碼重複');
-       }
+        $check1 = StoreEmployee::where('phone', $data['phone'])->get();
+        if ($check1->isNotEmpty()) {
+            throw new ErrException('手機號碼重複');
+        }
 
-       $check2= StoreEmployee::where('email',$data['email'])->get();
-       if($check2->isNotEmpty()){
+        $check2 = StoreEmployee::where('email', $data['email'])->get();
+        if ($check2->isNotEmpty()) {
             throw new ErrException('信箱重複');
-       }
+        }
 
         $role = StorePrivilegeRole::find($data['role_id']);
         switch ($role->name) {
@@ -57,8 +59,8 @@ class StoreEmployeeService
                 }
                 $employee = Auth::user();
                 $store_id = $employee->store_id;
-                $store_uid=$employee->store_uid;
-                $this->repository->counterRoleCreate($data, $store_id,$store_uid);
+                $store_uid = $employee->store_uid;
+                $this->repository->counterRoleCreate($data, $store_id, $store_uid);
                 break;
         }
     }
@@ -116,11 +118,25 @@ class StoreEmployeeService
         StoreEmployee::where('uid', $uid)->delete();
     }
 
-    public function update($uid, $data)
+    public function update($uid, $data, $access_token)
     {
-        $employee = StoreEmployee::where('uid', $uid)->first();
-        $employee->fill($data);
-        $employee->save();
+        
+        DB::transaction(function () use ($uid, $data, $access_token) {
+
+            $employee = StoreEmployee::where('uid', $uid)->first();
+            if (isset($data['role_id'])) {
+                if ($employee->role_id !== $data['role_id']) {
+                    StorePrivilegeRoleLog::create([
+                        'uid'=>$uid,
+                        'access_token'=>$access_token
+                    ]);
+                }
+            }
+
+            $employee->fill($data);
+            $employee->save();
+
+        });
     }
 
     public function resetPassword($data)

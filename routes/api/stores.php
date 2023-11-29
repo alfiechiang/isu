@@ -18,7 +18,7 @@ Route::get('custom/coupon/export/{coupon_code}', [Stores\CustomCouponController:
 
 
 Route::group([
-  'middleware' => 'auth:employee',
+  'middleware' => ['auth:employee','role_modify'],
 ], function ($router) {
   Route::post('logout', [Stores\AuthController::class, 'logout']);
   Route::post('upload', [Stores\UploadFileController::class, 'upload']);

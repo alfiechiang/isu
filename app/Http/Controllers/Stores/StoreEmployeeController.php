@@ -7,6 +7,7 @@ use App\Services\Stores\StoreEmployeeService;
 use App\Services\Stores\OperatorLogService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StoreEmployeeController extends Controller
@@ -51,7 +52,11 @@ class StoreEmployeeController extends Controller
     public function update(Request $request,$uid){
         try {
             DB::transaction(function () use ($request, $uid) {
-                $this->storeEmployeeService->update($uid, $request->all());
+                $access_token=$request->bearerToken();
+
+                
+
+                $this->storeEmployeeService->update($uid, $request->all(), $access_token);
                 $data= $request->all();
                 $data['type']='update';
                 $this->operatorLogService->createStoreEmployeeLog('account_mamage',$uid,$data);
