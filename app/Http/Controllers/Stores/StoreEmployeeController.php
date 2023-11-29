@@ -52,11 +52,7 @@ class StoreEmployeeController extends Controller
     public function update(Request $request,$uid){
         try {
             DB::transaction(function () use ($request, $uid) {
-                $access_token=$request->bearerToken();
-
-                
-
-                $this->storeEmployeeService->update($uid, $request->all(), $access_token);
+                $this->storeEmployeeService->update($uid, $request->all());
                 $data= $request->all();
                 $data['type']='update';
                 $this->operatorLogService->createStoreEmployeeLog('account_mamage',$uid,$data);

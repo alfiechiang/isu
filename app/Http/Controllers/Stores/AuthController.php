@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Stores;
 
 use App\Enums\StatusCode;
 use App\Http\Response;
+use App\Models\AccessTokenLog;
+use App\Models\StoreEmployee;
 use App\Services\StoreRole\AuthService;
 use App\Services\Stores\StoreEmployeeService;
 use Illuminate\Http\Request;
@@ -46,6 +48,8 @@ class AuthController extends Controller
             }
 
             $token = $this->authService->login($credentials);
+            $employee=StoreEmployee::where('email',$request->identifier)->first();
+            AccessTokenLog::create(['uid'=>$employee->uid,'access_token'=>$token]);
             // 返回成功響應
             return Response::format(200,['access_token'=>$token],'請求成功');
 

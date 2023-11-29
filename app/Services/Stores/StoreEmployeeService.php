@@ -5,6 +5,7 @@ namespace App\Services\Stores;
 use App\Enums\EmployeeRole;
 use App\Exceptions\ErrException;
 use App\Helpers\Utils;
+use App\Models\AccessTokenLog;
 use App\Models\StoreEmployee;
 use App\Models\StorePrivilegeRole;
 use App\Models\StorePrivilegeRoleLog;
@@ -118,18 +119,21 @@ class StoreEmployeeService
         StoreEmployee::where('uid', $uid)->delete();
     }
 
-    public function update($uid, $data, $access_token)
+    public function update($uid, $data)
     {
         
-        DB::transaction(function () use ($uid, $data, $access_token) {
+        DB::transaction(function () use ($uid, $data) {
 
             $employee = StoreEmployee::where('uid', $uid)->first();
             if (isset($data['role_id'])) {
                 if ($employee->role_id !== $data['role_id']) {
-                    StorePrivilegeRoleLog::create([
-                        'uid'=>$uid,
-                        'access_token'=>$access_token
-                    ]);
+                    $log=AccessTokenLog::where('uid',$uid)->first();
+                    if(!empty($log)){
+                        StorePrivilegeRoleLog::create([
+                            'uid'=>$uid,
+                            'access_token'=>$log->access_token
+                        ]);
+                    }
                 }
             }
 

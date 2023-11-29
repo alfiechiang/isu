@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AccessTokenLog;
 use App\Models\StorePrivilegeRoleLog;
 use Closure;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class StorePrivilegeRoleModify
         $log=StorePrivilegeRoleLog::where('access_token',$access_token)->first();
         if(!empty($log)){
             $log->delete();
+            AccessTokenLog::where('access_token',request()->bearerToken())->delete();
             route('login');
         }
         return $next($request);
