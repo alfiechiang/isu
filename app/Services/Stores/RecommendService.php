@@ -32,10 +32,10 @@ class RecommendService
             'precision'=>$data['precision'],
             'latitude'=>$data['latitude'],
             'phone'=>$data['phone'],
+            'cell_phone'=>$data['cell_phone'],
             'address'=>$data['address'],
             'official_website'=>$data['official_website'],
             'content'=>$data['content'],
-            'desc'=>$data['desc'],
             'image'=>$data['image'],
         ]);
 
