@@ -96,70 +96,78 @@ class ProfileController extends Controller
                 }
 
                 $keysArray = ['name', 'birthday', 'county', 'phone', 'interest', 'postal', 'district', 'email', 'country', 'address', 'gender'];
-                $persent=true;
-                foreach ($authUser->getAttributes() as $key => $value) {
-                    foreach($keysArray as $k){
-                        if($k ==$key && empty($value)){
-                            $persent=false;
-                            break;
+                $keysArray2 = ['name', 'birthday',  'phone', 'interest', 'postal', 'email', 'country', 'address', 'gender'];
+
+                $persent = true;
+                switch ($data['country']) {
+                    case '台灣':
+                        foreach ($authUser->getAttributes() as $key => $value) {
+                            foreach ($keysArray as $k) {
+                                if ($k == $key && empty($value)) {
+                                    $persent = false;
+                                    break;
+                                }
+                            }
                         }
-                    }
+
+                        break;
+                    default:
+                        foreach ($authUser->getAttributes() as $key => $value) {
+                            foreach ($keysArray2 as $k) {
+                                if ($k == $key && empty($value)) {
+                                    $persent = false;
+                                    break;
+                                }
+                            }
+                        }
+                        break;
                 }
 
-                $exist=CouponCustomer::where('customer_id',$authUser->id)->where('coupon_id',config('coupon.customer.coupon_id'))->get();
-                if($exist->isNotEmpty()){
-                    $persent=false;
+                $exist = CouponCustomer::where('customer_id', $authUser->id)->where('coupon_id', config('coupon.customer.coupon_id'))->get();
+                if ($exist->isNotEmpty()) {
+                    $persent = false;
                 }
 
-                if($persent){
-                    $insertData=[];
-                    $created_at=date('Y-m-d H:i:s');
+                if ($persent) {
+
+                    $created_at = date('Y-m-d H:i:s');
                     $expire_at = date('Y-m-d', strtotime("+1 year", strtotime($created_at)));
-                    for($i=0 ;$i<10;$i++){
-                        $data=[
-                            'id'=>Str::uuid(),
-                            'code_script'=>'M'.date('Ymd'),
-                            'created_at'=>$created_at,
-                            'expired_at'=>$expire_at ,
-                            'status'=>1,
-                            'coupon_cn_name'=>'會員大禮包',
-                            'customer_id'=>$authUser->id,
-                            'coupon_id'=>config('coupon.customer.coupon_id')
-                        ];
-                        $insertData[]=$data;
-                    }
-                    DB::table('coupon_customers')->insert($insertData);
+                    $data = [
+                        'id' => Str::uuid(),
+                        'code_script' => 'M' . date('Ymd'),
+                        'created_at' => $created_at,
+                        'expired_at' => $expire_at,
+                        'status' => 1,
+                        'coupon_cn_name' => '會員大禮包',
+                        'customer_id' => $authUser->id,
+                        'coupon_id' => config('coupon.customer.coupon_id')
+                    ];
+                    DB::table('coupon_customers')->insert($data);
                 }
 
 
-                if(isset($data['birthday'])){
-                    $created_at =$authUser->created_at;
+                if (isset($data['birthday'])) {
+                    $created_at = $authUser->created_at;
                     $expire_at = date('Y-m-d H:i:s', strtotime("+1 month", strtotime($authUser->birthday)));
-                    if($created_at< $expire_at){
-                        $year_start_date=now()->startOfYear()->format('Y-m-d');
+                    if ($created_at < $expire_at) {
+                        $year_start_date = now()->startOfYear()->format('Y-m-d');
                         $year_end_date = now()->endOfYear()->format('Y-m-d');
                         $exist = CouponCustomer::where('customer_id', $authUser->id)->whereBetween('created_at', [$year_start_date, $year_end_date])
                             ->where('coupon_id', config('coupon.birthday.coupon_id'))->get();
-                        if($exist->isEmpty()){
+                        if ($exist->isEmpty()) {
                             CouponCustomer::create([
-                                'id'=>Str::uuid(),
-                                'code_script'=>'B'.date('Ymd'),
-                                'created_at'=>date('Y-m-d H:i:s'),
-                                'expired_at'=>$expire_at ,
-                                'status'=>1,
-                                'coupon_cn_name'=>'生日大禮',
-                                'customer_id'=>$authUser->id,
-                                'coupon_id'=>config('coupon.birthday.coupon_id')
+                                'id' => Str::uuid(),
+                                'code_script' => 'B' . date('Ymd'),
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'expired_at' => $expire_at,
+                                'status' => 1,
+                                'coupon_cn_name' => '生日大禮',
+                                'customer_id' => $authUser->id,
+                                'coupon_id' => config('coupon.birthday.coupon_id')
                             ]);
-
                         }
-
                     }
-
                 }
-            
-
-
             });
             // 返回成功響應
             return Response::success();
