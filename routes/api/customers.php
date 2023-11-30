@@ -49,6 +49,7 @@ Route::group([
     Route::post('socialaccount/bind', [Customers\SocialLoginController::class, 'bindSocialAccount']);
     Route::get('coupons', [Customers\CouponController::class, 'index']);
     Route::get('custom/coupon', [Stores\CustomCouponController::class, 'pageList']);
+    Route::get('custom/customers/coupons', [Customers\CustomCouponController::class, 'customerList']);
     Route::get('coupons/customer/one', [Customers\CouponController::class, 'findCutstmerCouponOne']);
     Route::get('points', [Customers\PointController::class, 'index']);
     Route::post('scan-store/{store_id}', [Customers\PointController::class, 'scanStore']);
