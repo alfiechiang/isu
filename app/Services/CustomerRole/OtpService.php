@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use App\Exceptions\ErrException;
+
 
 class OtpService
 {
@@ -22,7 +24,7 @@ class OtpService
      *
      * @throws InvalidArgumentException|Exception
      */
-    public function generate(string $identifier,$country_code): object
+    public function generate(string $identifier, $country_code): object
     {
         $validity = Otp::AUTH_CODE_TTL;
         $digits = 6;
@@ -32,7 +34,24 @@ class OtpService
             ->count();
 
         if ($limit >= Otp::SEND_LIMIT) {
-           // throw new Exception('操作過於頻繁，請稍後再試.', StatusCode::OTP_SEND_LIMIT->value);
+            // throw new Exception('操作過於頻繁，請稍後再試.', StatusCode::OTP_SEND_LIMIT->value);
+        }
+
+
+        $clientIp = request()->ip();
+        //同一ip驗證碼頻率在每分鐘內不得超過50筆
+        $now = Carbon::now();
+        $oneMinuteAgo = $now->subMinute();
+        $oneMinuteAgo = $oneMinuteAgo->format('Y-m-d H:i:s');
+        $sixHoursAgo = $now->subHours(6);
+        $count1 = Otp::whereBetween('created_at', [$oneMinuteAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
+        $count2 = Otp::whereBetween('created_at', [$sixHoursAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
+        if ($count1 >= 50) {
+            throw new ErrException('請求頻繁');
+        }
+        //6小時內累積次數不可超過100筆
+        if ($count1 >= 100) {
+            throw new ErrException('請求頻繁');
         }
 
         // 驗證參數格式
@@ -51,21 +70,23 @@ class OtpService
 
         // 產生 OTP 碼
         $token = $this->generatePin($digits);
-        // 儲存至資料庫
-        $otp=Otp::where('identifier',$identifier)->first();
-        if (is_null($otp)){
+        //儲存至資料庫
+        $otp = Otp::where('identifier', $identifier)->first();
+
+        if (is_null($otp)) {
             $otp = Otp::create([
                 'identifier' => $identifier,
                 'token' => $token,
-                'country_code'=>$country_code,
+                'country_code' => $country_code,
                 'expired_at' => Carbon::now()->addSeconds($validity),
+                'ip_address' => $clientIp
             ]);
-        }else{
-            $otp->token=$token;
-            $otp->expired_at=Carbon::now()->addSeconds($validity);
+        } else {
+            $otp->token = $token;
+            $otp->expired_at = Carbon::now()->addSeconds($validity);
             $otp->save();
         }
-        $otp->country_code=$country_code;
+        $otp->country_code = $country_code;
 
         return (object)[
             'otp' => $otp,
@@ -126,4 +147,3 @@ class OtpService
         return $pin;
     }
 }
-

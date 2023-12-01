@@ -59,7 +59,7 @@ class OtpController extends Controller
             return Response::success();
         } catch (\Exception $e) {
             // 返回失敗響應.
-            return Response::error();
+            return Response::errorFormat($e);
         }
     }
 

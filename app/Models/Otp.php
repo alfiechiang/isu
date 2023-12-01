@@ -48,7 +48,7 @@ class Otp extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'identifier', 'token', 'expired_at', 'valid', 'country_code',
+        'identifier', 'token', 'expired_at', 'valid', 'country_code','ip_address'
     ];
 
     protected $casts = [

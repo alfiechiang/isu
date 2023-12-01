@@ -29,7 +29,7 @@ class Response
     {
         $json = [];
         $json['code'] = 40001;
-        $json['message'] = '系統錯誤';
+        $json['message'] = '系統錯誤c';
         $json['data'] = [];
         return response()->json($json);
     }
