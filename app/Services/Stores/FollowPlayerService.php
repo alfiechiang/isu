@@ -26,119 +26,127 @@ class FollowPlayerService
 
     public function create($data)
     {
-        if(isset($data['area'])){
+        if (isset($data['area'])) {
             $areas = County::select('region')->groupBy('region')->pluck('region')->toArray();
             $parts = explode(',', $data['area']);
-            foreach($parts as $part){
-                if(!in_array($part, $areas)){
+            foreach ($parts as $part) {
+                if (!in_array($part, $areas)) {
                     throw new ErrException("區域欄位格式不對");
                 }
             }
         }
 
-        $auth=Auth::user();
-        $role=StorePrivilegeRole::find($auth->role_id);
-        
+        $auth = Auth::user();
+        $role = StorePrivilegeRole::find($auth->role_id);
+
         switch ($role->name) {
             case EmployeeRole::TOP->value:
                 $this->repository->adminRoleCreate($data);
                 break;
             case EmployeeRole::STORE->value:
-                $data['store_uid']=$auth->store_uid;
+                $data['store_uid'] = $auth->store_uid;
                 $this->repository->storeRoleCreate($data);
                 break;
             case EmployeeRole::COUNTER->value:
-                $data['store_uid']=$auth->store_uid;
+                $data['store_uid'] = $auth->store_uid;
                 $this->repository->counterRoleCreate($data);
                 break;
         }
     }
-    public function update($follow_id,$data)
+    public function update($follow_id, $data)
     {
 
-        $auth=Auth::user();
-        $role=StorePrivilegeRole::find($auth->role_id);
-        $follower =FollowPlayer::find($follow_id);
+        $auth = Auth::user();
+        $role = StorePrivilegeRole::find($auth->role_id);
+        $follower = FollowPlayer::find($follow_id);
 
-        if(isset($data['area'])){
+        if (isset($data['area'])) {
             $areas = County::select('region')->groupBy('region')->pluck('region')->toArray();
             $parts = explode(',', $data['area']);
-            foreach($parts as $part){
-                if(!in_array($part, $areas)){
+            foreach ($parts as $part) {
+                if (!in_array($part, $areas)) {
                     throw new ErrException("區域欄位格式不對");
                 }
             }
         }
 
-        if( $follower->area )
-        switch ($role->name) {
-            case EmployeeRole::STORE->value:
-                $data['review'] = true;
-                break;
-            case EmployeeRole::COUNTER->value:
-                $operator =$follower->operator;
-                $dignity=StoreEmployee::where('email',$operator)->first();
-                $dignityRole=StorePrivilegeRole::find($dignity->role_id);
-                if($dignityRole->name ==EmployeeRole::STORE->value){
-                    throw new ErrorException("櫃檯沒有權限編輯店家文章") ;
-                }
+        if ($follower->area)
+            switch ($role->name) {
+                case EmployeeRole::STORE->value:
+                    $data['review'] = true;
+                    break;
+                case EmployeeRole::COUNTER->value:
+                    $operator = $follower->operator;
+                    $dignity = StoreEmployee::where('email', $operator)->first();
+                    $dignityRole = StorePrivilegeRole::find($dignity->role_id);
+                    if ($dignityRole->name == EmployeeRole::STORE->value) {
+                        throw new ErrorException("櫃檯沒有權限編輯店家文章");
+                    }
 
-                if($follower->creator !== $auth->email){
-                    throw new ErrorException("櫃檯沒有權限編輯其他櫃檯文章") ;
-                }
-                if($follower->review){
-                    throw new ErrorException("已發布櫃檯沒有權限編輯") ;
-
-                }
-                break;
-        }
+                    if ($follower->creator !== $auth->email) {
+                        throw new ErrorException("櫃檯沒有權限編輯其他櫃檯文章");
+                    }
+                    if ($follower->review) {
+                        throw new ErrorException("已發布櫃檯沒有權限編輯");
+                    }
+                    break;
+            }
         $follower->fill($data);
         $follower->save();
     }
 
-    public function checkUpdatePermission($follow_id){
+    public function checkUpdatePermission($follow_id)
+    {
 
-        $hasPermission=true;
-        $auth=Auth::user();
-        $role=StorePrivilegeRole::find($auth->role_id);
-        $follower =FollowPlayer::find($follow_id);
+        $hasPermission = true;
+        $auth = Auth::user();
+        $role = StorePrivilegeRole::find($auth->role_id);
+        $follower = FollowPlayer::find($follow_id);
 
         switch ($role->name) {
             case EmployeeRole::COUNTER->value:
-                $operator =$follower->operator;
-                $dignity=StoreEmployee::where('email',$operator)->first();
-                $dignityRole=StorePrivilegeRole::find($dignity->role_id);
-                if($dignityRole->name ==EmployeeRole::STORE->value){
-                    $hasPermission=false;
+                $email = $follower->operator;
+                $dignity = StoreEmployee::where('email', $email)->first();
+                $dignityRole = StorePrivilegeRole::find($dignity->role_id);
+                if ($dignityRole->name == EmployeeRole::STORE->value) {
+                    $hasPermission = false;
+                }
+                //櫃檯文章不能編輯其他櫃檯
+                if ($auth->email !== $email) {
+                    $hasPermission = false;
+                }
+                //發佈了也不能編輯
+                if (isset($follower->creator) && !empty($follower->creator)) {
+                    $hasPermission = false;
                 }
                 break;
             default:
-            break;
+                break;
         }
 
-        return ['hasPermission' =>$hasPermission];
+        return ['hasPermission' => $hasPermission];
     }
 
-    
+
 
     public function findone($follow_id)
     {
-        $follower =FollowPlayer::find($follow_id);
+        $follower = FollowPlayer::find($follow_id);
         return $follower;
     }
 
     public function delete($follow_id)
     {
-        $follower =FollowPlayer::find($follow_id);
-        $auth=Auth::user();
+        $follower = FollowPlayer::find($follow_id);
+        $auth = Auth::user();
 
-        $role=StorePrivilegeRole::find($auth->role_id);
+        $role = StorePrivilegeRole::find($auth->role_id);
         switch ($role->name) {
             case EmployeeRole::COUNTER->value:
-                if($follower->creator!==$auth->email){
-                    throw new ErrorException("櫃檯沒有權限刪除其他櫃檯文章") ;
+                if ($follower->creator !== $auth->email) {
+                    throw new ErrorException("櫃檯沒有權限刪除其他櫃檯文章");
                 }
-            break;
+                break;
         }
         $follower->delete();
     }
@@ -146,17 +154,17 @@ class FollowPlayerService
     public function pageList($data)
     {
         $Builder = new FollowPlayer();
-        $auth=Auth::user();
-        $role=StorePrivilegeRole::find($auth->role_id);
+        $auth = Auth::user();
+        $role = StorePrivilegeRole::find($auth->role_id);
         switch ($role->name) {
             case EmployeeRole::STORE->value:
             case EmployeeRole::COUNTER->value:
-                $data['store_uid']=$auth->store_uid;
-                $Builder= $Builder->where('store_uid',$data['store_uid']);
+                $data['store_uid'] = $auth->store_uid;
+                $Builder = $Builder->where('store_uid', $data['store_uid']);
                 break;
         }
-        if(isset($data['review'])){
-            $Builder= $Builder->where('review',$data['review']);
+        if (isset($data['review'])) {
+            $Builder = $Builder->where('review', $data['review']);
         }
 
         if (isset($data['keyword'])) {
@@ -167,32 +175,29 @@ class FollowPlayerService
                     ->orwhere('operator', 'like', '%' . $data['keyword'] . '%');
             });
         }
-        
-        return $Builder->orderBy('created_at','desc')
-        ->orderBy('updated_at','desc')->paginate($data['per_page']);
 
+        return $Builder->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')->paginate($data['per_page']);
     }
 
     //自己所屬的文章
     public function ownList($data)
     {
-        $auth=Auth::user();
-        $role=StorePrivilegeRole::find($auth->role_id);
+        $auth = Auth::user();
+        $role = StorePrivilegeRole::find($auth->role_id);
         $Builder = new FollowPlayer();
-        $follower_ids=[];
-        $email=(Auth::user())->email;
+        $follower_ids = [];
+        $email = (Auth::user())->email;
         switch ($role->name) {
             case EmployeeRole::STORE->value:
-                $follower_ids=$Builder->where('store_uid',$auth->store_uid)->pluck('id');
+                $follower_ids = $Builder->where('store_uid', $auth->store_uid)->pluck('id');
                 break;
             case EmployeeRole::COUNTER->value:
-                $follower_ids=$Builder->where('store_uid',$auth->store_uid)
-                ->where('creator',$email)->pluck('id');
+                $follower_ids = $Builder->where('store_uid', $auth->store_uid)
+                    ->where('creator', $email)->pluck('id');
                 break;
         }
 
-        return ['follower_ids'=>$follower_ids];
-
+        return ['follower_ids' => $follower_ids];
     }
-
 }
