@@ -11,7 +11,7 @@ class CustomCoupon extends Model
 
     protected $fillable = [
         'name', 'code', 'img', 'per_people_volume', 'total_issue','issue_time' ,'expire_time',
-        'coupon_desc','notice_desc','notify','shelve'
+        'coupon_desc','notice_desc','notify','shelve','operator','operator_ip'
     ];
 
 }

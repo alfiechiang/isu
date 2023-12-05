@@ -15,6 +15,8 @@ class CustomCouponService
     public function create($data)
     {
         $code = $data['code'] . date('Ymd');
+        $operator =Auth::user()->email;
+        $clientIp = request()->ip();
         $coupon=CustomCoupon::create([
             'name' => $data['name'],
             'code' => $code,
@@ -26,6 +28,8 @@ class CustomCouponService
             'coupon_desc' => $data['coupon_desc'],
             'notice_desc' => $data['notice_desc'],
             'notify' => $data['notify'],
+            'operator'=>$operator,
+            'operator_ip'=>$clientIp
         ]);
 
         return ['coupon_code'=>$coupon->code];
