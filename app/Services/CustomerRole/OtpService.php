@@ -46,7 +46,7 @@ class OtpService
         $sixHoursAgo = $now->subHours(6);
         $count1 = Otp::whereBetween('created_at', [$oneMinuteAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
         $count2 = Otp::whereBetween('created_at', [$sixHoursAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
-        if ($count1 >= 50) {
+        if ($count1 >= 5) {
             throw new ErrException('請求頻繁');
         }
         //6小時內累積次數不可超過100筆
