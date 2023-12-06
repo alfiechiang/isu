@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use App\Exceptions\ErrException;
-
+use App\Models\OptLog;
 
 class OtpService
 {
@@ -37,15 +37,14 @@ class OtpService
             // throw new Exception('操作過於頻繁，請稍後再試.', StatusCode::OTP_SEND_LIMIT->value);
         }
 
-
         $clientIp = request()->ip();
         //同一ip驗證碼頻率在每分鐘內不得超過50筆
         $now = Carbon::now();
         $oneMinuteAgo = $now->subMinute();
         $oneMinuteAgo = $oneMinuteAgo->format('Y-m-d H:i:s');
         $sixHoursAgo = $now->subHours(6);
-        $count1 = Otp::whereBetween('created_at', [$oneMinuteAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
-        $count2 = Otp::whereBetween('created_at', [$sixHoursAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
+        $count1 = OptLog::whereBetween('created_at', [$oneMinuteAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
+        $count2 = OptLog::whereBetween('created_at', [$sixHoursAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
         if ($count1 >= 5) {
             throw new ErrException('請求頻繁');
         }
@@ -87,6 +86,9 @@ class OtpService
             $otp->save();
         }
         $otp->country_code = $country_code;
+
+        $clientIp = request()->ip();
+        OptLog::create(['ip_address' => $clientIp]);
 
         return (object)[
             'otp' => $otp,
