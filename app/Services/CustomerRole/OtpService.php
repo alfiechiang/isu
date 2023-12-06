@@ -43,15 +43,14 @@ class OtpService
         $oneMinuteAgo = $now->subMinute();
         $oneMinuteAgo = $oneMinuteAgo->format('Y-m-d H:i:s');
         $sixHoursAgo = $now->subHours(6);
-        $sixHoursAgo = $now->subSeconds(30);
         $count1 = OptLog::whereBetween('created_at', [$oneMinuteAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
         $count2 = OptLog::whereBetween('created_at', [$sixHoursAgo, date('Y-m-d H:i:s')])->where('ip_address', $clientIp)->count();
-        if ($count1 >= 10) {
+        if ($count1 >= 50) {
             throw new ErrException('請求頻繁');
         }
         //6小時內累積次數不可超過100筆
-        if ($count2>= 3) {
-            throw new ErrException('稍後再試');
+        if ($count2>= 100) {
+            throw new ErrException('請求頻繁');
         }
 
         // 驗證參數格式
