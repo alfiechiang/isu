@@ -33,13 +33,16 @@ class CustomerCouponPelopeListImport implements ToCollection
             CustomCouponPeopleList::where('coupon_code',$this->coupon_code)->delete();
 
             foreach ($rows as $row) {
-                CustomCouponPeopleList::create([
-                    'coupon_code' => $this->coupon_code,
-                    'coupon_name'=>$this->coupon_name,
-                    'guid' => $row[0],
-                    'phone' => $row[1],
-                    'email' => $row[2]
-                ]);
+                if(!is_null($row[0])){
+                    CustomCouponPeopleList::create([
+                        'coupon_code' => $this->coupon_code,
+                        'coupon_name'=>$this->coupon_name,
+                        'guid' => $row[0],
+                        'phone' => $row[1],
+                        'email' => $row[2]
+                    ]);
+                }
+               
             }
         });
     }
