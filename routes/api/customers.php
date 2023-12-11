@@ -6,7 +6,7 @@ use App\Http\Controllers\Stores;
 
 use App\Http\Controllers\Customers;
 
-Route::get('whosyourdaddy', [Customers\TestController::class, 'axcd']);
+//Route::get('whosyourdaddy', [Customers\TestController::class, 'axcd']);
 
 Route::post('login', [Customers\AuthController::class, 'login']);
 Route::post('register', [Customers\AuthController::class, 'register']);

@@ -40,7 +40,7 @@ class Otp extends Model
 
     const AUTH_CODE_TTL = 900;
 
-    protected $country_code = 'sssss';
+    protected $country_code='886';
 
     /**
      * The attributes that are mass assignable.
@@ -48,7 +48,7 @@ class Otp extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'identifier', 'token', 'expired_at', 'valid', 'country_code','ip_address'
+        'identifier', 'token', 'expired_at', 'valid', 'country_code','ip_address','coupon_code'
     ];
 
     protected $casts = [

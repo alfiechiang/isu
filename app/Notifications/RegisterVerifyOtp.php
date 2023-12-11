@@ -35,6 +35,7 @@ class RegisterVerifyOtp extends Notification
         }
 
         if (preg_match('/^9\d{8}$/', $notifiable->identifier) === 1) {
+
             return ['sms'];
         }
 
@@ -49,12 +50,32 @@ class RegisterVerifyOtp extends Notification
 
     public function toSms(object $notifiable): SmsMessage
     {
+
         switch ($this->lang) {
             case 'cn':
                 $content = "【愛嬉遊聯盟】，您的驗證碼為 {$notifiable->token}，{$this->validity}分鐘內有效。請勿將此驗證碼提供給其他人或愛嬉遊聯盟員工。";
                 break;
             case 'en':
-                $content="[I See You Hostel Alliance] Your verification code is:{$notifiable->token}, valid for {$this->validity} minutes. Please do not share this verification code with anyone or Love Fun League staff.";
+                $content="[I See You Hotel Alliance] Your verification code is:{$notifiable->token},
+                valid for {$this->validity} minutes. Please do not share this verification 
+                code with anyone or Love Fun League staff.";
+                break;
+            default:
+                $content = "【愛嬉遊聯盟】，您的驗證碼為 {$notifiable->token}，{$this->validity}分鐘內有效。請勿將此驗證碼提供給其他人或愛嬉遊聯盟員工。";
+
+        }
+
+        if(!empty($notifiable->coupon_code)){
+            switch ($this->lang) {
+                case 'cn':
+                    $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷 {$notifiable->coupon_code}";
+                    break;
+                case 'en':
+                    $content="[I See You Hotel Alliance] thank you for getting this coupon {$notifiable->coupon_code}";
+                    break;
+                default:
+                    $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷 {$notifiable->coupon_code}";
+            }
         }
 
         return (new SmsMessage)

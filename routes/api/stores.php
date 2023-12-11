@@ -14,9 +14,6 @@ Route::get('customers/export', [Stores\CustomerController::class, 'export']);
 
 Route::get('custom/coupon/export/{coupon_code}', [Stores\CustomCouponController::class, 'export']);
 
-
-
-
 Route::group([
   'middleware' => ['auth:employee','role_modify'],
 ], function ($router) {
