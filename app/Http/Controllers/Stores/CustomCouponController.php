@@ -84,7 +84,9 @@ class CustomCouponController extends Controller
     {
 
         try {
-            return Excel::download(new CustomCouponCustomersExport($coupon_code), 'custom_coupon.xlsx');
+            $customCoupon=CustomCoupon::where('code',$coupon_code)->first();
+            $name=$customCoupon->name;
+            return Excel::download(new CustomCouponCustomersExport($coupon_code), "$name.xlsx");
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
