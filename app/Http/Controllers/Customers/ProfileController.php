@@ -127,22 +127,28 @@ class ProfileController extends Controller
                 if ($exist->isNotEmpty()) {
                     $persent = false;
                 }
-
+                
                 if ($persent) {
 
                     $created_at = date('Y-m-d H:i:s');
                     $expire_at = date('Y-m-d', strtotime("+1 year", strtotime($created_at)));
-                    $data = [
-                        'id' => Str::uuid(),
-                        'code_script' => 'M' . date('Ymd'),
-                        'created_at' => $created_at,
-                        'expired_at' => $expire_at,
-                        'status' => 1,
-                        'coupon_cn_name' => '會員大禮包',
-                        'customer_id' => $authUser->id,
-                        'coupon_id' => config('coupon.customer.coupon_id')
-                    ];
-                    DB::table('coupon_customers')->insert($data);
+                    $insertData=[];
+
+                    for ($i = 0; $i < 10; $i++) {
+                        $data = [
+                            'id' => Str::uuid(),
+                            'code_script' => 'M' . date('Ymd'),
+                            'created_at' => $created_at,
+                            'expired_at' => $expire_at,
+                            'status' => 1,
+                            'coupon_cn_name' => '會員大禮包',
+                            'customer_id' => $authUser->id,
+                            'coupon_id' => config('coupon.customer.coupon_id')
+                        ];
+                        $insertData[]=$data;
+                    }
+                    
+                    DB::table('coupon_customers')->insert($insertData);
                 }
 
 
