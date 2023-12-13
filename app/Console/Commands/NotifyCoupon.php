@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Otp;
 use App\Notifications\RegisterVerifyOtp;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class NotifyCoupon extends Command
@@ -34,16 +35,29 @@ class NotifyCoupon extends Command
         Log::info('exec notify:coupon');
         $codes=CustomCoupon::where('notify',1)->pluck('code');
         $customCouponCustomers=CustomCouponCustomer::whereIn('coupon_code',$codes)->where('notify',0)->limit(10)->get();
-        foreach($customCouponCustomers as $customCouponCustomer){
-           $customer=Customer::where('guid',$customCouponCustomer->guid)->first();
-           $otp= Otp::create([
-                //'coupon_code'=>$customCouponCustomer->coupon_code,
-                'identifier'=>$customer->phone
-            ]);
-            $validity=0;
-            $lang='cn';
-            $otp->country_code = "+886";
-            $otp->notify(new RegisterVerifyOtp($validity, $lang));
-        }
+
+        
+
+        DB::transaction(function () use ($customCouponCustomers) {
+
+            foreach($customCouponCustomers as $customCouponCustomer){
+                $customer=Customer::where('guid',$customCouponCustomer->guid)->first();
+                $otp= Otp::create([
+                        'coupon_code'=>$customCouponCustomer->coupon_code,
+                        'identifier'=>$customer->phone
+                    ]);
+                    $validity=0;
+                    $lang='cn';
+                    $otp->country_code = "+886";
+                    $otp->notify(new RegisterVerifyOtp($validity, $lang));
+            }
+
+            foreach($customCouponCustomers as $customCouponCustomer){
+                $customCouponCustomer->notify =true;
+                $customCouponCustomer->save();
+            }
+
+
+        });
     }
 }

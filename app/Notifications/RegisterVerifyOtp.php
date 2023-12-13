@@ -74,7 +74,7 @@ class RegisterVerifyOtp extends Notification
                     $content="[I See You Hotel Alliance] thank you for getting this coupon {$notifiable->coupon_code}";
                     break;
                 default:
-                    $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷 {$notifiable->coupon_code}";
+                    $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷:{$notifiable->coupon_code}";
             }
         }
 
