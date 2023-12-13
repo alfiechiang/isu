@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Otp;
 use App\Notifications\RegisterVerifyOtp;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class NotifyCoupon extends Command
 {
@@ -30,6 +31,7 @@ class NotifyCoupon extends Command
      */
     public function handle()
     {
+        Log::info('exec notify:coupon');
         $codes=CustomCoupon::where('notify',1)->pluck('code');
         $customCouponCustomers=CustomCouponCustomer::whereIn('coupon_code',$codes)->where('notify',0)->limit(10)->get();
         foreach($customCouponCustomers as $customCouponCustomer){

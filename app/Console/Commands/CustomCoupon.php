@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\CustomCoupon as ModelsCustomCoupon;
 use App\Services\Stores\CustomCouponService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CustomCoupon extends Command
 {
@@ -27,6 +28,7 @@ class CustomCoupon extends Command
      */
     public function handle()
     {
+        Log::info('exec custom-coupon');
         $starttime =date('Y-m-d 00:00:00');
         $endtime =date('Y-m-d 23:59:59');
 
