@@ -47,7 +47,6 @@ class CustomCouponService
         $insertData = [];
         $items = CustomCouponPeopleList::where('coupon_code', $coupon_code)->get();
         $coupon =  CustomCoupon::where('code', $coupon_code)->first();
-
         foreach ($items as $item) {
             for ($i = 0; $i < $coupon->per_people_volume; $i++) {
                 $data = [

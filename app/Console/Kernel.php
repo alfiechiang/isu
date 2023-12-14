@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('longtime-coupon:caculate')->dailyAt('00:07');
         $schedule->command('updatestamptype')->dailyAt('00:10');
         $schedule->command('notify:coupon')->hourly();
+        $schedule->command('custom-coupon')->hourly();
     }
 
     /**
