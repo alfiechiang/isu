@@ -109,9 +109,11 @@ class StampService
             $prize->save();
 
             $spend_stamp_num = $data['spend_stamp_num'];
-
+            $now = date('Y-m-d H:i:s');
+            
             $customer = Customer::where("guid", $data['guid'])->first();
             $stamps = StampCustomer::where("customer_id", $customer->id)->whereNull("consumed_at")
+                ->where('expired_at', '>=', $now)
                 ->orderBy("expired_at")->limit($spend_stamp_num)->get();
 
             if ($stamps->count() < $spend_stamp_num) {
