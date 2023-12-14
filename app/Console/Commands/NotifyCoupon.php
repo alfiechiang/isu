@@ -36,8 +36,6 @@ class NotifyCoupon extends Command
         $codes=CustomCoupon::where('notify',1)->pluck('code');
         $customCouponCustomers=CustomCouponCustomer::whereIn('coupon_code',$codes)->where('notify',0)->limit(10)->get();
 
-        
-
         DB::transaction(function () use ($customCouponCustomers) {
 
             foreach($customCouponCustomers as $customCouponCustomer){
