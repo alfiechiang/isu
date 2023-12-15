@@ -101,12 +101,14 @@ class StampService
     public function exchangeStamp($data)
     {
         DB::transaction(function () use ($data) {
-            $prize = Prize::find($data['prize_id'])->first();
+            $prize = Prize::where('id',$data['prize_id'])->first();
             if ($data['exchange_num'] > $prize->stock) {
                 throw new ErrException("品項庫存不足");
             }
             $prize->stock = $prize->stock - $data['exchange_num'];
             $prize->save();
+
+
 
             $spend_stamp_num = $data['spend_stamp_num'];
             $now = date('Y-m-d H:i:s');

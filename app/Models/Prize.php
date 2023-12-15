@@ -9,6 +9,6 @@ class Prize extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'store_uid', 'exchange_num', 'spend_stamp_num', 'stock','item_name','desc'
+       'id', 'store_uid', 'exchange_num', 'spend_stamp_num', 'stock','item_name','desc'
     ];
 }
