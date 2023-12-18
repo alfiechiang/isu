@@ -45,6 +45,17 @@ class CouponService
         $now = date('Y-m-d H:i:s');
 
         if ($data['status'] == 1) {
+            //檢查日期是否過期 但是status還是1
+            $checkutList = $Builder->where('status', $data['status'])
+                ->orderBy('created_at', 'desc')->get();
+            foreach ($checkutList as $check) {
+                $now = date('Y-m-d H:is');
+                if ($check->expired_at < $now) {
+                    $check->status = 2; //過期以使用
+                    $check->save();
+                }
+            }
+
             $Builder = $Builder->where('status', $data['status'])
                 ->orderBy('created_at', 'desc');
         }
@@ -64,9 +75,8 @@ class CouponService
     {
         $auth = Auth::user();
         $Builder = new  CouponCustomer();
-        
-        return  $Builder->where('customer_id', $auth->id)->where('coupon_id', config('coupon.customer.coupon_id'))
-        ->first();
-    }
 
+        return  $Builder->where('customer_id', $auth->id)->where('coupon_id', config('coupon.customer.coupon_id'))
+            ->first();
+    }
 }

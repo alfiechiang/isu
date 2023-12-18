@@ -20,8 +20,17 @@ class CouponService
 
 
     public function findoneCouponByMember($coupon_code,$coupon_id){
-        return  CouponCustomer::where('coupon_id',$coupon_code)->with('coupon')
+
+        $coupon =CouponCustomer::where('coupon_id',$coupon_code)->with('coupon')
         ->where('id',$coupon_id)->first();
+        $now =date('Y-m-d H:i:s');
+
+        if($coupon->expired_at <$now){
+            $coupon->status=2;
+            $coupon->save();
+        }
+
+        return $coupon;
     }
 
 }
