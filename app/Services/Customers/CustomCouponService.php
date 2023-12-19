@@ -6,15 +6,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\CouponCustomer;
 use App\Models\CustomCoupon;
 use App\Models\CustomCouponCustomer;
-use Illuminate\Support\Facades\DB;
 
 class CustomCouponService
 {
 
     public function customerPageList($data)
     {
-        DB::enableQueryLog();
-
         
         $Builder = new  CustomCouponCustomer();
         $auth = Auth::user();
@@ -34,14 +31,7 @@ class CustomCouponService
                 ->orderBy('created_at', 'desc');
         }
 
-        $res= $Builder->with('coupon')->paginate($data['per_page']);
-
-        $query = DB::getQueryLog();
-
-        dd($query);
-
-
-        return $res;
+        return $Builder->with('coupon')->paginate($data['per_page']);
 
     }
 
