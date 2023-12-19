@@ -24,7 +24,7 @@ class CustomCouponService
 
         if ($data['status'] == 2) {
             $Builder = $Builder->where(function ($query) use ($now) {
-                $query->where('expire_time', '<=', $now)->orWhere('exchange',1);
+                $query->where('expire_time', '<', $now)->orWhere('exchange',1);
             })
                 ->orderBy('created_at', 'desc');
         }
