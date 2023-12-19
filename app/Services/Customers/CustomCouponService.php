@@ -6,16 +6,21 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\CouponCustomer;
 use App\Models\CustomCoupon;
 use App\Models\CustomCouponCustomer;
+use Illuminate\Support\Facades\DB;
 
 class CustomCouponService
 {
 
     public function customerPageList($data)
     {
+        DB::enableQueryLog();
+
+        
         $Builder = new  CustomCouponCustomer();
         $auth = Auth::user();
         $Builder = $Builder->where('guid', $auth->guid);
         $now = date('Y-m-d H:i:s');
+        
         if ($data['status'] == 1) {
             $Builder = $Builder->where('exchange', 0)
                 ->where('expire_time','>',$now)
@@ -29,7 +34,15 @@ class CustomCouponService
                 ->orderBy('created_at', 'desc');
         }
 
-        return $Builder->with('coupon')->paginate($data['per_page']);
+        $res= $Builder->with('coupon')->paginate($data['per_page']);
+
+        $query = DB::getQueryLog();
+
+        dd($query);
+
+
+        return $res;
+
     }
 
 }
