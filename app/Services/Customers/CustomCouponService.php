@@ -15,13 +15,13 @@ class CustomCouponService
         $Builder = new  CustomCouponCustomer();
         $auth = Auth::user();
         $Builder = $Builder->where('guid', $auth->guid);
-
+        $now = date('Y-m-d H:i:s');
         if ($data['status'] == 1) {
             $Builder = $Builder->where('exchange', 0)
+                ->where('expire_time','>',$now)
                 ->orderBy('created_at', 'desc');
         }
 
-        $now = date('Y-m-d H:i:s');
         if ($data['status'] == 2) {
             $Builder = $Builder->where(function ($query) use ($now) {
                 $query->where('expire_time', '<=', $now);

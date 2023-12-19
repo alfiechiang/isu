@@ -24,11 +24,14 @@ class CouponService
         $coupon =CouponCustomer::where('coupon_id',$coupon_code)->with('coupon')
         ->where('id',$coupon_id)->first();
         $now =date('Y-m-d H:i:s');
-
-        if($coupon->expired_at <$now){
-            $coupon->status=2;
-            $coupon->save();
+        if(isset($coupon->expired_at)){
+            if($coupon->expired_at <$now){
+                $coupon->status=2;
+                $coupon->save();
+            }
         }
+
+       
 
         return $coupon;
     }
