@@ -33,13 +33,13 @@ class CustomCoupon extends Command
             Log::info('exec custom-coupon');
             $starttime = date('Y-m-d 00:00:00');
             $endtime = date('Y-m-d 23:59:59');
-            $coupons = ModelsCustomCoupon::whereBetween('issue_time', [$starttime, $endtime])->get();
+            $coupons = ModelsCustomCoupon::where('send', false)
+                ->whereBetween('issue_time', [$starttime, $endtime])->get();
             $service = new CustomCouponService();
             foreach ($coupons as $coupon) {
                 $service->send($coupon->code);
             }
-            ModelsCustomCoupon::whereBetween('issue_time', [$starttime, $endtime])->update(['send'=>true]);
+            ModelsCustomCoupon::whereBetween('issue_time', [$starttime, $endtime])->update(['send' => true]);
         });
-        
     }
 }
