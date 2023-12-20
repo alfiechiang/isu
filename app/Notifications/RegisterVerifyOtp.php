@@ -68,10 +68,12 @@ class RegisterVerifyOtp extends Notification
         if(!empty($notifiable->coupon_code)){
             switch ($this->lang) {
                 case 'cn':
-                    $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷 {$notifiable->coupon_code}";
+                    $content = "您好！【愛嬉遊】為您獻上專屬優惠劵【{$notifiable->coupon_code}】，可憑此券享受優惠！請盡快在有效期限內使用喔！";
+                    
                     break;
                 case 'en':
-                    $content="[I See You Hotel Alliance] thank you for getting this coupon {$notifiable->coupon_code}";
+                    $content="Hello! 【ISU】 is offering you an exclusive discount coupon with the code [{$notifiable->coupon_code}]. You can enjoy discounts by presenting this coupon! Please use it as soon as possible within the validity period.";
+
                     break;
                 default:
                     $content = "【愛嬉遊聯盟】，感謝您獲得此優惠卷:{$notifiable->coupon_code}";
