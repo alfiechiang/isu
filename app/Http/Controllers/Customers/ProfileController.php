@@ -167,7 +167,7 @@ class ProfileController extends Controller
                                 'created_at' => date('Y-m-d H:i:s'),
                                 'expired_at' => $expire_at,
                                 'status' => 1,
-                                'coupon_cn_name' => '生日大禮',
+                                'coupon_cn_name' => '生日禮劵',
                                 'customer_id' => $authUser->id,
                                 'coupon_id' => config('coupon.birthday.coupon_id')
                             ]);

@@ -113,7 +113,7 @@ class CustomerSeeder extends Seeder
 
     private function couponCustomers($id){
         $insertData=[
-            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'生日大禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'B20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
+            ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'生日禮劵','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'B20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
             ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>1,'coupon_cn_name'=>'好久不見','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-08-07 12:35:30','consumed_at'=>null,'coupon_id'=>'F20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
             ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'開卡禮','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'C20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
             ['id'=>Str::uuid(),'code_script'=>'ABCDEF1234567890','status'=>2,'coupon_cn_name'=>'會員大禮包','created_at'=>'2023-07-07 12:35:30','expired_at'=>'2023-07-07 12:35:30','consumed_at'=>'2023-07-06 12:35:30','coupon_id'=>'M20230707','customer_id'=>$id,'exchange_store'=>'Seven'],
