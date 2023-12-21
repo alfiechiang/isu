@@ -163,6 +163,7 @@ class AuthService
      */
     public function createCustomer(array $data): Customer
     {
+
         // 如果手機號碼已經被註冊，則拋出異常.
         $phone = Arr::get($data, 'phone');
 
@@ -179,6 +180,7 @@ class AuthService
                 'guid'=>'ISU'.date('Ymd').rand(1000000,9999999),
                 'country_code'=>$data['country_code'],
             ]);
+            $expired_at = date('Y-m-d', strtotime("+1 year", strtotime(date('Y-m-d H:i:s'))));
             CouponCustomer::create([
                 'id'=>Str::uuid(),
                 'code_script'=>'F'.date('Ymd'),
@@ -186,6 +188,7 @@ class AuthService
                 'status'=>1,
                 'coupon_cn_name'=>'開卡禮',
                 'customer_id'=>$customer->id,
+                'expired_at'=>$expired_at,
                 'coupon_id'=>config('coupon.open.coupon_id')
             ]);
 
