@@ -5,6 +5,8 @@ namespace App\Services\Stores;
 use App\Models\Coupon;
 use App\Models\CouponCustomer;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CouponService
 {
@@ -46,6 +48,33 @@ class CouponService
        
 
         return $coupon;
+    }
+
+    //特定會員某張優惠卷失效
+    public function findoneCouponDisableByMember($coupon_code, $operaterIp, $desc, $coupon_id)
+    {
+
+        DB::transaction(function () use ($coupon_code, $operaterIp, $desc, $coupon_id) {
+            CouponCustomer::where('coupon_id', $coupon_code)->where('id', $coupon_id)
+                ->update(['disable' => true, 'memo' => $desc]);
+            $insertData = [];
+            $auth = Auth::user();
+            $coupons = CouponCustomer::where('coupon_id', $coupon_code)->where('id', $coupon_id)->get();
+            foreach ($coupons as $coupon) {
+                $costomer =Customer::where('id',$coupon->customer_id)->first();
+                $insertData[] = [
+                    'guid' =>$costomer->guid,
+                    'coupon_code' => $coupon->coupon_id,
+                    'coupon_name' => $coupon->coupon_cn_name,
+                    'operator' => $auth->name,
+                    'disable_time' => date('Y-m-d H:i:s'),
+                    'operator_ip' => $operaterIp,
+                    'desc' => $desc
+                ];
+            }
+
+            DB::table('coupon_disable_logs')->insert($insertData);
+        });
     }
 
 }

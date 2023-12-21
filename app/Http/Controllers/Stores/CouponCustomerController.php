@@ -45,6 +45,19 @@ class CouponCustomerController extends Controller
         }
     }
 
+    public function findoneCouponDisableByMember(Request $request,$coupon_code) //全數失效
+    {
+        try {
+            $operaterIp=$request->ip();
+            $desc=$request->desc;
+            $coupon_id=$request->coupon_id;
+            $this->couponService->findoneCouponDisableByMember($coupon_code,$operaterIp,$desc,$coupon_id);
+            return Response::format(200, [], '請求成功');
+        } catch (Exception $e) {
+            return Response::errorFormat($e);
+        }
+    }
+
    
     
 }
