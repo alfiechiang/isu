@@ -16,7 +16,7 @@ class CouponService
 
     public function peoplePageList($data,$coupon_code){
 
-        $Builder = CouponCustomer::where('coupon_id', $coupon_code);
+        $Builder = CouponCustomer::where('coupon_id', $coupon_code)->where('disable',false);
         if (isset($data['keyword'])) {
             $customer_id = '';
             $customer = Customer::where('guid', $data['keyword'])->orWhere('name', $data['keyword'])->first();
@@ -33,7 +33,7 @@ class CouponService
 
     public function findoneCouponByMember($coupon_code,$coupon_id){
 
-        $coupon =CouponCustomer::where('coupon_id',$coupon_code)->with('coupon')
+        $coupon =CouponCustomer::where('coupon_id',$coupon_code)->where('disable',false)->with('coupon')
         ->where('id',$coupon_id)->first();
         $now =date('Y-m-d H:i:s');
         if(isset($coupon->expired_at)){

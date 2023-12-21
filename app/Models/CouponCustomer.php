@@ -23,7 +23,7 @@ class CouponCustomer extends Model
      */
     protected $fillable = [
         'expired_at', 'status', 'memo', 'coupon_id', 'coupon_cn_name','coupon_script' ,'customer_id',
-        'operator_type', 'operator_id', 'reference_type', 'reference_id',
+        'operator_type', 'operator_id', 'reference_type', 'reference_id','disable'
     ];
 
     protected $casts = [

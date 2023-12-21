@@ -41,7 +41,7 @@ class CouponService
 
         $Builder = new  CouponCustomer();
         $auth = Auth::user();
-        $Builder = $Builder->where('customer_id', $auth->id);
+        $Builder = $Builder->where('customer_id', $auth->id)->where('disable',false);
         $now = date('Y-m-d H:i:s');
 
         if ($data['status'] == 1) {
