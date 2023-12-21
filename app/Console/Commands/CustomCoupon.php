@@ -37,6 +37,7 @@ class CustomCoupon extends Command
                 ->whereBetween('issue_time', [$starttime, $endtime])->get();
             $service = new CustomCouponService();
             foreach ($coupons as $coupon) {
+                Log::info("exec:custom-coupon:foreach:$coupon->code");
                 $service->send($coupon->code);
             }
             ModelsCustomCoupon::whereBetween('issue_time', [$starttime, $endtime])->update(['send' => true]);

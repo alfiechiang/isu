@@ -33,29 +33,31 @@ class NotifyCoupon extends Command
     public function handle()
     {
         Log::info('exec notify:coupon');
-        $codes=CustomCoupon::where('notify',1)->pluck('code');
-        $customCouponCustomers=CustomCouponCustomer::whereIn('coupon_code',$codes)->where('notify',0)->limit(10)->get();
-
+        $codes = CustomCoupon::where('notify', 1)->pluck('code');
+        $customCouponCustomers = CustomCouponCustomer::whereIn('coupon_code', $codes)
+            ->where('notify', false)->with('customer')->limit(30)->get();
         DB::transaction(function () use ($customCouponCustomers) {
+            foreach ($customCouponCustomers as $customCouponCustomer) {
+                $customer = Customer::where('guid', $customCouponCustomer->guid)->first();
+                $otp = Otp::create([
+                    'coupon_code' => $customCouponCustomer->coupon_code,
+                    'identifier' => $customer->phone
+                ]);
+                $validity = 0;
+                $lang = 'cn';
 
-            foreach($customCouponCustomers as $customCouponCustomer){
-                $customer=Customer::where('guid',$customCouponCustomer->guid)->first();
-                $otp= Otp::create([
-                        'coupon_code'=>$customCouponCustomer->coupon_code,
-                        'identifier'=>$customer->phone
-                    ]);
-                    $validity=0;
-                    $lang='cn';
-                    $otp->country_code = "+886";
-                    $otp->notify(new RegisterVerifyOtp($validity, $lang));
+                $country_code = "+886";
+                if (isset($customCouponCustomer->customer->country_code)) {
+                    $country_code = "+" . $customCouponCustomer->customer->country_code;
+                }
+                $otp->country_code = $country_code;
+                $otp->notify(new RegisterVerifyOtp($validity, $lang));
             }
-
-            foreach($customCouponCustomers as $customCouponCustomer){
-                $customCouponCustomer->notify =true;
-                $customCouponCustomer->save();
+            $ids=[];
+            foreach ($customCouponCustomers as $customCouponCustomer) {
+                $ids[]=$customCouponCustomer->id;
             }
-
-
+            CustomCouponCustomer::whereIn('id', $ids)->update(['notify'=>true]);
         });
     }
 }

@@ -34,7 +34,7 @@ class CustomerSeeder extends Seeder
         $this->stampCustomers($r2->id);
 
        $r3= Customer::create(
-            ['name' => 'zack', 'guid' => 'ISU202307051236012', 'phone' => '938905077', 'password' => '123456']
+            ['name' => 'zack', 'guid' => 'ISU202307051236012', 'phone' => '938905078', 'password' => '123456']
         );
         $this->stampCustomers($r3->id);
 
