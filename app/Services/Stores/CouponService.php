@@ -4,6 +4,7 @@ namespace App\Services\Stores;
 
 use App\Models\Coupon;
 use App\Models\CouponCustomer;
+use App\Models\Customer;
 
 class CouponService
 {
@@ -14,8 +15,19 @@ class CouponService
 
 
     public function peoplePageList($data,$coupon_code){
-        return CouponCustomer::where('coupon_id',$coupon_code)->with('customer')
-        ->groupBy('customer_id','coupon_id')->paginate($data['per_page']);
+
+        $Builder = CouponCustomer::where('coupon_id', $coupon_code);
+        if (isset($data['keyword'])) {
+            $customer_id = '';
+            $customer = Customer::where('guid', $data['keyword'])->orWhere('name', $data['keyword'])->first();
+            if (!is_null($customer)) {
+                $customer_id = $customer->id;
+            }
+            $Builder = $Builder->where('customer_id', $customer_id);
+        }
+
+        return $Builder->with('customer')
+            ->groupBy('customer_id', 'coupon_id')->paginate($data['per_page']);
     }
 
 
