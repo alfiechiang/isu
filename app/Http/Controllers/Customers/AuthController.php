@@ -231,7 +231,11 @@ class AuthController extends Controller
 
     public function checkToken()
     {   
-        $isValidToken = Auth::guard('customers')->check();
+        $isValidToken=true;
+        $auth =Auth::user();
+        if(is_null($auth)){
+            $isValidToken=false;
+        }
         return Response::format(200, ['isValid' => $isValidToken], "請求成功");
     }
 }
