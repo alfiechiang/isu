@@ -100,7 +100,8 @@ class CustomCouponService
         DB::transaction(function () use ($coupon_code,$operaterIp,$desc) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             $coupon->disable=true;
-            CustomCouponCustomer::where('coupon_code',$coupon_code)->update(['disable'=>true,'desc'=>$desc]);
+            CustomCouponCustomer::where('coupon_code',$coupon_code)->update(
+                ['disable'=>true,'desc'=>$desc,'exchange' => 1,'exchange_time'=>date('Y-m-d H:i:s')]);
             $insertData=[];
             $auth =Auth::user();
             $coupons= CustomCouponCustomer::where('coupon_code',$coupon_code)->get();
@@ -128,7 +129,8 @@ class CustomCouponService
         DB::transaction(function () use ($coupon_code,$operaterIp,$desc,$coupon_id) {
             $coupon =  CustomCoupon::where('code', $coupon_code)->first();
             $coupon->disable=true;
-            CustomCouponCustomer::where('coupon_code',$coupon_code)->where('id',$coupon_id)->update(['disable'=>true,'desc'=>$desc]);
+            CustomCouponCustomer::where('coupon_code',$coupon_code)->where('id',$coupon_id)
+            ->update(['disable'=>true,'desc'=>$desc,'exchange' => 1,'exchange_time'=>date('Y-m-d H:i:s')]);
             $insertData=[];
             $auth =Auth::user();
             $coupons= CustomCouponCustomer::where('coupon_code',$coupon_code)->where('id',$coupon_id)->get();

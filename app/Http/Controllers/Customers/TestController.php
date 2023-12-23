@@ -34,4 +34,9 @@ class TestController extends Controller
         DB::table('stores')->delete();
         Artisan::call('db:seed');
     }
+
+    public function send(Request $request){
+        Artisan::call('custom-coupon');
+        Artisan::call('notify:coupon');
+    }
 }

@@ -21,7 +21,6 @@ class CustomCouponService
         if ($data['status'] == 1) {
             $Builder = $Builder->where('exchange', 0)
                 ->where('expire_time','>',$now)
-                ->where('disable',false)
                 ->orderBy('created_at', 'desc');
         }
 

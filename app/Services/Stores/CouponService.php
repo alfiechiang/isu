@@ -35,7 +35,7 @@ class CouponService
 
     public function findoneCouponByMember($coupon_code,$coupon_id){
 
-        $coupon =CouponCustomer::where('coupon_id',$coupon_code)->where('disable',false)->with('coupon')
+        $coupon =CouponCustomer::where('coupon_id',$coupon_code)->with('coupon')
         ->where('id',$coupon_id)->first();
         $now =date('Y-m-d H:i:s');
         if(isset($coupon->expired_at)){
@@ -44,8 +44,6 @@ class CouponService
                 $coupon->save();
             }
         }
-
-       
 
         return $coupon;
     }
@@ -56,7 +54,7 @@ class CouponService
 
         DB::transaction(function () use ($coupon_code, $operaterIp, $desc, $coupon_id) {
             CouponCustomer::where('coupon_id', $coupon_code)->where('id', $coupon_id)
-                ->update(['disable' => true, 'memo' => $desc]);
+                ->update(['disable' => true, 'memo' => $desc,'consumed_at'=>date('Y-m-d H:i:s'),'status'=>2]);
             $insertData = [];
             $auth = Auth::user();
             $coupons = CouponCustomer::where('coupon_id', $coupon_code)->where('id', $coupon_id)->get();
