@@ -6,6 +6,7 @@ use App\Sms\SmsMessage;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Log;
 
 class Every8dSms
 {
@@ -49,8 +50,8 @@ class Every8dSms
         ]);
         $contents = $response->getBody()->getContents();
         $record = str_getcsv($contents, ',');
-
         if($record[0] <= 0){
+            Log::error("SMS_Send_faild phone number:$country_code.$to");
             throw new Exception($record[1]);
         }
 

@@ -27,7 +27,7 @@ class LongtimeCoupon extends Command
      */
     protected $description = 'Command description';
 
-    protected $starttimeString ="-1 days";
+    protected $starttimeString ="-180 days";
 
     /**
      * Execute the console command.

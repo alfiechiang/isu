@@ -32,15 +32,21 @@ class CustomCoupon extends Command
         DB::transaction(function () {
             Log::info('exec custom-coupon');
             $starttime = date('Y-m-d 00:00:00');
+            $now = date('Y-m-d H:is');
             $endtime = date('Y-m-d 23:59:59');
             $coupons = ModelsCustomCoupon::where('send', false)
                 ->whereBetween('issue_time', [$starttime, $endtime])->get();
             $service = new CustomCouponService();
             foreach ($coupons as $coupon) {
-                Log::info("exec:custom-coupon:foreach:$coupon->code");
-                $service->send($coupon->code);
+
+                if ($coupon->issue_time <= $now) {
+                    Log::info("exec:custom-coupon:foreach:$coupon->code");
+                    $service->send($coupon->code);
+
+                    $coupon->send = true;
+                    $coupon->save();
+                }
             }
-            ModelsCustomCoupon::whereBetween('issue_time', [$starttime, $endtime])->update(['send' => true]);
         });
     }
 }

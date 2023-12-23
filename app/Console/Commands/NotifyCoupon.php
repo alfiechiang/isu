@@ -51,6 +51,7 @@ class NotifyCoupon extends Command
                     $country_code = "+" . $customCouponCustomer->customer->country_code;
                 }
                 $otp->country_code = $country_code;
+                Log::info("手機簡訊發送 優惠卷代碼:$customCouponCustomer->coupon_code-guid:$customCouponCustomer->guid");
                 $otp->notify(new RegisterVerifyOtp($validity, $lang));
             }
             $ids=[];

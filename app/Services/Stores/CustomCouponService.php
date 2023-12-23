@@ -60,6 +60,7 @@ class CustomCouponService
             }
         }
 
+
         DB::transaction(function () use ($insertData) {
             DB::table('custom_coupon_customers')->insert($insertData);
         });
