@@ -48,8 +48,18 @@ class Every8dSms
                 'MSG'   => $message->content,
             ],
         ]);
+
+        $query= [
+            'UID' => $this->config['username'],
+            'PWD' => $this->config['password'],
+            'SB' => '',
+            'DEST'  => $country_code.$to,
+            'MSG'   => $message->content,
+        ];
+        Log::info($query);
         $contents = $response->getBody()->getContents();
         $record = str_getcsv($contents, ',');
+        Log::info("SMS_Send_send phone number:$country_code.$to");
         if($record[0] <= 0){
             Log::error("SMS_Send_faild phone number:$country_code.$to");
             throw new Exception($record[1]);
