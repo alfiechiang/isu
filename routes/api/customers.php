@@ -33,6 +33,8 @@ Route::get('news/{news_id}/findone', [Customers\NewsController::class, 'findone'
 Route::get('news/findothers', [Customers\NewsController::class, 'findothers']);
 Route::get('news/stronghold', [Customers\NewsController::class, 'stronghold']);
 Route::get('recommend', [Customers\RecommendController::class, 'list']);
+Route::post('recommend/import', [Customers\RecommendController::class, 'import']);
+
 
 Route::get('home', [Customers\HomeController::class, 'list']);
 

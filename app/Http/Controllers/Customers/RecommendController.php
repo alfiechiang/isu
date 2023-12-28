@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Customers;
 
 use App\Http\Response;
+use App\Imports\RecommendsImport;
 use App\Services\Customers\RecommendService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class RecommendController extends Controller
 {
@@ -23,6 +26,17 @@ class RecommendController extends Controller
         } catch (\Exception $e) {
             return Response::errorFormat($e);
         }
+    }
+
+
+    public function import(Request $request){
+        try {
+            Excel::import(new RecommendsImport(), request()->file('import'));
+            return Response::format(200, [], '請求成功');
+        } catch (\Exception $e) {
+            return Response::errorFormat($e);
+        }
+
     }
 
    
