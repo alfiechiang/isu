@@ -35,6 +35,16 @@ class RecommendsImport implements ToCollection
         //餐飲  12
         //生活  13
         //購物  14
+
+        $names =[];
+
+
+        foreach ($rows as $row) {
+            $names[]=$row[3];
+        }
+
+        DB::table('recommends')->whereIn('name',$names)->delete();
+
         $insertData = [];
         foreach ($rows as $row) {
             $item = [];
@@ -45,6 +55,8 @@ class RecommendsImport implements ToCollection
             $item['cell_phone']=$row[6];
             $item['address']=$row[7];
             $item['official_website']=$row[21];
+            $item['open_start_time']='08:00';
+            $item['open_end_time']='18:00';
             $insertData[]=$item;
         }
         DB::table('recommends')->insert($insertData);
