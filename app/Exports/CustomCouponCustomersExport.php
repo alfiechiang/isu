@@ -24,7 +24,7 @@ class CustomCouponCustomersExport implements FromCollection,WithHeadings,WithCol
     */
     public function collection()
     {
-        $customers =CustomCouponCustomer::where('coupon_code',$this->coupon_code)->get();
+        $customers =CustomCouponCustomer::with('customer')->where('coupon_code',$this->coupon_code)->get();
 
         $results=[];
         foreach($customers as $customer){
@@ -32,15 +32,24 @@ class CustomCouponCustomersExport implements FromCollection,WithHeadings,WithCol
             $result['coupon_code']=$customer->coupon_code;
             $result['coupon_name']=$customer->coupon_name;
             $result['guid']=$customer->guid;
-            $result['customer_name']=$customer->customer_name;
-            $result['phone']=$customer->phone;
-            $result['email']=$customer->email;
+            
+            if(isset($customer->customer->name)){
+                $result['customer_name']=$customer->customer->name;
+            }
+
+            if(isset($customer->customer->phone)){
+                $result['phone']=$customer->customer->phone;
+            }
+
+            if(isset($customer->customer->email)){
+                $result['email']=$customer->customer->email;
+            }
+
             $result['exchange_time']=$customer->exchange_time;
             $result['exchange_place']=$customer->exchange_place;
             $result['exchanger']=$customer->exchanger;
             $results[]=$result;
         }
-
 
         return collect($results);
     }
