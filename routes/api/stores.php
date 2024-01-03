@@ -13,6 +13,8 @@ Route::post('otp/check', [Stores\MailController::class, 'checkOtp']);
 Route::get('customers/export', [Stores\CustomerController::class, 'export']);
 
 Route::get('custom/coupon/export/{coupon_code}', [Stores\CustomCouponController::class, 'export']);
+Route::get('stamp-customer/export', [Stores\StampCustomerController::class, 'export']);
+Route::get('point-customers/export', [Stores\PointCustomerController::class, 'export']);
 
 Route::group([
   'middleware' => ['auth:employee','role_modify'],
@@ -37,6 +39,7 @@ Route::group([
   Route::post('stamp-customer', [Stores\StampCustomerController::class, 'create']);
   Route::get('stamp-customer', [Stores\StampCustomerController::class, 'list']);
   Route::get('stamp-customer/log', [Stores\StampCustomerController::class, 'logList']);
+
   Route::delete('stamp-customer/{stamp_id}', [Stores\StampCustomerController::class, 'delete']);
   Route::post('prize', [Stores\PrizeController::class, 'create']);
   Route::get('prize/{prize_id}/findone', [Stores\PrizeController::class, 'findone']);

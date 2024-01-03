@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Stores;
 
+use App\Exports\PointCustomersExport;
 use App\Http\Response;
 use App\Services\Stores\PointCustomerService;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PointCustomerController extends Controller
 {
@@ -69,5 +72,13 @@ class PointCustomerController extends Controller
             return Response::errorFormat($e);
         }
     }
+
+    public function export(Request $request){
+        return Excel::download(new PointCustomersExport, '點數.xlsx');
+    }
+
+
+
+    //export
     
 }

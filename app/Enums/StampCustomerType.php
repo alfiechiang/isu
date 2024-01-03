@@ -5,7 +5,7 @@ namespace App\Enums;
 enum StampCustomerType:int
 {
     case POINTSEXCHANGE = 1;  //點數兌換
-    case STAY =2;  //住宿獲取3
+    case STAY =2;  //住宿獲取
     case SOMEONE_DELIVER =3;   //他人贈送
 
     case ALREADY_USE =4;   //已使用

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Stores;
 
+use App\Exports\StampCustomersExport;
 use App\Http\Response;
 use App\Services\Stores\StampCustomerService;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class StampCustomerController extends Controller
 {
@@ -63,5 +66,10 @@ class StampCustomerController extends Controller
         } catch (Exception $e) {
             return Response::errorFormat($e);
         }
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new StampCustomersExport, '集章.xlsx');
     }
 }

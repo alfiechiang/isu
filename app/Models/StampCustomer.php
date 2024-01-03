@@ -43,6 +43,7 @@ class StampCustomer extends Model
         return $this->belongsTo(Customer::class);
     }
 
+
     public function store(): BelongsTo
     {
         return $this->belongsTo(Store::class);
@@ -56,5 +57,10 @@ class StampCustomer extends Model
     public function operator(): MorphTo
     {
         return $this->morphTo('operator', 'operator_type', 'operator_id');
+    }
+
+    public function presentguid(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class,'guid','source');
     }
 }
