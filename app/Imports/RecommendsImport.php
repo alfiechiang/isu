@@ -25,7 +25,6 @@ class RecommendsImport implements ToCollection
     {
 
         unset($rows[0]);
-
         //遊樂園區/觀光工廠/博物館  1
         //銀行/郵局 2
         //公家機關  3
@@ -56,7 +55,6 @@ class RecommendsImport implements ToCollection
                 $phone=$row[5];
             }
             $item['phone']=$phone;
-
             $cell_phone=null;
             if(isset($row[6])){
                 $cell_phone=$row[6];
@@ -66,7 +64,6 @@ class RecommendsImport implements ToCollection
             if(isset($row[7])){
                 $address=$row[7];
             }
-
             $item['address']=$address;
             $official_website=null;
             if(isset($row[21])){
@@ -87,6 +84,17 @@ class RecommendsImport implements ToCollection
                 $open_end_time=$dateTime->format('H:i');
             }
             $item['open_end_time']=$open_end_time;
+            $precision='';
+            if(isset($row[18])){
+                $precision=$row[18];
+            }
+            $item['precision']=$precision;
+            $latitude='';
+            if(isset($row[19])){
+                $latitude=$row[19];
+            }
+            $item['latitude']=$latitude;
+
             $insertData[]=$item;
         }
         DB::table('recommends')->insert($insertData);
