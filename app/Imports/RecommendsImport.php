@@ -3,10 +3,14 @@
 namespace App\Imports;
 
 use App\Models\CustomCouponPeopleList;
+use App\Models\Recommend;
+use Carbon\Exceptions\EndLessPeriodException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+
 
 class RecommendsImport implements ToCollection
 {
@@ -21,6 +25,7 @@ class RecommendsImport implements ToCollection
     {
 
         unset($rows[0]);
+
         //遊樂園區/觀光工廠/博物館  1
         //銀行/郵局 2
         //公家機關  3
@@ -35,28 +40,53 @@ class RecommendsImport implements ToCollection
         //餐飲  12
         //生活  13
         //購物  14
-
-        $names =[];
-
-
-        foreach ($rows as $row) {
-            $names[]=$row[3];
-        }
-
-        DB::table('recommends')->whereIn('name',$names)->delete();
-
+       // Recommend::truncate();
         $insertData = [];
         foreach ($rows as $row) {
             $item = [];
             $item['type'] =$this->switchToType($row[2]);
             $item['name']=$row[3];
-            $item['content']=$row[4];
-            $item['phone']=$row[5];
-            $item['cell_phone']=$row[6];
-            $item['address']=$row[7];
-            $item['official_website']=$row[21];
-            $item['open_start_time']='08:00';
-            $item['open_end_time']='18:00';
+            if(isset($row[4])){
+                $item['content']=$row[4];
+            }else{
+                $item['content']=null;
+            }
+            $phone=null;
+            if(isset($row[5])){
+                $phone=$row[5];
+            }
+            $item['phone']=$phone;
+
+            $cell_phone=null;
+            if(isset($row[6])){
+                $cell_phone=$row[6];
+            }
+            $item['cell_phone']=$cell_phone;
+            $address=null;
+            if(isset($row[7])){
+                $address=$row[7];
+            }
+
+            $item['address']=$address;
+            $official_website=null;
+            if(isset($row[21])){
+                $official_website=$row[21];
+            }
+            $item['official_website']=$official_website;
+            $open_start_time=null;
+            if(isset($row[16])){
+                $timeValue = $row[16]; // 假設時間在第一列
+                $dateTime = Date::excelToDateTimeObject($timeValue); // 將 Excel 時間轉換為 DateTime 對象                
+                $open_start_time=$dateTime->format('H:i');
+            }
+            $item['open_start_time']=$open_start_time;
+            $open_end_time=null;
+            if(isset($row[17])){
+                $timeValue = $row[17]; // 假設時間在第一列
+                $dateTime = Date::excelToDateTimeObject($timeValue); // 將 Excel 時間轉換為 DateTime 對象                
+                $open_end_time=$dateTime->format('H:i');
+            }
+            $item['open_end_time']=$open_end_time;
             $insertData[]=$item;
         }
         DB::table('recommends')->insert($insertData);
