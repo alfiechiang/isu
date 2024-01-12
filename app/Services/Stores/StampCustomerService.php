@@ -41,7 +41,8 @@ class StampCustomerService
                 'created_at' => $created_at,
                 'expired_at' => $expire_at,
                 'type' => $type,
-                'source' => $auth->name
+                'source' => $auth->name,
+                'memo'=>$data['desc']
             ]);
 
             StampLog::create([
