@@ -28,6 +28,14 @@ class CouponService
             $Builder = $Builder->where('customer_id', $customer_id);
         }
 
+        $list= $Builder->with('customer')->groupBy('customer_id', 'coupon_id')->get();
+        foreach( $list as $item){
+            if(is_null($item->customer)){
+                CouponCustomer::where('id',$item->id)->delete();
+            }
+        }
+        
+
         return $Builder->with('customer')
             ->groupBy('customer_id', 'coupon_id')->paginate($data['per_page']);
     }
