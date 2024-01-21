@@ -26,12 +26,14 @@ class StampCustomersExport implements FromCollection, WithHeadings, WithColumnWi
             $result['expired_at'] = $stamp->expired_at;
             $result['source'] = $stamp->source;
             $type='';
+            $exchange_time='';
             switch ($stamp->type) {
                 case StampCustomerType::POINTSEXCHANGE->value:
                     $type='點數兌換';
                     break;
                 case StampCustomerType::STAY->value:
                     $type='住宿獲取';
+                    $exchange_time = $stamp->created_at;
                     break;
                 case StampCustomerType::SYSTEM_SEND->value:
                     $type='系統發送';
@@ -48,7 +50,7 @@ class StampCustomersExport implements FromCollection, WithHeadings, WithColumnWi
                 default:
             }
             $result['type'] = $type;
-            $result['consumed_at'] = $stamp->consumed_at;
+            $result['exchange_time'] = $exchange_time;
             if(StampCustomerType::STAY->value==$stamp->type){
                 $result['exchange_store'] = $stamp->source;
             }
