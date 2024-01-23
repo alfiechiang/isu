@@ -14,7 +14,7 @@ enum StampCustomerType:int
 
     case ALREADY_USE_SOMEONE_DELIVER =6;   //已使用（他人贈送）
 
-    case ALREADY_USE_OWN_DELIVER =7;   //已使用（他人贈送）
+    case ALREADY_USE_OWN_DELIVER =7;   //已使用（我方贈予）
 
     case HAVE_EXPIRE_SOMEONE_DELIVER =8;   //已過期
 

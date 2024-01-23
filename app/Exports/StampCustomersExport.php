@@ -48,7 +48,7 @@ class StampCustomersExport implements FromCollection, WithHeadings, WithColumnWi
                     $type='已過期';
                     break;
                 case StampCustomerType::ALREADY_USE_OWN_DELIVER->value:
-                    $type='已使用（他人贈送）';
+                    $type='已使用（我方贈予）';
                     break;
                 default:
             }
